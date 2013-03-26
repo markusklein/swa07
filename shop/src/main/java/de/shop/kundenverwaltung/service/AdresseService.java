@@ -1,13 +1,11 @@
 package de.shop.kundenverwaltung.service;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 //import java.util.Locale;
-import java.util.logging.Logger;
-import static java.util.logging.Level.FINER;
+
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,29 +17,32 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import org.jboss.logging.Logger;
+
 import de.shop.util.IdGroup;
 import de.shop.util.ValidatorProvider;
-
 import de.shop.kundenverwaltung.domain.Adresse;
 
 public class AdresseService implements Serializable {
 	private static final long serialVersionUID = 1650148163922645962L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	@PersistenceContext
 	private transient EntityManager em;
+	
+	@Inject
+	private transient Logger logger;
 	
 	@Inject
 	private ValidatorProvider validationProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
 	public List<Adresse> findAlleAdressen() {
@@ -86,7 +87,7 @@ public class AdresseService implements Serializable {
 				throw new AdresseExistsException(adresse.getAdresseId());
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Neue Adresse");
+			logger.debugf("Neue Adresse");
 		}
 		em.merge(adresse);
 		return adresse;
