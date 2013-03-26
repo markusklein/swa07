@@ -18,11 +18,6 @@ import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.sql.Timestamp;
@@ -63,7 +58,7 @@ import de.shop.util.IdGroup;
 	
 				
 })
-@XmlRootElement
+
 public class Kategorie implements Serializable {
 	
 	/**
@@ -96,7 +91,6 @@ public class Kategorie implements Serializable {
 	@GeneratedValue
 	@Min(value = MIN_ID, message = "{artikelverwaltung.kategorie.id.min}", groups = IdGroup.class)
 	@Column(name = "kategorie_id", nullable = false)
-	@XmlAttribute
 	private Long kategorieId;
 	
 	@Version
@@ -106,7 +100,6 @@ public class Kategorie implements Serializable {
 	@Column(name = "bezeichnung", nullable = false, length = 20)
 	@NotNull(message = "{artikelverwaltung.kategorie.bezeichnung.notNull}")
 	@Size(max = BEZEICHNUNG_LENGTH_MAX, message = "{artikelverwaltung.kategorie.bezeichnung.length}")
-	@XmlElement(required = true)
 	private String bezeichnung;
 
 	@Column(name = "erzeugt", nullable = false)

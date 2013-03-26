@@ -1,7 +1,8 @@
 package de.shop.artikelverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
+
+import org.jboss.logging.Logger;
+
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
@@ -11,7 +12,6 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -35,11 +35,12 @@ import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.service.KategorieService;
 
 
+import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
 
 @Path("/kategorien")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
@@ -52,15 +53,18 @@ public class KategorieResource {
 	
 	@Inject
 	private UriHelperKategorie uriHelperKategorie;
+	
+	@Inject
+	private LocaleHelper localeHelper;
 
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 	
 	@GET
@@ -89,21 +93,21 @@ public class KategorieResource {
 	}
 	
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
-	@Produces
+	@Consumes(APPLICATION_JSON)
+	@Produces(APPLICATION_JSON)
 	public Response createKategorie(Kategorie kategorie, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		kategorie = ks.createKategorie(kategorie, locale);
-		LOGGER.log(FINEST, "Adresse: {0}", kategorie);
+		LOGGER.debugf("Adresse: {0}", kategorie);
 		
 		final URI KategorieUri = uriHelperKategorie.getUriKategorie(kategorie, uriInfo);
 		return Response.created(KategorieUri).build();
 	}
 	
 	@PUT
-	@Consumes({ APPLICATION_XML, TEXT_XML })
-	@Produces
+	@Consumes(APPLICATION_JSON)
+	@Produces(APPLICATION_JSON)
 	public void updateKategorie(Kategorie kategorie, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandene Kategorie ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
@@ -114,11 +118,11 @@ public class KategorieResource {
 			final String msg = "Keine Kategorie gefunden mit der ID " + kategorie.getKategorieId();
 			throw new NotFoundException(msg);
 		}
-		LOGGER.log(FINEST, "Kategorie vorher: %s", origKategorie);
+		LOGGER.debugf("Kategorie vorher: %s", origKategorie);
 	
 		// Daten des vorhandene Kategorie ueberschreiben
 		origKategorie.setValues(kategorie);
-		LOGGER.log(FINEST, "Kategorie nachher: %s", origKategorie);
+		LOGGER.debugf("Kategorie nachher: %s", origKategorie);
 		
 		// Update durchfuehren
 		kategorie = ks.updateKategorie(origKategorie, locale);

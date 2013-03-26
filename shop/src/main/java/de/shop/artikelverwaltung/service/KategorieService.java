@@ -5,7 +5,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -19,7 +18,9 @@ import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.util.IdGroup;
 import de.shop.util.Log;
 import de.shop.util.ValidatorProvider;
-import static java.util.logging.Level.FINER;
+import org.jboss.logging.Logger;
+
+
 
 
 @Log
@@ -33,16 +34,19 @@ public class KategorieService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidatorProvider validationService;
+	private ValidatorProvider validationProvider;
+	
+	@Inject
+	private transient Logger logger; 
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 	
 	public List<Kategorie> findAllKategorie() {
@@ -85,7 +89,7 @@ public class KategorieService implements Serializable {
 				throw new KategorieExistsException(kategorie.getKategorieId());
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Neue Kategorie");
+			LOGGER.debugf("Neue Kategorie");
 		}
 		em.merge(kategorie);
 		return kategorie;
@@ -102,7 +106,7 @@ public class KategorieService implements Serializable {
 	}
 	private void validateKategorie(Kategorie kategorie, Locale locale, Class<?>... groups) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Kategorie>> violations = validator.validate(kategorie, groups);
 		if (!violations.isEmpty()) {
@@ -111,7 +115,7 @@ public class KategorieService implements Serializable {
 	}
 	
 	private void validateKategorieId(Long kategorieId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Kategorie>> violations = validator.validateValue(Kategorie.class,
 				                                                                           "kategorieId",
 				                                                                           kategorieId,

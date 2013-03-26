@@ -5,10 +5,6 @@ import java.io.Serializable;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import static de.shop.util.Constants.ERSTE_VERSION;
 import static de.shop.util.Constants.MIN_ID;
@@ -85,7 +81,6 @@ import de.shop.util.IdGroup;
 								
 									
 })
-@XmlRootElement
 public class Artikel implements Serializable {
 	
 	private static final String PREFIX = "Artikel.";
@@ -123,7 +118,6 @@ public class Artikel implements Serializable {
 	@GeneratedValue
 	@Min(value = MIN_ID, message = "{artikelverwaltung.artikel.id.min}", groups = IdGroup.class)
 	@Column(name = "artikel_id")
-	@XmlAttribute
 	private Long artikel_id;
 	
 	@Version
@@ -132,25 +126,21 @@ public class Artikel implements Serializable {
 
 	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "kategorie_id", updatable = false)
-	@XmlElement(required = true)
 	@NotNull(message = "{artikelverwaltung.artikel.kategorie.notNull}")
 	private Kategorie kategorie;
 	
 	@Column(nullable = false, length = 45)
 	@NotNull(message = "{artikelverwaltung.artikel.beschreibung.notNull}")
 	@Size(max = BEZEICHNUNG_LENGTH_MAX, message = "{artikelverwaltung.artikel.beschreibung.length}")
-	@XmlElement(required = true)
 	private String beschreibung;
 	
 	@Column(nullable = false, length = 45)
 	@NotNull(message = "{artikelverwaltung.artikel.name.notNull}")
 	@Size(max = NAME_LENGTH_MAX, message = "{artikelverwaltung.artikel.name.length}")
-	@XmlElement(required = true)
 	private String name;
 
 	@Column(nullable = false)
 	@NotNull
-	@XmlElement(required = true)
 	private float preis;
 	
 	@Column(nullable = false)

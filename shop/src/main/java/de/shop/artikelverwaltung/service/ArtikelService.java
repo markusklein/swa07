@@ -1,13 +1,12 @@
 package de.shop.artikelverwaltung.service;
 
-import static java.util.logging.Level.FINER;
+
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -23,6 +22,7 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.util.IdGroup;
 import de.shop.util.Log;
+import org.jboss.logging.Logger;
 
 @Log
 public class ArtikelService implements Serializable {
@@ -36,16 +36,16 @@ public class ArtikelService implements Serializable {
 	private KategorieService ks;
 	
 	@Inject
-	private ValidatorProvider validationService;
+	private ValidatorProvider validationProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 	
 	public List<Artikel> findAllArtikel() {
@@ -102,7 +102,7 @@ public class ArtikelService implements Serializable {
 				throw new ArtikelExistsException(artikel.getArtikelId());
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Neuer Artikel");
+			LOGGER.debugf("Neuer Artikel");
 		}
 		em.merge(artikel);
 		return artikel;
@@ -123,7 +123,7 @@ public class ArtikelService implements Serializable {
 
 	private void validateArtikel(Artikel artikel, Locale locale, Class<?>... groups) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Artikel>> violations = validator.validate(artikel, groups);
 		if (!violations.isEmpty()) {
@@ -132,7 +132,7 @@ public class ArtikelService implements Serializable {
 	}
 	
 	private void validateArtikelId(Long artikelId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Artikel>> violations = validator.validateValue(Artikel.class,
 				                                                                           "artikelId",
 				                                                                           artikelId,
