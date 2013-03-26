@@ -3,9 +3,6 @@ package de.shop.kundenverwaltung.rest;
 import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -44,12 +41,9 @@ import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
-import de.shop.util.RestLongWrapper;
-import de.shop.util.RestStringWrapper;
-
 
 @Path("/kunden")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
@@ -78,7 +72,7 @@ public class KundeResource {
 	}
 	
 	@GET
-	@Produces(TEXT_PLAIN)
+	@Produces(APPLICATION_JSON)
 	@Path("version")
 	public String getVersion() {
 		return VERSION;
@@ -152,25 +146,25 @@ public class KundeResource {
 	
 	@GET
 	@Path("/prefix/id/{id:[1-9][0-9]*}")
-	public Collection<RestLongWrapper> findIdsByPrefix(@PathParam("id") String idPrefix, @Context UriInfo uriInfo) {
+	public Collection<Long> findIdsByPrefix(@PathParam("id") String idPrefix, @Context UriInfo uriInfo) {
 		final Collection<Long> ids = ks.findIdsByPrefix(idPrefix);
-		final Collection<RestLongWrapper> result = new ArrayList<>(ids.size());
-		for (Long id : ids) {
-			result.add(new RestLongWrapper(id));
-		}
-		return result;
+//		final Collection<RestLongWrapper> result = new ArrayList<>(ids.size());
+//		for (Long id : ids) {
+//			result.add(new RestLongWrapper(id));
+//		}
+		return ids;
 	}
 	
 	@GET
 	@Path("/prefix/nachname/{nachname}")
-	public Collection<RestStringWrapper> findNachnamenByPrefix(@PathParam("nachname") String nachnamePrefix,
+	public Collection<String> findNachnamenByPrefix(@PathParam("nachname") String nachnamePrefix,
 			                                                   @Context UriInfo uriInfo) {
 		final Collection<String> nachnamen = ks.findNachnamenByPrefix(nachnamePrefix);
-		final Collection<RestStringWrapper> wrapperColl = new ArrayList<>(nachnamen.size());
-		for (String n : nachnamen) {
-			wrapperColl.add(new RestStringWrapper(n));
-		}
-		return wrapperColl;
+//		final Collection<RestStringWrapper> wrapperColl = new ArrayList<>(nachnamen.size());
+//		for (String n : nachnamen) {
+//			wrapperColl.add(new RestStringWrapper(n));
+//		}
+		return nachnamen;
 	}
 
 	
@@ -217,7 +211,7 @@ public class KundeResource {
 	 * @return Response-Objekt mit URL des neuen Privatkunden
 	 */
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createKunde(Kunde kunde, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		final Adresse lieferadresse = kunde.getLieferadresse();
@@ -240,7 +234,7 @@ public class KundeResource {
 	 * @param kunde zu aktualisierende Daten des Kunden
 	 */
 	@PUT
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public void updateKunde(Kunde kunde, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandenen Kunden ermitteln

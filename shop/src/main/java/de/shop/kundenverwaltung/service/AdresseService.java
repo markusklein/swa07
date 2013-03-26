@@ -20,7 +20,7 @@ import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 import de.shop.util.IdGroup;
-import de.shop.util.ValidationService;
+import de.shop.util.ValidatorProvider;
 
 import de.shop.kundenverwaltung.domain.Adresse;
 
@@ -32,7 +32,7 @@ public class AdresseService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validationProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -94,7 +94,7 @@ public class AdresseService implements Serializable {
 	
 	private void validateAdresse(Adresse adresse, Locale locale, Class<?>... groups) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Adresse>> violations = validator.validate(adresse, groups);
 		if (!violations.isEmpty()) {
@@ -103,7 +103,7 @@ public class AdresseService implements Serializable {
 	}
 	
 	private void validateAdresseId(Long adresseId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Adresse>> violations = validator.validateValue(Adresse.class,
 				                                                                           "adresseId",
 				                                                                           adresseId,

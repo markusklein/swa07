@@ -18,7 +18,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.util.IdGroup;
-import de.shop.util.ValidationService;
+import de.shop.util.ValidatorProvider;
 import javax.validation.groups.Default;
 
 public class ZahlungsinformationService implements Serializable {
@@ -31,7 +31,7 @@ public class ZahlungsinformationService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validationProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -126,7 +126,7 @@ public class ZahlungsinformationService implements Serializable {
 	private void validateZahlungsinformation(Zahlungsinformation zahlungsinformation,
 											 Locale locale, Class<?>... groups) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Zahlungsinformation>> violations
 			   = validator.validate(zahlungsinformation, groups);
@@ -138,7 +138,7 @@ public class ZahlungsinformationService implements Serializable {
 	
 	
 	private void validateZahlungsinformationId(Long zahlId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Zahlungsinformation>> violations
 		= validator.validateValue(Zahlungsinformation.class, "zahlId", zahlId, IdGroup.class);
 		if (!violations.isEmpty())

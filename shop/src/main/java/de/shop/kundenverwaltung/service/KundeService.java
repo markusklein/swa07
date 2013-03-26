@@ -27,7 +27,7 @@ import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.util.IdGroup;
-import de.shop.util.ValidationService;
+import de.shop.util.ValidatorProvider;
 
 public class KundeService implements Serializable {
 
@@ -58,7 +58,7 @@ public class KundeService implements Serializable {
 	private transient Event<Kunde> event;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validationProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -296,14 +296,14 @@ public class KundeService implements Serializable {
 	
 	private void validateKunde(Kunde kunde, Locale locale, Class<?>... groups) {
 		
-		final Validator validator = validationService.getValidator(locale);		
+		final Validator validator = validationProvider.getValidator(locale);		
 		final Set<ConstraintViolation<Kunde>> violations = validator.validate(kunde, groups);
 		if (!violations.isEmpty()) {
 			throw new KundeValidationException(kunde, violations);
 		}
 	}
 	private void validateKundeId(Long kundeId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
 				                                                                           "kundeid",
 				                                                                           kundeId,
@@ -313,7 +313,7 @@ public class KundeService implements Serializable {
 	}
 	
 	private void validateKundeNachname(String nachname, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
 				                                                                           "nachname",
 				                                                                           nachname,
@@ -325,7 +325,7 @@ public class KundeService implements Serializable {
 	
 	
 	private void validateKundeEmail(String email, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
 				                                                                           "email",
 				                                                                           email,

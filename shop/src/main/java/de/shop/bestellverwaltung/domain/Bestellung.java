@@ -6,6 +6,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -23,13 +25,16 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static de.shop.util.Constants.MIN_ID;
 import static java.util.logging.Level.FINER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.EnumType.STRING;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -127,6 +132,10 @@ public class Bestellung implements Serializable {
 	@XmlAttribute
 	private Long id;
 	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
+	
 	@Column(name = "status")
 	@Enumerated(STRING)
 	private BestellstatusType status;
@@ -158,7 +167,7 @@ public class Bestellung implements Serializable {
 
 	@OneToMany(cascade = { PERSIST, REMOVE })
 	@JoinColumn(name = "bestell_id", nullable = false, updatable = true)
-	@OrderColumn(name = "idx")
+	//@OrderColumn(name = "idx", nullable = false)
 	//ToDo @NotEmpty löst Fehler aus in BestellungTest.java, da leere Bestellung angelegt wird
 	//@NotEmpty(message = "{bestellverwaltung.bestellung.bestellpositionen.notEmpty}")
 	@Valid

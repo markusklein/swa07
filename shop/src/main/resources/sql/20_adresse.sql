@@ -1,0 +1,18 @@
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(100, 'Willy-Andreas-Allee 17', '76131', 'Karlsruhe', 'DE', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(101, 'Güterweg 34', '76131', 'Karlsruhe', 'DE', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(102, 'Singenerstraße 35', '78256', 'Steißlingen', 'DE', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(103, 'Uhlandstraße 119', '78224', 'Singen', 'DE', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(104, 'Königsstraße 8', '70173', 'Stuttgart', 'DE', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(105, 'Eisenbahnstraße 57', '79098', 'Freiburg', 'DE', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(140, 'Tobleronestraße 1', '8200', 'Schaffhausen', 'CH', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(141, 'Alpenweg 74', '8004', 'Zürich', 'CH', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(142, 'Seestraße 55', '8004', 'Zürich', 'CH', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(143, 'Uniweg 4', '4001', 'Basel', 'CH', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(144, 'Hauptstraße 98', '4001', 'Basel', 'CH', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(145, 'Jodlergasse 6', '7000', 'Chur', 'CH', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(170, 'Baumgarten 57', '5280', 'Braunau am Inn', 'A', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(171, 'Straden 79', '5280', 'Braunau am Inn', 'A', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(172, 'Rossmarkt 69', '5280', 'Braunau am Inn', 'A', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(173, 'Lucasweg 36', '5010', 'Salzburg', 'A', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(174, 'Salzburgerstrasse 42', '5010', 'Salzburg', 'A', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(175, 'Zistelweg 32', '1220', 'Wien', 'A', '05.08.2006 00:00:00', '05.08.2006 00:00:00', 0);

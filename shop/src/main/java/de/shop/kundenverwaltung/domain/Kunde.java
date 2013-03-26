@@ -1,10 +1,12 @@
 package de.shop.kundenverwaltung.domain;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static javax.persistence.EnumType.STRING;
 
 import java.io.Serializable;
 import java.net.URI;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -153,6 +156,10 @@ public class Kunde implements Serializable {
 	@GeneratedValue
 	@Column(name = "kunde_id", unique = true, updatable = false, nullable = false)
 	private Long kundeid;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	@XmlElement
 	@NotNull

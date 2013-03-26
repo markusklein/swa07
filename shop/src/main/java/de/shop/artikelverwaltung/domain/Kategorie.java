@@ -1,6 +1,8 @@
 package de.shop.artikelverwaltung.domain;
 
 import java.io.Serializable;
+
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 
 
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
@@ -19,14 +22,16 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static de.shop.util.Constants.MIN_ID;
 import static de.shop.util.Constants.BEZEICHNUNG_LENGTH_MAX;
 import de.shop.util.IdGroup;
-import de.shop.util.XmlDateAdapter;
-
 
 /**
  * The persistent class for the kategorie database table.
@@ -93,6 +98,10 @@ public class Kategorie implements Serializable {
 	@Column(name = "kategorie_id", nullable = false)
 	@XmlAttribute
 	private Long kategorieId;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	@Column(name = "bezeichnung", nullable = false, length = 20)
 	@NotNull(message = "{artikelverwaltung.kategorie.bezeichnung.notNull}")
@@ -101,11 +110,11 @@ public class Kategorie implements Serializable {
 	private String bezeichnung;
 
 	@Column(name = "erzeugt", nullable = false)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Timestamp erzeugt;
 	
 	@Column(name = "aktualisiert", nullable = false)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Timestamp aktualisiert;
 	
 	@PrePersist

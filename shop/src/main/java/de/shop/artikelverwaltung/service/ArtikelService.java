@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import de.shop.util.ValidationService;
+import de.shop.util.ValidatorProvider;
 import com.google.common.base.Strings;
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
@@ -36,7 +36,7 @@ public class ArtikelService implements Serializable {
 	private KategorieService ks;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validationService;
 	
 	@PostConstruct
 	private void postConstruct() {

@@ -1,6 +1,7 @@
 package de.shop.artikelverwaltung.domain;
 
 import java.io.Serializable;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -9,15 +10,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
 import static de.shop.util.Constants.MIN_ID;
 import static de.shop.util.Constants.BEZEICHNUNG_LENGTH_MAX;
 import static de.shop.util.Constants.NAME_LENGTH_MAX;
-
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,14 +33,11 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.Version;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import de.shop.util.IdGroup;
-import de.shop.util.XmlDateAdapter;
-
-
-
-
-
-
 
 /**
  * The persistent class for the artikel database table.
@@ -126,6 +125,10 @@ public class Artikel implements Serializable {
 	@Column(name = "artikel_id")
 	@XmlAttribute
 	private Long artikel_id;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "kategorie_id", updatable = false)
@@ -152,12 +155,12 @@ public class Artikel implements Serializable {
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Date erzeugt;
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Date aktualisiert;
 
 	//@SuppressWarnings("unused")

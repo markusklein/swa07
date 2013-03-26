@@ -7,7 +7,8 @@ public final class Constants {
 	public static final int INT_ANZ_ZIFFERN = 11;
 	public static final int LONG_ANZ_ZIFFERN = 20;
 	public static final int BEZEICHNUNG_LENGTH_MAX = 45;
-	public static final int NAME_LENGTH_MAX = 20;
+	public static final int NAME_LENGTH_MAX = 30;
+	public static final int ERSTE_VERSION = 0;
 	
 	
 	

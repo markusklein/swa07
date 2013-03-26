@@ -1,17 +1,12 @@
 package de.shop.kundenverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -29,35 +24,48 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.service.AdresseService;
+import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 @Path("/adressen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class AdresseResource {
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
+	@Context
+	private UriInfo uriInfo;
+	
+	@Context
+    private HttpHeaders headers;
+	
 	@Inject
 	private AdresseService as;
 	
 	@Inject
 	private UriHelperAdresse uriHelperAdresse;
+	
+	@Inject
+	private LocaleHelper localeHelper;
 
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
 	@GET
@@ -69,11 +77,8 @@ public class AdresseResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Adresse findAdresseById(@PathParam("id") Long id,
-			                           @Context UriInfo uriInfo,
-			                           @Context HttpHeaders headers) {
-		final List<Locale> locales = headers.getAcceptableLanguages();
-		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+	public Adresse findAdresseById(@PathParam("id") Long id) {
+		final Locale locale = localeHelper.getLocale(headers);
 		final Adresse adresse = as.findAdresseById(id, locale);
 		if (adresse == null) {
 			// TODO msg passend zu locale
@@ -85,20 +90,20 @@ public class AdresseResource {
 	}
 	
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createAdresse(Adresse adresse, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		adresse = as.createAdresse(adresse, locale);
-		LOGGER.log(FINEST, "Adresse: {0}", adresse);
+		LOGGER.trace(adresse);
 		
 		final URI adresseUri = uriHelperAdresse.getUriAdresse(adresse, uriInfo);
 		return Response.created(adresseUri).build();
 	}
 	
 	@PUT
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public void updateAdresse(Adresse adresse, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandene Adressen ermitteln
@@ -110,11 +115,11 @@ public class AdresseResource {
 			final String msg = "Keine Adresse gefunden mit der ID " + adresse.getAdresseId();
 			throw new NotFoundException(msg);
 		}
-		LOGGER.log(FINEST, "Adresse vorher: %s", origAdresse);
+		LOGGER.trace(origAdresse);
 	
 		// Daten der vorhandenen Adresse ueberschreiben
 		origAdresse.setValues(adresse);
-		LOGGER.log(FINEST, "Adresse nachher: %s", origAdresse);
+		LOGGER.trace(origAdresse);
 		
 		// Update durchfuehren
 		adresse = as.updateAdresse(origAdresse, locale);

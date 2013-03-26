@@ -27,7 +27,7 @@ import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.IdGroup;
 import de.shop.util.TechnicalDate;
-import de.shop.util.ValidationService;
+import de.shop.util.ValidatorProvider;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -53,7 +53,7 @@ public class BestellungService implements Serializable {
 	private KundeService ks;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validationService;
 	
 	@Inject
 	@NeueBestellung

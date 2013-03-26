@@ -18,7 +18,7 @@ import javax.validation.groups.Default;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.util.IdGroup;
 import de.shop.util.Log;
-import de.shop.util.ValidationService;
+import de.shop.util.ValidatorProvider;
 import static java.util.logging.Level.FINER;
 
 
@@ -33,7 +33,7 @@ public class KategorieService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validationService;
 	
 	@PostConstruct
 	private void postConstruct() {

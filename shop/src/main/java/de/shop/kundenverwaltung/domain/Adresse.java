@@ -2,8 +2,12 @@ package de.shop.kundenverwaltung.domain;
 
 import static javax.persistence.EnumType.STRING;
 
-import java.io.Serializable;
+import static de.shop.util.Constants.ERSTE_VERSION;
 
+import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
+
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -12,21 +16,22 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.jboss.logging.Logger;
 
 import de.shop.util.IdGroup;
-import de.shop.util.XmlDateAdapter;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -55,9 +60,9 @@ import java.util.Date;
 						+ "WHERE UPPER(a.land) = UPPER(:" + Adresse.PARAM_ADRESSEN_LAND + ")")
 })
 
-@XmlRootElement
 public class Adresse implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	private static final String PREFIX = "Adresse.";
 	
@@ -74,51 +79,50 @@ public class Adresse implements Serializable {
 	@GeneratedValue
 	@Column(name = "adresse_id", unique = true, nullable = false, updatable = false)
 	@Min(value = 1, message = "{kundenverwaltung.adresse.id.min}", groups = IdGroup.class)
-	@XmlAttribute
 	private Long adresseId = null;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
 	@Size(min = 2, max = 60, message = "{kundenverwaltung.adresse.strasse.length}")
 	@Column(length = 60, nullable = false)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+ [0-9]+([a-z])?", message = "{kundenverwaltung.adresse.strasse.pattern")
-	@XmlElement(required = true)
 	private String strasse;
 
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
 	@Column(length = 25, nullable = false)
 	@Pattern(regexp = "[0-9]{4,5}", message = "{kundenverwaltung.adresse.plz.pattern}")
 	@Digits(integer = 5, fraction = 0)
-	@XmlElement(required = true)
 	private String plz;
 
 	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
 	@Size(min = 2, max = 45, message = "{kundenverwaltung.adresse.ort.length}")
 	@Column(length = 45, nullable = false)
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{kundenverwaltung.adresse.ort.pattern}")
-	@XmlElement(required = true)
 	private String ort;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.land.notNull}")
 	@Enumerated(STRING)
 	@Column(length = 2, nullable = false)
-	@XmlElement(required = true)
 	private AdresseLandType land;
 	
 	@Column(name = "aktualisiert", nullable = false)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Timestamp aktualisiert;
 
 	@Column(name = "erzeugt", nullable = false)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Timestamp erzeugt;
 
 	//TODO Rückbeziehung nachschauen
 	@OneToOne(mappedBy = "lieferadresse")
-	@XmlTransient
+	@JsonIgnore
 	private Kunde kundeLieferAdresse;
 	
 	@OneToOne(mappedBy = "rechnungsadresse")
-	@XmlTransient
+	@JsonIgnore
 	private Kunde kundeRechnungsAdresse;
 	
 	@PrePersist
@@ -126,8 +130,21 @@ public class Adresse implements Serializable {
 		erzeugt = new Timestamp(new Date().getTime());
 		aktualisiert = new Timestamp(new Date().getTime());
 	}
-	//Todo PreUpdate
-	//@PreUpdate
+
+	@PreUpdate
+	private void preUpdate() {
+		aktualisiert = new Timestamp(new Date().getTime());
+	}
+	
+	@PostPersist
+	private void postPersist() {
+		LOGGER.debugf("Neue Adresse mit ID=%s", adresseId);
+	}
+	
+	@PostUpdate
+	private void postUpdate() {
+		LOGGER.debugf("Adresse mit ID=%s aktualisiert", adresseId);
+	}
 	
 	//Konstruktoren
 	public Adresse() {

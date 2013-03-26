@@ -1,5 +1,8 @@
 package de.shop.kundenverwaltung.domain;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
+
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -24,8 +28,7 @@ import java.util.Date;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-import de.shop.util.XmlDateAdapter;
-
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * The persistent class for the zahlungsinformation database table.
@@ -76,6 +79,10 @@ public class Zahlungsinformation implements Serializable {
 	@XmlAttribute
 	private Long zahlId = null;
 	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
+	
 	@NotNull(message = "{kundenverwaltung.zahlungsinformation.kontoinhaber.notNull}")
 	@Column(length = 45, nullable = false)
 	@Size(min = 2, max = 45, message = "{kundenverwaltung.zahlungsinformation.kontoinhaber.length}")
@@ -118,11 +125,11 @@ public class Zahlungsinformation implements Serializable {
 	private String swift;
 	
 	@Column(nullable = false)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Timestamp aktualisiert;
 	
 	@Column(nullable = false)
-	@XmlJavaTypeAdapter(XmlDateAdapter.class)
+	@JsonIgnore
 	private Timestamp erzeugt;
 
 	public Long getZahlId() {

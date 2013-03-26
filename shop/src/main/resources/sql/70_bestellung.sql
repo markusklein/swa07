@@ -1,0 +1,10 @@
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(300, 'OFFEN', 600, 'A1001', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(301, 'OFFEN', 600, 'A1002', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(302, 'OFFEN', 601, 'A1003', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(303, 'OFFEN', 600, 'A1004', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(304, 'OFFEN', 602, 'A1005', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(305, 'OFFEN', 609, 'A1006', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(306, 'OFFEN', 607, 'A1007', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(307, 'OFFEN', 605, 'A1008', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(308, 'STORNIERT', 605, 'A1009', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
+INSERT INTO bestellung (bestell_id, status, kunde_id, lieferverfolgungsnummer, erzeugt, aktualisiert, version) VALUES(309, 'OFFEN', 606, 'A1010', '20.10.2012 19:02:05', '20.10.2012 19:02:05', 0);
