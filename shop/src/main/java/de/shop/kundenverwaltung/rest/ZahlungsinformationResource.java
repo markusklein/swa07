@@ -1,17 +1,14 @@
 package de.shop.kundenverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
+
+import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -33,31 +30,38 @@ import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.kundenverwaltung.service.ZahlungsinformationService;
+import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
 
 @Path("/zahlungsinformationen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
 public class ZahlungsinformationResource {
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	
+	@Inject
+	private transient Logger logger;
+	
 	@Inject
 	private ZahlungsinformationService zs;
 	
 	@Inject
 	private UriHelperZahlungsinformation uriHelperZahlungsinformation;
+	
+	@Inject
+	private LocaleHelper localeHelper;
 
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@GET
@@ -84,7 +88,7 @@ public class ZahlungsinformationResource {
 	}
 	
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createZahlungsinformation(Zahlungsinformation zahlungsinformation,
 			                                  @Context UriInfo uriInfo, @Context HttpHeaders headers) {
@@ -92,7 +96,7 @@ public class ZahlungsinformationResource {
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
 		zahlungsinformation = zs.createZahlungsinformation(zahlungsinformation, locale);
-		LOGGER.log(FINEST, "Zahlungsinformation: {0}", zahlungsinformation);
+		LOGGER.trace(zahlungsinformation);
 		
 		final URI zahlungsinformationUri = uriHelperZahlungsinformation.
 				                           getUriZahlungsinformation(zahlungsinformation, uriInfo);
@@ -101,7 +105,7 @@ public class ZahlungsinformationResource {
 	}
 	
 	@PUT
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public void updateZahlungsinformation(Zahlungsinformation zahlungsinformation, @Context UriInfo uriInfo,
 			                              @Context HttpHeaders headers) {
@@ -115,11 +119,10 @@ public class ZahlungsinformationResource {
 			throw new NotFoundException(msg);
 		}
 		
-		LOGGER.log(FINEST, "Zahlungsinformation vorher: %s", originaleZahlungsinformation);
-		
+		LOGGER.trace(originaleZahlungsinformation);
 		// Daten des vorhandenen Kunden überschreiben
 		originaleZahlungsinformation.setValues(zahlungsinformation);
-		LOGGER.log(FINEST, "Zahlungsinformation nachher: %s", originaleZahlungsinformation);
+		LOGGER.trace(originaleZahlungsinformation);
 		
 		// Update durchführen
 		zahlungsinformation = zs.updateZahlungsinformation(originaleZahlungsinformation, locale);

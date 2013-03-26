@@ -1,13 +1,10 @@
 package de.shop.kundenverwaltung.service;
 
-import static java.util.logging.Level.FINER;
-
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.jboss.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -16,31 +13,35 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
+
 import de.shop.util.IdGroup;
 import de.shop.util.ValidatorProvider;
-import javax.validation.groups.Default;
+
 
 public class ZahlungsinformationService implements Serializable {
 	
 
 	private static final long serialVersionUID = 2025119056807350622L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-	
+		
 	@PersistenceContext
 	private transient EntityManager em;
+	
+	@Inject
+	private transient Logger logger;
 	
 	@Inject
 	private ValidatorProvider validationProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	// Alle Zahlungsinformationen finden
@@ -83,7 +84,7 @@ public class ZahlungsinformationService implements Serializable {
 		
 		catch (NoResultException e) {
 			// Noch keine Zahlungsinformation mit dieser Kontonummer
-			LOGGER.finest("Kontonummer existiert noch nicht");
+			logger.debugf("Kontonummer existiert noch nicht");
 		}
 		
 		zahlungsinformation.setZahlId(null);
@@ -113,7 +114,7 @@ public class ZahlungsinformationService implements Serializable {
 			}
 		
 			catch (NoResultException e) {
-				LOGGER.finest("Neue ZahlungsinformationID");
+				logger.debugf("ZahlungsinformationID");
 				
 			}
 		
