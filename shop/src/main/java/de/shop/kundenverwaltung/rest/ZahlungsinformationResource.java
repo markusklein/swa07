@@ -43,9 +43,6 @@ public class ZahlungsinformationResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	@Inject
-	private transient Logger logger;
-	
-	@Inject
 	private ZahlungsinformationService zs;
 	
 	@Inject
@@ -56,12 +53,12 @@ public class ZahlungsinformationResource {
 
 	@PostConstruct
 	private void postConstruct() {
-		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@GET
