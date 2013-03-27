@@ -1,5 +1,6 @@
 package de.shop.bestellverwaltung.rest;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+
+import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.rest.UriHelperArtikel;
 import de.shop.bestellverwaltung.domain.Bestellposition;
@@ -18,6 +21,8 @@ import de.shop.util.Log;
 @ApplicationScoped
 @Log
 public class UriHelperBestellung {
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	
 	@Inject
 	private UriHelperKunde uriHelperKunde;
 	
@@ -41,6 +46,8 @@ public class UriHelperBestellung {
 				bp.setArtikelUri(artikelUri);
 			}
 		}
+		
+		LOGGER.trace(bestellung);
 	}
 	
 	public URI getUriBestellung(Bestellung bestellung, UriInfo uriInfo) {

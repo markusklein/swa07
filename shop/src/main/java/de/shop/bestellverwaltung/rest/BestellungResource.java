@@ -1,9 +1,6 @@
 package de.shop.bestellverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -11,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
+
+import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -38,18 +36,26 @@ import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.rest.UriHelperKunde;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
+import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
+//import de.shop.util.Log;
 import de.shop.util.NotFoundException;
 
 
 @Path("/bestellungen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
 public class BestellungResource {
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-	protected static final Locale LOCALE = Locale.GERMAN;
+	//protected static final Locale LOCALE = Locale.GERMAN;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	
+	@Context
+	private UriInfo uriInfo;
+	
+    @Context
+    private HttpHeaders headers;
 	
 	@Inject
 	private BestellungService bs;
@@ -61,6 +67,9 @@ public class BestellungResource {
 	private ArtikelService as;
 	
 	@Inject
+	private LocaleHelper localeHelper;
+	
+	@Inject
 	private UriHelperBestellung uriHelperBestellung;
 	
 	@Inject
@@ -68,25 +77,26 @@ public class BestellungResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Bestellung findBestellungById(@PathParam("id") Long id, @Context UriInfo uriInfo) {
-		final Bestellung bestellung = bs.findBestellungById(id, BestellungFetchType.NUR_BESTELLUNG, LOCALE);
+	public Bestellung findBestellungById(@PathParam("id") Long id) {
+		final Locale locale = localeHelper.getLocale(headers);
+		final Bestellung bestellung = bs.findBestellungById(id, BestellungFetchType.NUR_BESTELLUNG, locale);
 		if (bestellung == null) {
 			final String msg = "Keine Bestellung gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
 		}
 
 		// URLs innerhalb der gefundenen Bestellung anpassen
-		uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);
+		//uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);
 		return bestellung;
 	}
 	
@@ -97,7 +107,7 @@ public class BestellungResource {
 	 */
 	@GET
 	@Path("{id:[1-9][0-9]*}/kunde")
-	public Kunde findKundeByBestellung(@PathParam("id") Long id, @Context UriInfo uriInfo) {
+	public Kunde findKundeByBestellung(@PathParam("id") Long id) {
 		final Kunde kunde = bs.findKundeByBestellung(id);
 		if (kunde == null) {
 			final String msg = "Keine Bestellung gefunden mit der ID " + id;
@@ -114,8 +124,9 @@ public class BestellungResource {
 	 */
 	@GET
 	public Collection<Bestellung> findAllbestellungen() {
+		final Locale locale = localeHelper.getLocale(headers);
 		Collection<Bestellung> bestellungen = null;
-			bestellungen = bs.findAllBestellungen(BestellungFetchType.NUR_BESTELLUNG, LOCALE);
+			bestellungen = bs.findAllBestellungen(BestellungFetchType.NUR_BESTELLUNG, locale);
 			if (bestellungen.isEmpty()) {
 				final String msg = "Keine Bestellungen vorhanden";
 				throw new NotFoundException(msg);
@@ -130,9 +141,9 @@ public class BestellungResource {
 	 * @return Objekt mit Bestelldaten, falls die ID vorhanden ist
 	 */
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
-	public Response createBestellung(Bestellung bestellung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Response createBestellung(Bestellung bestellung) {
 		// Schluessel des Kunden extrahieren
 		final String kundeUriStr = bestellung.getKundeUri().toString();
 		int startPos = kundeUriStr.lastIndexOf('/') + 1;
@@ -146,8 +157,7 @@ public class BestellungResource {
 		}
 		
 		// Kunde mit den vorhandenen ("alten") Bestellungen ermitteln
-		final List<Locale> locales = headers.getAcceptableLanguages();
-		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		final Locale locale = localeHelper.getLocale(headers);
 		final Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
 		// Implizites Nachladen innerhalb der Transaktion wuerde auch funktionieren
 		// final AbstractKunde kunde = ks.findKundeById(kundeId);
@@ -231,7 +241,7 @@ public class BestellungResource {
 
 		final URI bestellungUri = uriHelperBestellung.getUriBestellung(bestellung, uriInfo);
 		final Response response = Response.created(bestellungUri).build();
-		LOGGER.finest(bestellungUri.toString());
+		LOGGER.debugf(bestellungUri.toString());
 		
 		return response;
 	}

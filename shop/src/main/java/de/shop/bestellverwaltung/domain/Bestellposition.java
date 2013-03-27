@@ -1,10 +1,15 @@
 package de.shop.bestellverwaltung.domain;
 
+import static de.shop.util.Constants.ERSTE_VERSION;
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.TemporalType.TIMESTAMP;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -22,16 +27,11 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.util.TechnicalDate;
-import static de.shop.util.Constants.ERSTE_VERSION;
-import static javax.persistence.EnumType.STRING;
-import static javax.persistence.TemporalType.TIMESTAMP;
 
 
 /**
@@ -41,6 +41,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Table (name = "bestellposition")
+@Cacheable
 @NamedQueries({
 	@NamedQuery(name = Bestellposition.FIND_BESTELLPOSITIONEN_BY_ARTIKEL,
             query = "SELECT bp"
@@ -48,7 +49,6 @@ import static javax.persistence.TemporalType.TIMESTAMP;
             		+ " WHERE  bp.artikel.id = :" + Bestellposition.PARAM_BESTELLPOSITION_ARTIKEL)
 })
 
-@XmlRootElement
 public class Bestellposition implements Serializable {
 	
 	private static final String PREFIX = "Bestellposition.";
@@ -63,7 +63,6 @@ public class Bestellposition implements Serializable {
 	@GeneratedValue
 	@Column(name = "bestellpos_id", unique = true, nullable = false, updatable = false)
 	@NotNull(groups = TechnicalDate.class)
-	@XmlAttribute
 	private Long id;
 
 	@Version
@@ -72,7 +71,6 @@ public class Bestellposition implements Serializable {
 	
 	@Column(nullable = false)
 	@Min(value = ANZAHL_MIN, message = "{bestellverwaltung.bestellposition.anzahl.min}")
-	@XmlElement
 	private int bestellmenge;
 
 	@Column(name = "status")
@@ -92,11 +90,10 @@ public class Bestellposition implements Serializable {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "artikel_id", nullable = false)
 	@NotNull(message = "{bestellverwaltung.bestellposition.artikel.notNull}")
-	@XmlTransient
+	@JsonIgnore
 	private Artikel artikel;
 
 	@Transient
-	@XmlElement(name = "artikel", required = true)
 	private URI artikelUri;
 	
 	

@@ -2,9 +2,8 @@ package de.shop.bestellverwaltung.service;
 
 import static de.shop.util.Constants.KEINE_ID;
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
+//import static java.util.logging.Level.FINER;
+//import static java.util.logging.Level.FINEST;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -16,7 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
+import org.jboss.logging.Logger;
 import javax.enterprise.event.Event;
 
 
@@ -39,7 +39,6 @@ public class BestellungService implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8088898369932459648L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	public enum BestellungFetchType {
 		NUR_BESTELLUNG,
@@ -53,7 +52,10 @@ public class BestellungService implements Serializable {
 	private KundeService ks;
 	
 	@Inject
-	private ValidatorProvider validationService;
+	private ValidatorProvider validationProvider;
+	
+	@Inject
+	private transient Logger logger; 
 	
 	@Inject
 	@NeueBestellung
@@ -61,12 +63,12 @@ public class BestellungService implements Serializable {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 	
 	public Bestellung findBestellungById(Long id, BestellungFetchType fetch, Locale locale) {
@@ -152,7 +154,7 @@ public class BestellungService implements Serializable {
 		}
 		
 		for (Bestellposition bp : bestellung.getBestellpositionen()) {
-			LOGGER.log(FINEST, "Bestellposition: {0}", bp);				
+			logger.debugf("Bestellposition: {0}", bp);				
 		}
 
 		
@@ -198,11 +200,10 @@ public class BestellungService implements Serializable {
 //	}
 
 	private void validateBestellung(Bestellung bestellung, Locale locale, Class<?>... groups) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validationProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Bestellung>> violations = validator.validate(bestellung);
 		if (violations != null && !violations.isEmpty()) {
-			LOGGER.exiting("BestellungService", "createBestellung", violations);
 			throw new BestellungValidationException(bestellung, violations);
 		}
 	}

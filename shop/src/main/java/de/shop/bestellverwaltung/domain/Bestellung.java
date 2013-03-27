@@ -38,11 +38,8 @@ import static javax.persistence.EnumType.STRING;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.IdGroup;
@@ -98,7 +95,6 @@ import java.util.logging.Logger;
 			+ " WHERE  b.kunde = :" + Bestellung.PARAM_KUNDEID)	    
 })
 
-@XmlRootElement
 public class Bestellung implements Serializable {
 	
 	private static final String PREFIX = "Bestellung.";
@@ -129,7 +125,6 @@ public class Bestellung implements Serializable {
 	@GeneratedValue
 	@Column(name = "bestell_id", unique = true, nullable = false, updatable = false)
 	@Min(value = MIN_ID, message = "{bestellverwaltung.bestellung.id.min}", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id;
 	
 	@Version
@@ -146,23 +141,21 @@ public class Bestellung implements Serializable {
 	@Column(nullable = false)
 	@NotNull(message = "{bestellverwaltung.bestellung.erzeugt.notNull}", groups = TechnicalDate.class)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erzeugt;
 	
 	@Column(nullable = false)
 	@NotNull(message = "{bestellverwaltung.bestellung.aktualisiert.notNull}", groups = TechnicalDate.class)
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date aktualisiert;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "kunde_id")//, nullable = false, insertable = false, updatable = false)
 	@NotNull(message = "{bestellverwaltung.bestellung.kunde.notNull}", groups = PreExistingGroup.class)
-	@XmlTransient
 	private Kunde kunde;
 	
 	@Transient
-	@XmlElement(name = "kunde", required = true)
 	private URI kundeUri;
 
 	@OneToMany(cascade = { PERSIST, REMOVE })
@@ -171,8 +164,9 @@ public class Bestellung implements Serializable {
 	//ToDo @NotEmpty löst Fehler aus in BestellungTest.java, da leere Bestellung angelegt wird
 	//@NotEmpty(message = "{bestellverwaltung.bestellung.bestellpositionen.notEmpty}")
 	@Valid
-	@XmlElementWrapper(name = "bestellpositionen", required = true)
-	@XmlElement(name = "bestellposition", required = true)
+//	@XmlElementWrapper(name = "bestellpositionen", required = true)
+//	@XmlElement(name = "bestellposition", required = true)
+	@JsonIgnore
 	private List<Bestellposition> bestellpositionen;
 	
 	public Bestellung() {
