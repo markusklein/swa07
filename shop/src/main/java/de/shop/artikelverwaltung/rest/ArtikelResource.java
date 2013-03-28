@@ -38,7 +38,7 @@ import de.shop.util.NotFoundException;
 
 
 @Path("/artikel")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
@@ -82,7 +82,7 @@ public class ArtikelResource {
 		final Artikel artikel = as.findArtikelById(id, locale);
 		if (artikel == null) {
 			// TODO msg passend zu locale
-			final String msg = "Keine Kategorie gefunden mit der ID " + id;
+			final String msg = "Kein Artikel gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
 		}
 		
@@ -95,7 +95,7 @@ public class ArtikelResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		artikel = as.createArtikel(artikel, locale);
-		LOGGER.debugf("Adresse: {0}", artikel);
+		LOGGER.debugf("Artikel: {0}", artikel);
 		
 		final URI ArtikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
 		return Response.created(ArtikelUri).build();

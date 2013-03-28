@@ -4,8 +4,6 @@ package de.shop.artikelverwaltung.rest;
 import org.jboss.logging.Logger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -99,7 +97,7 @@ public class KategorieResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		kategorie = ks.createKategorie(kategorie, locale);
-		LOGGER.debugf("Adresse: {0}", kategorie);
+		LOGGER.debugf("Kategorie: {0}", kategorie);
 		
 		final URI KategorieUri = uriHelperKategorie.getUriKategorie(kategorie, uriInfo);
 		return Response.created(KategorieUri).build();

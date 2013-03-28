@@ -28,7 +28,6 @@ public class KategorieService implements Serializable {
 
 	
 	private static final long serialVersionUID = -5650547909234333262L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
 	@PersistenceContext
 	private transient EntityManager em;
@@ -41,12 +40,12 @@ public class KategorieService implements Serializable {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 	
 	public List<Kategorie> findAllKategorie() {
@@ -89,7 +88,7 @@ public class KategorieService implements Serializable {
 				throw new KategorieExistsException(kategorie.getKategorieId());
 		}
 		catch (NoResultException e) {
-			LOGGER.debugf("Neue Kategorie");
+			logger.debugf("Neue Kategorie");
 		}
 		em.merge(kategorie);
 		return kategorie;
