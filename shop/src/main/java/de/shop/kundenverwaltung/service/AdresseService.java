@@ -20,9 +20,11 @@ import javax.validation.groups.Default;
 import org.jboss.logging.Logger;
 
 import de.shop.util.IdGroup;
+import de.shop.util.Log;
 import de.shop.util.ValidatorProvider;
 import de.shop.kundenverwaltung.domain.Adresse;
 
+@Log
 public class AdresseService implements Serializable {
 	private static final long serialVersionUID = 1650148163922645962L;
 	
