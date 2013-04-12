@@ -89,14 +89,14 @@ public class BestellungResource {
 	@Path("{id:[1-9][0-9]*}")
 	public Bestellung findBestellungById(@PathParam("id") Long id) {
 		final Locale locale = localeHelper.getLocale(headers);
-		final Bestellung bestellung = bs.findBestellungById(id, BestellungFetchType.NUR_BESTELLUNG, locale);
+		final Bestellung bestellung = bs.findBestellungById(id, BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
 		if (bestellung == null) {
 			final String msg = "Keine Bestellung gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
 		}
 
 		// URLs innerhalb der gefundenen Bestellung anpassen
-		//uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);
+		uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);
 		return bestellung;
 	}
 	
@@ -126,7 +126,7 @@ public class BestellungResource {
 	public Collection<Bestellung> findAllbestellungen() {
 		final Locale locale = localeHelper.getLocale(headers);
 		Collection<Bestellung> bestellungen = null;
-			bestellungen = bs.findAllBestellungen(BestellungFetchType.NUR_BESTELLUNG, locale);
+			bestellungen = bs.findAllBestellungen(BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
 			if (bestellungen.isEmpty()) {
 				final String msg = "Keine Bestellungen vorhanden";
 				throw new NotFoundException(msg);

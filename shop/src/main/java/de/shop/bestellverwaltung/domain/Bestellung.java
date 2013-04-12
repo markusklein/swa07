@@ -153,6 +153,7 @@ public class Bestellung implements Serializable {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "kunde_id")//, nullable = false, insertable = false, updatable = false)
 	@NotNull(message = "{bestellverwaltung.bestellung.kunde.notNull}", groups = PreExistingGroup.class)
+	@JsonIgnore
 	private Kunde kunde;
 	
 	@Transient
@@ -166,7 +167,7 @@ public class Bestellung implements Serializable {
 	@Valid
 //	@XmlElementWrapper(name = "bestellpositionen", required = true)
 //	@XmlElement(name = "bestellposition", required = true)
-	@JsonIgnore
+	//@JsonIgnore
 	private List<Bestellposition> bestellpositionen;
 	
 	public Bestellung() {
