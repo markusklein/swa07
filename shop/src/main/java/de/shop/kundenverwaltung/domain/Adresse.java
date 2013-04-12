@@ -59,7 +59,6 @@ import java.util.Date;
 						+ "FROM Adresse a "
 						+ "WHERE UPPER(a.land) = UPPER(:" + Adresse.PARAM_ADRESSEN_LAND + ")")
 })
-
 public class Adresse implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
