@@ -40,12 +40,14 @@ import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 //import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 
 @Path("/bestellungen")
 @Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class BestellungResource {
 	//protected static final Locale LOCALE = Locale.GERMAN;

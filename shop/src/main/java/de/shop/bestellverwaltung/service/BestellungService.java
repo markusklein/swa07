@@ -2,8 +2,6 @@ package de.shop.bestellverwaltung.service;
 
 import static de.shop.util.Constants.KEINE_ID;
 import java.io.Serializable;
-//import static java.util.logging.Level.FINER;
-//import static java.util.logging.Level.FINEST;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -15,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
-//import java.util.logging.Logger;
 import org.jboss.logging.Logger;
 import javax.enterprise.event.Event;
 
