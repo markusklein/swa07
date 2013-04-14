@@ -5,6 +5,7 @@ import static javax.persistence.EnumType.STRING;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Date;
 
@@ -19,6 +20,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -29,6 +32,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.util.TechnicalDate;
@@ -41,14 +45,13 @@ import de.shop.util.TechnicalDate;
 
 @Entity
 @Table (name = "bestellposition")
-@Cacheable
 @NamedQueries({
 	@NamedQuery(name = Bestellposition.FIND_BESTELLPOSITIONEN_BY_ARTIKEL,
             query = "SELECT bp"
 			        + " FROM   Bestellposition bp"
             		+ " WHERE  bp.artikel.id = :" + Bestellposition.PARAM_BESTELLPOSITION_ARTIKEL)
 })
-
+@Cacheable
 public class Bestellposition implements Serializable {
 	
 	private static final String PREFIX = "Bestellposition.";
@@ -57,6 +60,8 @@ public class Bestellposition implements Serializable {
 	public static final String PARAM_BESTELLPOSITION_ARTIKEL = "artikel";
 	
 	private static final long serialVersionUID = 9164003138551866949L;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	
 	private static final int ANZAHL_MIN = 1;
 
 	@Id
@@ -120,12 +125,22 @@ public class Bestellposition implements Serializable {
 		aktualisiert = new Date();
 	}
 	
+	@PostPersist
+	private void postPersist() {
+		LOGGER.debugf("Neue Bestellposition mit ID=%d", id);
+	}
+	
+
+	
 	@PreUpdate
 	private void preUpdate() {
 		aktualisiert = new Date();
 	}
 	
-
+	@PostUpdate
+	private void postUpdate() {
+		LOGGER.debugf("Bestellposition mit ID=%s aktualisiert: version=%d", id, version);
+	}
 	public Long getId() {
 		return id;
 	}
