@@ -83,7 +83,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			assertThat(true, is(true));
 		}
 		
-		@Ignore
+		
 		@Test
 		public void findKategorieById() {
 			LOGGER.debugf("BEGINN");
@@ -102,7 +102,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			try (final JsonReader jsonReader =
 					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 				final JsonObject jsonObject = jsonReader.readObject();
-				assertThat(jsonObject.getJsonNumber("id").longValue(), is(kategorieId.longValue()));
+				assertThat(jsonObject.getJsonNumber("kategorieId").longValue(), is(kategorieId.longValue()));
 			}
 			
 			LOGGER.debugf("ENDE");
