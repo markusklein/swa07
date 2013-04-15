@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -20,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -29,7 +31,6 @@ import javax.persistence.Version;
 
 import static de.shop.util.Constants.ERSTE_VERSION;
 import static de.shop.util.Constants.MIN_ID;
-import static java.util.logging.Level.FINER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
@@ -40,6 +41,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.jboss.logging.Logger;
 
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.IdGroup;
@@ -47,7 +49,6 @@ import de.shop.util.PreExistingGroup;
 import de.shop.util.TechnicalDate;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 
 
@@ -95,6 +96,7 @@ import java.util.logging.Logger;
 			+ " WHERE  b.kunde = :" + Bestellung.PARAM_KUNDEID)	    
 })
 
+@Cacheable
 public class Bestellung implements Serializable {
 	
 	private static final String PREFIX = "Bestellung.";
@@ -119,7 +121,7 @@ public class Bestellung implements Serializable {
 	public static final String PARAM_KUNDEID = "KundeId";
 	
 	private static final long serialVersionUID = 6704238277609138074L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	@Id
 	@GeneratedValue
@@ -161,13 +163,10 @@ public class Bestellung implements Serializable {
 
 	@OneToMany(cascade = { PERSIST, REMOVE })
 	@JoinColumn(name = "bestell_id", nullable = false, updatable = true)
-	//@OrderColumn(name = "idx", nullable = false)
+	@OrderColumn(name = "idx", nullable = false)
 	//ToDo @NotEmpty löst Fehler aus in BestellungTest.java, da leere Bestellung angelegt wird
 	//@NotEmpty(message = "{bestellverwaltung.bestellung.bestellpositionen.notEmpty}")
 	@Valid
-//	@XmlElementWrapper(name = "bestellpositionen", required = true)
-//	@XmlElement(name = "bestellposition", required = true)
-	//@JsonIgnore
 	private List<Bestellposition> bestellpositionen;
 	
 	public Bestellung() {
@@ -188,13 +187,18 @@ public class Bestellung implements Serializable {
 	
 	@PostPersist
 	private void postPersist() {
-		LOGGER.log(FINER, "Neue Bestellung mit ID={0}", id);
+		LOGGER.debugf("Neue Bestellund mit ID=%d", id);
 	}
 	
 	//@SuppressWarnings("unused")
 	@PreUpdate
 	private void preUpdate() {
 		aktualisiert = new Date();
+	}
+	
+	@PostUpdate
+	private void postUpdate() {
+		LOGGER.debugf("Bestellung mit ID=%d aktualisiert: version=%d", id, version);
 	}
 
 	public Long getId() {
