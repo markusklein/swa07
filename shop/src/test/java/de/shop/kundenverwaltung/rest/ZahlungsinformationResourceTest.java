@@ -4,11 +4,10 @@ import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.BASEPATH;
 import static de.shop.util.TestConstants.BASEURI;
-import static de.shop.util.TestConstants.KUNDEN_ID_FILE_PATH;
-import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
-import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
-import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
-import static de.shop.util.TestConstants.KUNDEN_PATH;
+import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_ID_PATH;
+import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM;
+import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_PATH;
+import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_URI;
 import static de.shop.util.TestConstants.LOCATION;
 import static de.shop.util.TestConstants.PORT;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
@@ -39,8 +38,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
+import org.jboss.logging.Logger;
+
+import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -54,16 +55,44 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
+
 import de.shop.util.AbstractResourceTest;
 
 
 @RunWith(Arquillian.class)
 @FixMethodOrder(NAME_ASCENDING)
-public class ZahlungsinformationResourceTest {
+public class ZahlungsinformationResourceTest extends AbstractResourceTest {
+	
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	private static final Long ZAHLUNGSINFORMATION_ID_VORHANDEN = Long.valueOf(700);
 	
 	@Test
 	public void validate() {
 		assertThat(true, is(true));
+	}
+	
+	@Test
+	public void findZahlungsinformationById() {
+		LOGGER.debugf("Beginn");
+		
+		// Given
+		final Long zahlId = ZAHLUNGSINFORMATION_ID_VORHANDEN;
+		
+		// When
+		final Response response = given().header(ACCEPT, APPLICATION_JSON)
+				                         .pathParameter(ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM, zahlId)                       
+				                         .get(ZAHLUNGSINFORMATIONEN_ID_PATH);
+
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_OK));
+		
+		try (final JsonReader jsonReader =
+				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+			final JsonObject jsonObject = jsonReader.readObject();
+			assertThat(jsonObject.getJsonNumber("zahlId").longValue(), is(zahlId.longValue()));
+		}
+		
+		LOGGER.debugf("ENDE");
 	}
 	
 }
