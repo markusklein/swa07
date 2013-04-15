@@ -33,6 +33,9 @@ public final class TestConstants {
 	public static final String ARTIKEL_PATH = "/artikel";
 	public static final String ARTIKEL_URI = BASEURI + ":" + PORT + BASEPATH + ARTIKEL_PATH;
 	
+	public static final String ZAHLUNGSINFORMATIONEN_PATH = "/zahlungsinformationen";
+	public static final String ZAHLUNGSINFORMATIONEN_URI = BASEURI + ":" + PORT + BASEPATH + ZAHLUNGSINFORMATIONEN_PATH;
+	
 	// Testklassen fuer Service- und Domain-Tests
 	public static final Class<?>[] TEST_CLASSES = { };
 	
