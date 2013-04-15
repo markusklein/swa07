@@ -33,6 +33,13 @@ public final class TestConstants {
 	public static final String ARTIKEL_PATH = "/artikel";
 	public static final String ARTIKEL_URI = BASEURI + ":" + PORT + BASEPATH + ARTIKEL_PATH;
 	
+	public static final String KATEGORIE_PATH = "/kategorien";
+	public static final String KATEGORIE_URI = BASEURI + ":" + PORT + BASEPATH + KATEGORIE_PATH;
+	public static final String KATEGORIE_ID_PATH_PARAM = "kategorieId";
+	public static final String KATEGORIE_ID_PATH = KATEGORIE_PATH + "/{" + KATEGORIE_ID_PATH_PARAM + "}";
+	public static final String KATEGORIE_NAME_QUERY_PARAM = "name";
+	public static final String KATEGORIE_ID_FILE_PATH = KATEGORIE_ID_PATH + "/file";
+	
 	public static final String ZAHLUNGSINFORMATIONEN_PATH = "/zahlungsinformationen";
 	public static final String ZAHLUNGSINFORMATIONEN_URI = BASEURI + ":" + PORT + BASEPATH + ZAHLUNGSINFORMATIONEN_PATH;
 	
