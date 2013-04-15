@@ -15,7 +15,7 @@ public final class TestConstants {
 	static {
 		BASEURI = System.getProperty("baseuri", "http://localhost");
 		PORT = Integer.parseInt(System.getProperty("port", "8080"));
-		BASEPATH = System.getProperty("basepath", "/shop2/rest");
+		BASEPATH = System.getProperty("basepath", "/shop/rest");
 	}
 	
 	public static final String KUNDEN_PATH = "/kunden";

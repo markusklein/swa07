@@ -83,7 +83,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			assertThat(true, is(true));
 		}
 		
-
+		@Ignore
 		@Test
 		public void findKategorieById() {
 			LOGGER.debugf("BEGINN");
