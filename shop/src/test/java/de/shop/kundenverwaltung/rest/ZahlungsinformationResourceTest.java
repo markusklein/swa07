@@ -36,6 +36,8 @@ import java.math.BigDecimal;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +58,9 @@ import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
 
+import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.util.AbstractResourceTest;
+
 
 
 @RunWith(Arquillian.class)
@@ -65,6 +69,16 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 	
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	private static final Long ZAHLUNGSINFORMATION_ID_VORHANDEN = Long.valueOf(700);
+	private static final Long ZAHLUNGSINFORMATION_ID_NICHT_VORHANDEN = Long.valueOf(2333);
+	
+	private static final String KONTOINHABER_NEU = "Morgan Freeman";
+	private static final Long KONTONUMMER_NEU = Long.valueOf(9191221);
+	private static final Long BLZ_NEU = Long.valueOf(66650081);
+	private static final String KREDITINSTITUT_NEU = "Sparkasse Chemnitz";
+	private static final String IBAN_NEU ="DE54666500859995054284";
+	private static final String SWIFT_NEU ="PZHSDE66YYY";
+	
+	private static final String KONTOINHABER_UPDATE = "Dennis Santos";
 	
 	@Test
 	public void validate() {
@@ -94,5 +108,110 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 		
 		LOGGER.debugf("ENDE");
 	}
+	
+	@Test
+	public void findZahlungsinformationByIdNichtVorhanden() {
+		LOGGER.debugf("BEGINN");
+		
+		// Given
+		final Long zahlId = ZAHLUNGSINFORMATION_ID_NICHT_VORHANDEN;
+		
+		// When
+		final Response response = given().header(ACCEPT, APPLICATION_JSON)
+				                         .pathParameter(ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM, zahlId)
+                                         .get(ZAHLUNGSINFORMATIONEN_ID_PATH);
+
+    	// Then
+    	assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
+		LOGGER.debugf("ENDE");
+	}
+	
+	@Test
+	public void createZahlungsinformation() {
+		LOGGER.debugf("BEGINN");
+		
+		// Given
+		final String kontoinhaber = KONTOINHABER_NEU;
+		final Long kontonummer = KONTONUMMER_NEU;
+		final Long blz = BLZ_NEU;
+		final String kreditinstitut = KREDITINSTITUT_NEU;
+		final String iban = IBAN_NEU;
+		final String swift = SWIFT_NEU;
+		
+		
+		// TODO final String username = USERNAME;
+		// TODO final String password = PASSWORD;
+		
+		final JsonObject jsonObject =  getJsonBuilderFactory().createObjectBuilder()
+		             		          .add("kontoinhaber", kontoinhaber)
+		             		          .add("kontonummer", kontonummer)
+		             		          .add("blz", blz)
+		             		          .add("kreditinstitut", kreditinstitut)
+		             		          .add("iban", iban)
+		             		          .add("swift", swift)
+		             		          .build();
+
+		// When
+		final Response response = given().contentType(APPLICATION_JSON)
+				                         .body(jsonObject.toString())
+                                         //.auth()
+                                         //.basic(username, password)
+                                         .post(ZAHLUNGSINFORMATIONEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_CREATED));
+		final String location = response.getHeader(LOCATION);
+		final int startPos = location.lastIndexOf('/');
+		final String idStr = location.substring(startPos + 1);
+		final Long id = Long.valueOf(idStr);
+		assertThat(id.longValue() > 0, is(true));
+
+		LOGGER.debugf("ENDE");
+	}
+	
+	@Test
+	public void updateZahlungsinformation() {
+		LOGGER.debugf("BEGINN");
+		
+		// Given
+		final Long zahlId = ZAHLUNGSINFORMATION_ID_VORHANDEN;
+		final String neuerKontoinhaber = KONTOINHABER_UPDATE;
+		//final String username = USERNAME;
+		//final String password = PASSWORD;
+		
+		// When
+		Response response = given().header(ACCEPT, APPLICATION_JSON)
+				                   .pathParameter(ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM, zahlId)
+                                   .get(ZAHLUNGSINFORMATIONEN_ID_PATH);
+		
+		JsonObject jsonObject;
+		try (final JsonReader jsonReader =
+				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+			jsonObject = jsonReader.readObject();
+		}
+    	assertThat(jsonObject.getJsonNumber("zahlId").longValue(), is(zahlId.longValue()));
+    	
+    	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
+    	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
+    	final Set<String> keys = jsonObject.keySet();
+    	for (String k : keys) {
+    		if ("kontoinhaber".equals(k)) {
+    			job.add("kontoinhaber", neuerKontoinhaber);
+    		}
+    		else {
+    			job.add(k, jsonObject.get(k));
+    		}
+    	}
+    	jsonObject = job.build();
+    	
+		response = given().contentType(APPLICATION_JSON)
+				          .body(jsonObject.toString())
+                          //.auth()
+                          //.basic(username, password)
+                          .put(ZAHLUNGSINFORMATIONEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+   	}
 	
 }
