@@ -74,6 +74,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 	
 	private static final Long KATEGORIE_ID_VORHANDEN = Long.valueOf(500);
 	private static final Long KATEGORIE_ID_NICHT_VORHANDEN = Long.valueOf(1000);
+	private static final String NEUE_BEZEICHNUNG = "Tiere";
 
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
@@ -82,7 +83,6 @@ public class KategorieResourceTest extends AbstractResourceTest {
 		public void validate() {
 			assertThat(true, is(true));
 		}
-		
 		
 		@Test
 		public void findKategorieById() {
@@ -124,5 +124,36 @@ public class KategorieResourceTest extends AbstractResourceTest {
 	    	assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
 			LOGGER.debugf("ENDE");
 		}
+		
+		@Ignore
+		@Test
+		public void createKategorie() {
+			LOGGER.debugf("BEGINN");
+			
+			// Given
+			final String bezeichnung = NEUE_BEZEICHNUNG;
+			
+			
+			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+			             		          .add("bezeichnung", bezeichnung)
+			             		  
+			                              .build();
+
+			// When
+			final Response response = given().contentType(APPLICATION_JSON)
+					                         .body(jsonObject.toString())
+	                                         .post(KATEGORIE_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_CREATED));
+			final String location = response.getHeader(LOCATION);
+			final int startPos = location.lastIndexOf('/');
+			final String idStr = location.substring(startPos + 1);
+			final Long id = Long.valueOf(idStr);
+			assertThat(id.longValue() > 0, is(true));
+
+			LOGGER.debugf("ENDE");
+		}
+		
 	
 }
