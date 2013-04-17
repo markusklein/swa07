@@ -163,7 +163,7 @@ public class Bestellung implements Serializable {
 
 	@OneToMany(cascade = { PERSIST, REMOVE })
 	@JoinColumn(name = "bestell_id", nullable = false, updatable = true)
-	@OrderColumn(name = "idx", nullable = false)
+	//@OrderColumn(name = "idx", nullable = false)
 	//ToDo @NotEmpty löst Fehler aus in BestellungTest.java, da leere Bestellung angelegt wird
 	//@NotEmpty(message = "{bestellverwaltung.bestellung.bestellpositionen.notEmpty}")
 	@Valid
