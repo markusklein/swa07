@@ -125,7 +125,6 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			LOGGER.debugf("ENDE");
 		}
 		
-		@Ignore
 		@Test
 		public void createKategorie() {
 			LOGGER.debugf("BEGINN");
@@ -136,8 +135,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			
 			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
 			             		          .add("bezeichnung", bezeichnung)
-			             		  
-			                              .build();
+			             		          .build();
 
 			// When
 			final Response response = given().contentType(APPLICATION_JSON)

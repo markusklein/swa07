@@ -92,7 +92,7 @@ public class KategorieResource {
 	
 	@POST
 	@Consumes(APPLICATION_JSON)
-	@Produces(APPLICATION_JSON)
+	@Produces
 	public Response createKategorie(Kategorie kategorie, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
@@ -105,7 +105,7 @@ public class KategorieResource {
 	
 	@PUT
 	@Consumes(APPLICATION_JSON)
-	@Produces(APPLICATION_JSON)
+	@Produces
 	public void updateKategorie(Kategorie kategorie, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandene Kategorie ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
