@@ -36,11 +36,13 @@ import de.shop.artikelverwaltung.service.KategorieService;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 @Path("/kategorien")
 @Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class KategorieResource {
 	
