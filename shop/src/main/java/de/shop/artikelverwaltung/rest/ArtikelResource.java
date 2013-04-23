@@ -35,11 +35,13 @@ import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 
 @Path("/artikel")
 @Produces(APPLICATION_JSON)
 @Consumes
+@Transactional
 @RequestScoped
 @Log
 public class ArtikelResource {

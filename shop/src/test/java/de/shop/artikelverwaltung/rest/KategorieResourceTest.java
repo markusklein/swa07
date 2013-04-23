@@ -75,6 +75,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 	private static final Long KATEGORIE_ID_VORHANDEN = Long.valueOf(500);
 	private static final Long KATEGORIE_ID_NICHT_VORHANDEN = Long.valueOf(1000);
 	private static final String NEUE_BEZEICHNUNG = "Tiere";
+	private static final String  NEUE_BEZEICHNUNG_UPDATE = "Babies";
 
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
@@ -153,5 +154,47 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			LOGGER.debugf("ENDE");
 		}
 		
-	
+		public void updateKategorie() {
+			
+			LOGGER.debugf("BEGINN");
+			
+			//Given
+			 
+			final Long kategorieId = KATEGORIE_ID_VORHANDEN;
+			final String neue_bezeichnung = NEUE_BEZEICHNUNG_UPDATE;
+			
+			// When
+			Response response = given().header(ACCEPT, APPLICATION_JSON)
+					                   .pathParameter(KATEGORIE_ID_PATH_PARAM, kategorieId)
+	                                   .get(KATEGORIE_ID_PATH);
+			
+			JsonObject jsonObject;
+			try (final JsonReader jsonReader =
+					              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+				jsonObject = jsonReader.readObject();
+			}
+	    	assertThat(jsonObject.getJsonNumber("KategorieId").longValue(), is(kategorieId.longValue()));
+	    	
+	    	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
+	    	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
+	    	final Set<String> keys = jsonObject.keySet();
+	    	for (String k : keys) {
+	    		if ("bezeichnung".equals(k)) {
+	    			job.add("bezeichnung", neue_bezeichnung);
+	    		}
+	    		else {
+	    			job.add(k, jsonObject.get(k));
+	    		}
+	    	}
+	    	jsonObject = job.build();
+	    	
+			response = given().contentType(APPLICATION_JSON)
+					          .body(jsonObject.toString())
+	                          //.auth()
+	                          //.basic(username, password)
+	                          .put(KATEGORIE_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+		}
 }
