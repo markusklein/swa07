@@ -69,7 +69,7 @@
    <role-name>admin</role-name>
   </auth-constraint>
  </security-constraint>
- <security-constraint>
+<!-- <security-constraint>
   <web-resource-collection>
    <web-resource-name>Bestellungen erzeugen</web-resource-name>
    <url-pattern>/rest/bestellungen</url-pattern>
@@ -80,7 +80,7 @@
    <role-name>mitarbeiter</role-name>
    <role-name>kunde</role-name>
   </auth-constraint>
- </security-constraint>
+ </security-constraint> -->
  <security-role>
   <role-name>admin</role-name>
  </security-role>

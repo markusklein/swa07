@@ -133,6 +133,9 @@ public class BestellungResource {
 				final String msg = "Keine Bestellungen vorhanden";
 				throw new NotFoundException(msg);
 			}
+		for (Bestellung bestellung : bestellungen) {
+			uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);
+		}
 		return bestellungen;
 	}
 	
