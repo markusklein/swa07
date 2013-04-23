@@ -14,6 +14,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 //import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
@@ -22,6 +23,7 @@ import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
 import java.util.logging.Logger;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
@@ -70,6 +72,62 @@ public class BestellungResourceTest extends AbstractResourceTest {
 
 		LOGGER.finer("ENDE");
 	}
+	
+	
+	
+	@Test
+	public void findAllBestellungen() {
+		LOGGER.finer("BEGINN");
+		
+		final Response response = given().header(ACCEPT, APPLICATION_JSON)
+                .get(BESTELLUNGEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_OK));
+		
+//		final JsonReader jsonReader =  getJsonReaderFactory().createReader(new StringReader(response.asString()));
+		
+//		assertThat(jsonReader, not(null));
+//		
+//		final JsonArray jsonObjects = jsonReader.readArray();
+//		
+//		assertThat(jsonObjects, not(null));
+		
+//		for (int i = 0; i < jsonObjects.size(); i++) {
+//			JsonObject jsonObject = jsonObjects.getJsonObject(i);
+//			//assertThat(jsonObject.getJsonNumber("id").longValue(), greaterThan(300));
+//			org.junit.Assert.assertThat(jsonObject.getJsonNumber("id").longValue(), not(null));
+//		}	
+		
+		LOGGER.finer("ENDE");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@Test
 	public void createBestellung() {
