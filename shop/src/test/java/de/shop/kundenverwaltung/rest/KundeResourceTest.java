@@ -83,7 +83,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final String NEU_GESCHLECHT ="M";
 	
 	private static final String USERNAME ="600";
-	private static final String PASSWORD ="Test012X3";
+	private static final String PASSWORT ="test123";
 	
 	private static final Long ADRESSE_ID_VORHANDEN = Long.valueOf(103);
 	private static final String STRASSE_NEU = "Karlsstraﬂe 30";
@@ -221,7 +221,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		final String email = NEUE_EMAIL;
 		final String geschlecht = NEU_GESCHLECHT;
 		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String passwort = PASSWORT;
 		final String telefon = NEU_TELEFON;
 		final String geburtsdatum = NEU_GEBURT;
 		
@@ -243,7 +243,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		             		          .add("nachname", nachname)
 		             		          .add("email", email)
 		             		          .add("geschlecht", geschlecht)
-		             		          .add("password", password)
+		             		          .add("passwort", passwort)
 		             		          .add("telefonnummer",telefon)
 		             		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
 		             				          .add("strasse", strasse)
