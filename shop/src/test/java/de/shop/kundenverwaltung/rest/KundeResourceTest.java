@@ -5,25 +5,21 @@ import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.BASEPATH;
 import static de.shop.util.TestConstants.BASEURI;
 import static de.shop.util.TestConstants.KUNDEN_ID_FILE_PATH;
-import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
+import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
 import static de.shop.util.TestConstants.PORT;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_CREATED;
-import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
@@ -36,7 +32,6 @@ import java.lang.invoke.MethodHandles;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -55,8 +50,6 @@ import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
 
-import de.shop.kundenverwaltung.domain.Adresse;
-import de.shop.kundenverwaltung.domain.KundeGeschlechtType;
 import de.shop.util.AbstractResourceTest;
 
 
@@ -67,10 +60,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 	
 	private static final Long KUNDE_ID_VORHANDEN = Long.valueOf(600);
 	private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(599);
-	private static final Long KUNDE_ID_UPDATE = Long.valueOf(1000);
-	private static final Long KUNDE_ID_DELETE = Long.valueOf(600);
-	private static final Long KUNDE_ID_DELETE_MIT_BESTELLUNGEN = Long.valueOf(601);
-	private static final Long KUNDE_ID_DELETE_FORBIDDEN = Long.valueOf(602);
+	private static final Long KUNDE_ID_UPDATE = Long.valueOf(601);
 	private static final String NACHNAME_VORHANDEN = "Pfeiffer";
 	private static final String NACHNAME_NICHT_VORHANDEN = "Falschername";
 	private static final String NEUER_NACHNAME = "Feurer";
@@ -220,7 +210,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		final String vorname = NEUER_VORNAME;
 		final String email = NEUE_EMAIL;
 		final String geschlecht = NEU_GESCHLECHT;
-		final String username = USERNAME;
 		final String passwort = PASSWORT;
 		final String telefon = NEU_TELEFON;
 		final String geburtsdatum = NEU_GEBURT;
@@ -312,27 +301,35 @@ public class KundeResourceTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
+	
 	@Ignore
 	@Test
 	public void createKundeInvalid() {
-		LOGGER.finer("BEGINN");
+	LOGGER.finer("BEGINN");
 		
 		// Given
 		final String nachname = NEUER_NACHNAME_INVALID;
 		final String vorname = NEUER_VORNAME;
 		final String email = NEUE_EMAIL_INVALID;
-		final boolean agbAkzeptiert = false;
-		final String username = USERNAME;
-		final String password = PASSWORD;
-
+		final String geschlecht = NEU_GESCHLECHT;
+		final String passwort = PASSWORT;
+		final String telefon = NEU_TELEFON;
+		final String geburtsdatum = NEU_GEBURT;
+		
+		
+		
 		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-   		                              .add("nachname", nachname)
-   		                              .add("vorname", vorname)
-   		                              .add("email", email)
-   		                             // .add("seit", seit)
-   		                              .add("agbAkzeptiert", agbAkzeptiert)
-   		                              .addNull("adresse")
-   		                              .build();
+				 					  .add("vorname", vorname)
+		             		          .add("nachname", nachname)
+		             		          .add("email", email)
+		             		          .add("geschlecht", geschlecht)
+		             		          .add("passwort", passwort)
+		             		          .add("telefonnummer",telefon)
+		             		          .addNull("lieferadresse")
+		             				  .addNull("rechnungsadresse")
+									  .addNull("zahlungsinformation")
+				             		  .add("geburtsdatum", geburtsdatum)
+		                              .build();
 
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
@@ -348,7 +345,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
-	@Ignore
+	
 	@Test
 	public void updateKunde() {
 		LOGGER.finer("BEGINN");
@@ -356,20 +353,22 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// Given
 		final Long kundeId = KUNDE_ID_UPDATE;
 		final String neuerNachname = NEUER_NACHNAME;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		//final String username = USERNAME;
+		//final String password = PASSWORD;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
                                    .get(KUNDEN_ID_PATH);
 		
+		assertThat(response.getStatusCode(), is(HTTP_OK));
+		
 		JsonObject jsonObject;
 		try (final JsonReader jsonReader =
 				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 			jsonObject = jsonReader.readObject();
 		}
-    	assertThat(jsonObject.getJsonNumber("id").longValue(), is(kundeId.longValue()));
+    	assertThat(jsonObject.getJsonNumber("kundeId").longValue(), is(kundeId.longValue()));
     	
     	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
     	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
@@ -386,80 +385,14 @@ public class KundeResourceTest extends AbstractResourceTest {
     	
 		response = given().contentType(APPLICATION_JSON)
 				          .body(jsonObject.toString())
-                          .auth()
-                          .basic(username, password)
+                          //.auth()
+                          //.basic(username, password)
                           .put(KUNDEN_PATH);
 		
 		// Then
 		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
    	}
-	@Ignore
-	@Test
-	public void deleteKunde() {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final Long kundeId = KUNDE_ID_DELETE;
-		final String username = USERNAME_ADMIN;
-		final String password = PASSWORD_ADMIN;
-		
-		// When
-		final Response response = given().auth()
-                                         .basic(username, password)
-                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-                                         .delete(KUNDEN_ID_PATH);
-		
-		// Then
-		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-		LOGGER.finer("ENDE");
-	}
-	@Ignore
-	@Test
-	public void deleteKundeMitBestellung() {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final Long kundeId = KUNDE_ID_DELETE_MIT_BESTELLUNGEN;
-		final String username = USERNAME_ADMIN;
-		final String password = PASSWORD_ADMIN;
-		
-		// When
-		final Response response = given().auth()
-                                         .basic(username, password)
-                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-                                         .delete(KUNDEN_ID_PATH);
-		
-		// Then
-		assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
-		final String errorMsg = response.asString();
-		assertThat(errorMsg, startsWith("Kunde mit ID=" + kundeId + " kann nicht geloescht werden:"));
-		assertThat(errorMsg, endsWith("Bestellung(en)"));
-
-		LOGGER.finer("ENDE");
-	}
-	
-	@Ignore
-	@Test
-	public void deleteKundeFehlendeBerechtigung() {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final String username = USERNAME;
-		final String password = PASSWORD;
-		final Long kundeId = KUNDE_ID_DELETE_FORBIDDEN;
-		
-		// When
-		final Response response = given().auth()
-                                         .basic(username, password)
-                                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-                                         .delete(KUNDEN_ID_PATH);
-		
-		// Then
-		assertThat(response.getStatusCode(), anyOf(is(HTTP_FORBIDDEN), is(HTTP_NOT_FOUND)));
-		
-		LOGGER.finer("ENDE");
-	}
-	@Ignore
+@Ignore
 	@Test
 	public void uploadDownload() throws IOException {
 		LOGGER.finer("BEGINN");
