@@ -216,6 +216,7 @@ public class Artikel implements Serializable {
 		name = a.name;
 		preis = a.preis;
 		kategorie.setValues(a.kategorie);
+		version = a.version;
 		
 	}	
 

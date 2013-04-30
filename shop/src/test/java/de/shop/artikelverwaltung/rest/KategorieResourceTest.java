@@ -84,7 +84,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 		public void validate() {
 			assertThat(true, is(true));
 		}
-		
+		//TODO Auth
 		@Test
 		public void findKategorieById() {
 			LOGGER.debugf("BEGINN");

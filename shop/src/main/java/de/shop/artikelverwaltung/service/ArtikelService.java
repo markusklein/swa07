@@ -104,6 +104,7 @@ public class ArtikelService implements Serializable {
 		catch (NoResultException e) {
 			LOGGER.debugf("Neuer Artikel");
 		}
+		em.detach(artikel);
 		em.merge(artikel);
 		return artikel;
 	}
