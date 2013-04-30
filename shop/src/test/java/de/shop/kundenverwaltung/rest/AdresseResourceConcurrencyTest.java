@@ -70,7 +70,7 @@ public class AdresseResourceConcurrencyTest extends AbstractResourceTest {
 		}
 		
 		// Konkurrierendes Update
-		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
+		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuer Strasse bauen
 		JsonObjectBuilder job2 = getJsonBuilderFactory().createObjectBuilder();
 		Set<String> keys = jsonObject.keySet();
 		    for (String k : keys) {
@@ -90,7 +90,7 @@ public class AdresseResourceConcurrencyTest extends AbstractResourceTest {
 		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
 				
 		// Fehlschlagendes Update
-		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
+		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuer Strasse bauen
 		JsonObjectBuilder job1 = getJsonBuilderFactory().createObjectBuilder();
 		keys = jsonObject.keySet();
 		for (String k : keys) {

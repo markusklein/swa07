@@ -91,6 +91,9 @@ public class AdresseService implements Serializable {
 		catch (NoResultException e) {
 			logger.debugf("Neue Adresse");
 		}
+		
+		em.detach(adresse);
+		
 		em.merge(adresse);
 		return adresse;
 	}

@@ -116,13 +116,13 @@ public class Adresse implements Serializable {
 	private Timestamp erzeugt;
 
 	//TODO Rückbeziehung nachschauen
-	@OneToOne(mappedBy = "lieferadresse")
-	@JsonIgnore
-	private Kunde kundeLieferAdresse;
-	
-	@OneToOne(mappedBy = "rechnungsadresse")
-	@JsonIgnore
-	private Kunde kundeRechnungsAdresse;
+//	@OneToOne(mappedBy = "lieferadresse")
+//	@JsonIgnore
+//	private Kunde kundeLieferAdresse;
+//	
+//	@OneToOne(mappedBy = "rechnungsadresse")
+//	@JsonIgnore
+//	private Kunde kundeRechnungsAdresse;
 	
 	@PrePersist
 	protected void prePersist() {
@@ -219,10 +219,20 @@ public class Adresse implements Serializable {
 		this.strasse = strasse;
 	}
 	
+	public int getVersion() {
+		return this.version;
+	}
+	
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	
 	public void setValues(Adresse a) {
-		strasse = a.strasse;
-		plz = a.plz;
-		ort = a.ort;
+		this.strasse = a.getStrasse();
+		this.plz = a.getPlz();
+		this.ort = a.getOrt();
+		this.land = a.getLand();
+		this.version = a.getVersion();
 	}
 	
 	@Override
