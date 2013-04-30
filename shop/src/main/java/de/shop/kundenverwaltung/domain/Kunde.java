@@ -2,13 +2,17 @@ package de.shop.kundenverwaltung.domain;
 
 import static de.shop.util.Constants.ERSTE_VERSION;
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.EAGER;
+import javax.persistence.UniqueConstraint;
 
 import java.io.Serializable;
 import java.net.URI;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -28,14 +32,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 
+
+
+
+import de.auth.service.jboss.AuthService.RolleType;
+
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -93,7 +101,15 @@ import java.util.Date;
 						+ Kunde.PARAM_KUNDE_ID_PREFIX + " ORDER BY k.kundeid"),
 	@NamedQuery(name  = Kunde.FIND_NACHNAMEN_BY_PREFIX,
    	            query = "SELECT   DISTINCT k.nachname FROM  Kunde k WHERE UPPER(k.nachname) LIKE UPPER(:" 
-   	            		+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")")
+   	            		+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"),
+   	@NamedQuery(name  = Kunde.FIND_KUNDE_BY_USERNAME,
+   	 	            query = "SELECT   k"
+   	 				        + " FROM  Kunde k"
+   	 	            		+ " WHERE CONCAT('', k.id) = :" + Kunde.PARAM_KUNDE_USERNAME),
+   	@NamedQuery(name  = Kunde.FIND_USERNAME_BY_USERNAME_PREFIX,
+   	   	            query = "SELECT   CONCAT('', k.id)"
+   	   				        + " FROM  Kunde k"
+   	    	            		+ " WHERE CONCAT('', k.id) LIKE :" + Kunde.PARAM_USERNAME_PREFIX)
 }
 	
 	)
@@ -139,6 +155,9 @@ public class Kunde implements Serializable {
 	
 	public static final String FIND_NACHNAMEN_BY_PREFIX = PREFIX + "findNachnameByPrefix";
 	public static final String FIND_IDS_BY_PREFIX = PREFIX + "findIdsByPrefix";
+	public static final String FIND_KUNDE_BY_USERNAME = PREFIX + "findKundeByUsername";
+	public static final String FIND_USERNAME_BY_USERNAME_PREFIX = PREFIX + "findKundeByUsernamePrefix";
+
 	
 	
 	public static final String PARAM_EMAIL = "email";
@@ -146,6 +165,9 @@ public class Kunde implements Serializable {
 	public static final String PARAM_NACHNAME = "nachname";
 	public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnameprefix";
 	public static final String PARAM_KUNDE_ID_PREFIX = "idprefix";
+	public static final String PARAM_KUNDE_USERNAME = "username";
+	public static final String PARAM_USERNAME_PREFIX = "usernamePrefix";
+
 	
 
 	
@@ -224,6 +246,14 @@ public class Kunde implements Serializable {
 	@Past(message = "{kundenverwaltung.kunde.erzeugt.past}")
 	@Column(nullable = false)
 	private Timestamp erzeugt;
+	
+	
+	@ElementCollection(fetch = EAGER)
+	@CollectionTable(name = "kunde_rolle",
+	                 joinColumns = @JoinColumn(name = "kunde_fk", nullable = false),
+	                 uniqueConstraints =  @UniqueConstraint(columnNames = { "kunde_fk", "rolle_fk" }))
+	@Column(table = "kunde_rolle", name = "rolle_fk", nullable = false)
+	private Set<RolleType> rollen;
 	
 	@Transient
 	private URI bestellungenUri;
@@ -408,6 +438,14 @@ public class Kunde implements Serializable {
 			this.zahlungsinformation = kunde.zahlungsinformation;
 			this.geburtsdatum = kunde.geburtsdatum;
 			this.bestellungenUri = kunde.bestellungenUri;		
+	}
+
+	public Set<RolleType> getRollen() {
+		return rollen;
+	}
+
+	public void setRollen(Set<RolleType> rollen) {
+		this.rollen = rollen;
 	}
 	 
 }
