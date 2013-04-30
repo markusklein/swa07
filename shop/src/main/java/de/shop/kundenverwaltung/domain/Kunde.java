@@ -31,6 +31,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 
 import java.sql.Timestamp;
@@ -43,7 +44,6 @@ import java.util.Date;
  */
 
 @Entity
-@XmlRootElement	
 @Table(name = "kunde")
 @NamedQueries({
 	@NamedQuery(name  = Kunde.FIND_KUNDE_BY_EMAIL, 
@@ -151,7 +151,6 @@ public class Kunde implements Serializable {
 	
 	
 	@Id
-	@XmlElement
 	@NotNull
 	@GeneratedValue
 	@Column(name = "kunde_id", unique = true, updatable = false, nullable = false)
@@ -161,21 +160,18 @@ public class Kunde implements Serializable {
 	@Basic(optional = false)
 	private int version = ERSTE_VERSION;
 
-	@XmlElement
 	@NotNull
 	@Size(min = 2, max = 30, message = "{kundenverwaltung.kunde.vorname.length}")
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+")
 	@Column(length = 30, nullable = false)
 	private String vorname;
 
-	@XmlElement
 	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
 	@Size(min = 2, max = 30, message = "{kundenverwaltung.kunde.nachname.length}")
 	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{kundenverwaltung.kunde.nachname.pattern}")
 	@Column(length = 30, nullable = false)
 	private String nachname;
 
-	@XmlElement
 	@NotNull(message ="{kundenverwaltung.kunde.email.notNull}")
 	@Email
 	@Size(min = 8, max = 45, message = "{kundenverwaltung.kunde.email.length}")
@@ -183,61 +179,53 @@ public class Kunde implements Serializable {
 	private String email;
 	
 	
-	@XmlElement
 	@Column(length = 1, nullable = false)
 	@Enumerated(STRING)
 	private KundeGeschlechtType geschlecht;
 	
-	@XmlElement
 	@NotNull
 	@Size(min = 6, max = 45)
 	@Column(length = 45, nullable = false)
 	private String passwort;
 	
-	@XmlElement
 	@NotNull
 	@Size(max = 45)
 	@Column(length = 45, nullable = false)
 	private String telefonnummer;
 
-	@XmlElement
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "lieferadresse")
 	private Adresse lieferadresse;
 
-	@XmlElement
 	@NotNull
 	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "rechnungsadresse")
 	private Adresse rechnungsadresse;
 
-	@XmlElement
 	@NotNull
 	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "zahlungsinformation_ID")
 	private Zahlungsinformation zahlungsinformation;
 	
-	@XmlElement
 	@NotNull
 	@Past
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date geburtsdatum;
 	
-	@XmlElement
+	@JsonIgnore
 	@NotNull
 	@Column(nullable = false)
 	private Timestamp aktualisiert;
 
-	@XmlElement
+	@JsonIgnore
 	@NotNull
 	@Past(message = "{kundenverwaltung.kunde.erzeugt.past}")
 	@Column(nullable = false)
 	private Timestamp erzeugt;
 	
 	@Transient
-	@XmlElement(name = "bestellungen")
 	private URI bestellungenUri;
 
 
