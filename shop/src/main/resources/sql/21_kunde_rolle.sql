@@ -1,9 +1,3 @@
--- ===============================================================================
--- Jede SQL-Anweisung muss in genau 1 Zeile
--- Kommentare durch -- am Zeilenanfang
--- ===============================================================================
-
-
 INSERT INTO kunde_rolle (kunde_fk, rolle_fk) VALUES (600,0);
 INSERT INTO kunde_rolle (kunde_fk, rolle_fk) VALUES (600,1);
 INSERT INTO kunde_rolle (kunde_fk, rolle_fk) VALUES (600,2);
