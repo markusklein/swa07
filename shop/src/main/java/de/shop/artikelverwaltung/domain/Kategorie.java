@@ -160,7 +160,7 @@ public class Kategorie implements Serializable {
 	
 	public void setValues(Kategorie k) {
 		bezeichnung = k.bezeichnung;
-		
+		version = k.version;
 	}
 	
 	@Override
