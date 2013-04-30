@@ -44,6 +44,13 @@ import de.shop.util.Transactional;
 public class ZahlungsinformationResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
+	
+	@Context
+	private UriInfo uriInfo;
+	
+	@Context
+    private HttpHeaders headers;
+	
 	@Inject
 	private ZahlungsinformationService zs;
 	

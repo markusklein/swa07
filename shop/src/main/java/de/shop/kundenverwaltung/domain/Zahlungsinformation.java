@@ -194,6 +194,14 @@ public class Zahlungsinformation implements Serializable {
 	public void setSwift(String swift) {
 		this.swift = swift;
 	}
+	
+	public int getVersion() {
+		return this.version;
+	}
+	
+	public void setVersion(int version) {
+		this.version = version;
+	}
 
 	@Override
 	public int hashCode() {
@@ -274,6 +282,7 @@ public class Zahlungsinformation implements Serializable {
 		this.kreditinstitut = z.kreditinstitut;
 		this.iban = z.iban;
 		this.swift = z.swift;
+		this.version = z.getVersion();
 	}
 
 }

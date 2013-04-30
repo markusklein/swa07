@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
 import org.jboss.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -14,12 +16,13 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
-import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 
+import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.util.IdGroup;
+import de.shop.util.Log;
 import de.shop.util.ValidatorProvider;
 
-
+@Log
 public class ZahlungsinformationService implements Serializable {
 	
 
@@ -118,6 +121,7 @@ public class ZahlungsinformationService implements Serializable {
 				
 			}
 		
+			em.detach(zahlungsinformation);
 			em.merge(zahlungsinformation);
 			return zahlungsinformation;
 	}
