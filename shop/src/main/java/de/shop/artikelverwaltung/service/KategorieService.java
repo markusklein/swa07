@@ -90,6 +90,7 @@ public class KategorieService implements Serializable {
 		catch (NoResultException e) {
 			logger.debugf("Neue Kategorie");
 		}
+		em.detach(kategorie);
 		em.merge(kategorie);
 		return kategorie;
 	}
