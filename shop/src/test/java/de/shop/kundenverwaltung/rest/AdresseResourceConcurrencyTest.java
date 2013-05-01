@@ -56,8 +56,8 @@ public class AdresseResourceConcurrencyTest extends AbstractResourceTest {
 		final Long adresseId = ADRESSE_ID_UPDATE;
 		final String neueStrasse = NEUE_STRASSE;
 		final String neueStrasse2 = NEUE_STRASSE_2;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		//WHEN
 		Response response = given().header(ACCEPT, APPLICATION_JSON)

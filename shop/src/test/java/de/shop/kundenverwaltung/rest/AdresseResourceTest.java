@@ -105,6 +105,9 @@ public class AdresseResourceTest extends AbstractResourceTest {
 		final String ort = ORT_NEU;
 		final String land = LAND_NEU;
 		
+		final String username = USERNAME_ADMIN;
+		final String passwort = PASSWORD_ADMIN;
+		
 		final JsonObject jsonObject =  getJsonBuilderFactory().createObjectBuilder()
 		          .add("strasse", strasse)
 		          .add("plz", plz)
@@ -115,8 +118,8 @@ public class AdresseResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
 						                 .body(jsonObject.toString())
-		                                 //.auth()
-		                                 //.basic(username, password)
+		                                 .auth()
+		                                 .basic(username, passwort)
 		                                 .post(ADRESSEN_PATH);
 		
 		// Then
@@ -134,6 +137,9 @@ public class AdresseResourceTest extends AbstractResourceTest {
 	public void updateAdresse() {
 		final Long adresseId = ADRESSE_ID_VORHANDEN;
 		final String strasseUpdate = STRASSE_UPDATE;
+		
+		final String username = USERNAME_ADMIN;
+		final String passwort = PASSWORD_ADMIN;
 		
 		//When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -162,8 +168,8 @@ public class AdresseResourceTest extends AbstractResourceTest {
     	
 		response = given().contentType(APPLICATION_JSON)
 				          .body(jsonObject.toString())
-                          //.auth()
-                          //.basic(username, password)
+                          .auth()
+                          .basic(username, passwort)
                           .put(ADRESSEN_PATH);
 		
 		// Then
