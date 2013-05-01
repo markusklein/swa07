@@ -81,6 +81,7 @@ public class AdresseService implements Serializable {
 			return null;
 		
 		validateAdresse(adresse, locale, Default.class);
+		em.detach(adresse);
 		
 		try {
 			final Adresse vorhandeneAdresse = em.find(Adresse.class, adresse.getAdresseId());
@@ -94,7 +95,7 @@ public class AdresseService implements Serializable {
 			logger.debugf("Neue Adresse");
 		}
 		
-		em.detach(adresse);
+		
 		
 		em.merge(adresse);
 		return adresse;
