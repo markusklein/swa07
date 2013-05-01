@@ -1,4 +1,4 @@
-package de.auth.service.jboss;
+package de.shop.auth.service.jboss;
 
 import static de.shop.kundenverwaltung.domain.Kunde.FIND_USERNAME_BY_USERNAME_PREFIX;
 import static de.shop.kundenverwaltung.domain.Kunde.PARAM_USERNAME_PREFIX;
