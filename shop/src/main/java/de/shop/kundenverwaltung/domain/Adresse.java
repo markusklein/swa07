@@ -1,13 +1,13 @@
 package de.shop.kundenverwaltung.domain;
 
 import static javax.persistence.EnumType.STRING;
-
 import static de.shop.util.Constants.ERSTE_VERSION;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -22,6 +22,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -116,12 +117,14 @@ public class Adresse implements Serializable {
 	private Timestamp erzeugt;
 
 	//TODO Rückbeziehung nachschauen
-//	@OneToOne(mappedBy = "lieferadresse")
+//	@OneToOne(mappedBy = "lieferadresse", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 //	@JsonIgnore
+//	@Valid
 //	private Kunde kundeLieferAdresse;
 //	
-//	@OneToOne(mappedBy = "rechnungsadresse")
+//	@OneToOne(mappedBy = "rechnungsadresse", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 //	@JsonIgnore
+//	@Valid
 //	private Kunde kundeRechnungsAdresse;
 	
 	@PrePersist

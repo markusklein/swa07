@@ -23,6 +23,7 @@ import com.jayway.restassured.response.Response;
 
 import static com.jayway.restassured.RestAssured.given;
 import static java.net.HttpURLConnection.HTTP_CREATED;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -39,6 +40,7 @@ public class AdresseResourceTest extends AbstractResourceTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final Long ADRESSE_ID_VORHANDEN = Long.valueOf(103);
+	private static final Long ADRESSE_ID_NICHT_VORHANDEN = Long.valueOf(453);
 	
 	private static final String STRASSE_NEU = "Karlsstraﬂe 30";
 	private static final String PLZ_NEU = "76133";
@@ -74,6 +76,23 @@ public class AdresseResourceTest extends AbstractResourceTest {
 		}
 
 		LOGGER.debugf("ENDE findAdresseById");
+	}
+	
+	@Test
+	public void findAdresseByIdNichtVorhanden() {
+		LOGGER.debugf("BEGINN findAdresseByIdNichtVorhanden");
+		
+		// Given
+		final Long adresseId = ADRESSE_ID_NICHT_VORHANDEN;
+		
+		// When
+		final Response response = given().header(ACCEPT, APPLICATION_JSON)
+				                         .pathParameter(ADRESSEN_ID_PATH_PARAM, adresseId)
+                                         .get(ADRESSEN_ID_PATH);
+
+    	// Then
+    	assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
+		LOGGER.debugf("ENDE findAdresseByIdNichtVorhanden");
 	}
 	
 	@Test

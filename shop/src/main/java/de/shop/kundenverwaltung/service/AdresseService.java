@@ -85,6 +85,8 @@ public class AdresseService implements Serializable {
 		try {
 			final Adresse vorhandeneAdresse = em.find(Adresse.class, adresse.getAdresseId());
 			
+			em.detach(vorhandeneAdresse);
+			
 			if (vorhandeneAdresse.getAdresseId().longValue() != adresse.getAdresseId().longValue())
 				throw new AdresseExistsException(adresse.getAdresseId());
 		}
