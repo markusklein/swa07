@@ -2,36 +2,25 @@ package de.shop.kundenverwaltung.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
-import static de.shop.util.TestConstants.BASEPATH;
-import static de.shop.util.TestConstants.BASEURI;
-import static de.shop.util.TestConstants.KUNDEN_ID_FILE_PATH;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
-import static de.shop.util.TestConstants.PORT;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -40,7 +29,6 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.xml.bind.DatatypeConverter;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
@@ -72,35 +60,20 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final String NEU_TELEFON = "0721 123456";
 	private static final String NEU_GESCHLECHT ="M";
 	
-	private static final String USERNAME ="600";
-	private static final String PASSWORT ="test123";
-	
-	private static final Long ADRESSE_ID_VORHANDEN = Long.valueOf(103);
 	private static final String STRASSE_NEU = "Karlsstraﬂe 30";
 	private static final String PLZ_NEU = "76133";
 	private static final String ORT_NEU = "Karlsruhe";
 	private static final String LAND_NEU = "DE";
-	private static final String STRASSE_UPDATE = "Moltkestraﬂe 333";
+
 	
-	private static final Long ZAHLUNGSINFORMATION_ID_VORHANDEN = Long.valueOf(700);
-	private static final Long ZAHLUNGSINFORMATION_ID_NICHT_VORHANDEN = Long.valueOf(2333);
 	private static final String KONTOINHABER_NEU = "Morgan Freeman";
 	private static final Long KONTONUMMER_NEU = Long.valueOf(9191221);
 	private static final Long BLZ_NEU = Long.valueOf(66650081);
 	private static final String KREDITINSTITUT_NEU = "Sparkasse Chemnitz";
 	private static final String IBAN_NEU ="DE54666500859995054284";
 	private static final String SWIFT_NEU ="PZHSDE66YYY";
-	private static final String KONTOINHABER_UPDATE = "Dennis Santos";
 	
-	private static final String FILENAME = "image.gif";
 	//private static final String FILENAME = "video.mp4";
-	private static final String FILENAME_UPLOAD = "src/test/resources/rest/" + FILENAME;
-	private static final String FILENAME_DOWNLOAD = "target/" + FILENAME;
-	private static final CopyOption[] COPY_OPTIONS = { REPLACE_EXISTING };
-	private static final Long KUNDE_ID_UPLOAD = Long.valueOf(102);
-
-	private static final String FILENAME_INVALID_MIMETYPE = "image.bmp";
-	private static final String FILENAME_UPLOAD_INVALID_MIMETYPE = "src/test/resources/rest/" + FILENAME_INVALID_MIMETYPE;
 	
 	
 	@Test
@@ -206,11 +179,13 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("BEGINN");
 		
 		// Given
+		final String username = USERNAME_ADMIN;
+		final String passwort = PASSWORD_ADMIN;
+		
 		final String nachname = NEUER_NACHNAME;
 		final String vorname = NEUER_VORNAME;
 		final String email = NEUE_EMAIL;
 		final String geschlecht = NEU_GESCHLECHT;
-		final String passwort = PASSWORT;
 		final String telefon = NEU_TELEFON;
 		final String geburtsdatum = NEU_GEBURT;
 		
@@ -260,8 +235,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
 				                         .body(jsonObject.toString())
-                                         //.auth()
-                                         //.basic(username, password)
+                                         .auth()
+                                         .basic(username, passwort)
                                          .post(KUNDEN_PATH);
 		
 		// Then
@@ -281,7 +256,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("BEGINN");
 		
 		// Given
-		final String username = USERNAME;
+		final String username = USERNAME_ADMIN;
 		final String password = PASSWORD_FALSCH;
 		final String nachname = NEUER_NACHNAME;
 		
@@ -308,11 +283,13 @@ public class KundeResourceTest extends AbstractResourceTest {
 	LOGGER.finer("BEGINN");
 		
 		// Given
+		final String username = USERNAME_ADMIN;
+		final String passwort = PASSWORD_ADMIN;
+		
 		final String nachname = NEUER_NACHNAME_INVALID;
 		final String vorname = NEUER_VORNAME;
 		final String email = NEUE_EMAIL_INVALID;
 		final String geschlecht = NEU_GESCHLECHT;
-		final String passwort = PASSWORT;
 		final String telefon = NEU_TELEFON;
 		final String geburtsdatum = NEU_GEBURT;
 		
@@ -363,8 +340,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
 				                         .body(jsonObject.toString())
-                                         //.auth()
-                                         //.basic(username, password)
+                                         .auth()
+                                         .basic(username, passwort)
                                          .post(KUNDEN_PATH);
 		
 		// Then
@@ -382,8 +359,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// Given
 		final Long kundeId = KUNDE_ID_UPDATE;
 		final String neuerNachname = NEUER_NACHNAME;
-		//final String username = USERNAME;
-		//final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -414,8 +391,8 @@ public class KundeResourceTest extends AbstractResourceTest {
     	
 		response = given().contentType(APPLICATION_JSON)
 				          .body(jsonObject.toString())
-                          //.auth()
-                          //.basic(username, password)
+                          .auth()
+                          .basic(username, password)
                           .put(KUNDEN_PATH);
 		
 		// Then

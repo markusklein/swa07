@@ -52,8 +52,8 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		final Long kundeId = KUNDE_ID_UPDATE;
     	final String neuerNachname = NEUER_NACHNAME;
     	final String neuerNachname2 = NEUER_NACHNAME_2;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -100,8 +100,8 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
     	jsonObject = job.build();
 		response = given().contentType(APPLICATION_JSON)
 				          .body(jsonObject.toString())
-		                  //.auth()
-		                  //.basic(username, password)
+		                  .auth()
+		                  .basic(username, password)
 		                  .put(KUNDEN_PATH);
     	
 		// Then
