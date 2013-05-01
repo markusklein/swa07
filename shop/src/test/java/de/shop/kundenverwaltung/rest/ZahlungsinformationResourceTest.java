@@ -139,8 +139,8 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 		final String swift = SWIFT_NEU;
 		
 		
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		final JsonObject jsonObject =  getJsonBuilderFactory().createObjectBuilder()
 		             		          .add("kontoinhaber", kontoinhaber)
@@ -176,8 +176,8 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 		// Given
 		final Long zahlId = ZAHLUNGSINFORMATION_ID_VORHANDEN;
 		final String neuerKontoinhaber = KONTOINHABER_UPDATE;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)

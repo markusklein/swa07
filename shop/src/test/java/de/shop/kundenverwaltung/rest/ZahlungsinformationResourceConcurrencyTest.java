@@ -50,8 +50,8 @@ public class ZahlungsinformationResourceConcurrencyTest extends AbstractResource
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final Long ZAHLUNGSINFORMATION_ID_UPDATE = Long.valueOf(709);
-	private static final String NEUER_NACHNAME = "Thomas Baier";
-	private static final String NEUER_NACHNAME_2 = "Frank Tausch";
+	private static final String NEUER_KONTOINHABER = "Thomas Baier";
+	private static final String NEUER_KONTOINHABER_2 = "Frank Tausch";
 	//private static final Long ZAHLUNGSINFORMATION_ID_DELETE1 = Long.valueOf(704);
 	//private static final Long ZAHLUNGSINFORMATION_ID_DELETE2 = Long.valueOf(705);
 		
@@ -61,10 +61,10 @@ public class ZahlungsinformationResourceConcurrencyTest extends AbstractResource
 		
 		// Given
 		final Long zahlId = ZAHLUNGSINFORMATION_ID_UPDATE;
-    	final String neuerNachname = NEUER_NACHNAME;
-    	final String neuerNachname2 = NEUER_NACHNAME_2;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+    	final String neuerKontoinhaber = NEUER_KONTOINHABER;
+    	final String neuerKontoinhaber2 = NEUER_KONTOINHABER_2;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -82,7 +82,7 @@ public class ZahlungsinformationResourceConcurrencyTest extends AbstractResource
     	Set<String> keys = jsonObject.keySet();
     	for (String k : keys) {
     		if ("kontoinhaber".equals(k)) {
-    			job2.add("kontoinhaber", neuerNachname2);
+    			job2.add("kontoinhaber", neuerKontoinhaber2);
     		}
     		else {
     			job2.add(k, jsonObject.get(k));
@@ -102,7 +102,7 @@ public class ZahlungsinformationResourceConcurrencyTest extends AbstractResource
     	keys = jsonObject.keySet();
     	for (String k : keys) {
     		if ("kontoinhaber".equals(k)) {
-    			job1.add("kontoinhaber", neuerNachname);
+    			job1.add("kontoinhaber", neuerKontoinhaber);
     		}
     		else {
     			job1.add(k, jsonObject.get(k));
