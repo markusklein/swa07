@@ -274,13 +274,16 @@ public class KundeService implements Serializable {
 		
 		validateKunde(kunde, locale, IdGroup.class);
 		
+		// kunde vom EntityManager trennen, weil anschliessend z.B. nach Id und Email gesucht wird
+				em.detach(kunde);
+		
 		try {
 			final Kunde vorhandenerKunde = em.createNamedQuery(Kunde.FIND_KUNDE_BY_EMAIL,
 					Kunde.class)
 					                                 .setParameter(Kunde.PARAM_EMAIL, kunde.getEmail())
 					                                 .getSingleResult();
 			
-		
+			em.detach(vorhandenerKunde);
 			if (vorhandenerKunde.getKundeId().longValue() != kunde.getKundeId().longValue()) {
 				throw new EmailExistsException(kunde.getEmail());
 			}
@@ -288,7 +291,7 @@ public class KundeService implements Serializable {
 		catch (NoResultException e) {
 			LOGGER.finest("Neue Email-Adresse");
 		}
-
+	
 		em.merge(kunde);
 		return kunde;
 	}

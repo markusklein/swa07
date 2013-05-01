@@ -433,11 +433,12 @@ public class Kunde implements Serializable {
 			this.geschlecht = kunde.geschlecht;
 			this.passwort = kunde.passwort;
 			this.telefonnummer = kunde.telefonnummer;
-			this.lieferadresse = kunde.lieferadresse;
-			this.rechnungsadresse = kunde.rechnungsadresse;
-			this.zahlungsinformation = kunde.zahlungsinformation;
+			this.lieferadresse.setValues(kunde.lieferadresse);
+			this.rechnungsadresse.setValues(kunde.rechnungsadresse);
+			this.zahlungsinformation.setValues(kunde.zahlungsinformation);
 			this.geburtsdatum = kunde.geburtsdatum;
-			this.bestellungenUri = kunde.bestellungenUri;		
+			this.bestellungenUri = kunde.bestellungenUri;	
+			this.version = kunde.version;
 	}
 
 	public Set<RolleType> getRollen() {
@@ -446,6 +447,14 @@ public class Kunde implements Serializable {
 
 	public void setRollen(Set<RolleType> rollen) {
 		this.rollen = rollen;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 	 
 }

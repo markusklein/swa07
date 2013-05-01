@@ -316,6 +316,18 @@ public class KundeResourceTest extends AbstractResourceTest {
 		final String telefon = NEU_TELEFON;
 		final String geburtsdatum = NEU_GEBURT;
 		
+		final String kontoinhaber = KONTOINHABER_NEU;
+		final Long kontonummer = KONTONUMMER_NEU;
+		final Long blz = BLZ_NEU;
+		final String kreditinstitut = KREDITINSTITUT_NEU;
+		final String iban = IBAN_NEU;
+		final String swift = SWIFT_NEU;
+		
+		final String strasse = STRASSE_NEU;
+		final String plz = PLZ_NEU;
+		final String ort = ORT_NEU;
+		final String land = LAND_NEU;
+		
 		
 		
 		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
@@ -325,9 +337,26 @@ public class KundeResourceTest extends AbstractResourceTest {
 		             		          .add("geschlecht", geschlecht)
 		             		          .add("passwort", passwort)
 		             		          .add("telefonnummer",telefon)
-		             		          .addNull("lieferadresse")
-		             				  .addNull("rechnungsadresse")
-									  .addNull("zahlungsinformation")
+		             		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
+		             				          .add("strasse", strasse)
+		             				          .add("plz", plz)
+		             				          .add("ort", ort)
+		             				          .add("land", land)
+		             				          .build())
+		             				  .add("rechnungsadresse", getJsonBuilderFactory().createObjectBuilder()
+									          .add("strasse", strasse)
+									          .add("plz", plz)
+									          .add("ort", ort)
+									          .add("land", land)
+									          .build())
+									  .add("zahlungsinformation", getJsonBuilderFactory().createObjectBuilder()
+				             		          .add("kontoinhaber", kontoinhaber)
+				             		          .add("kontonummer", kontonummer)
+				             		          .add("blz", blz)
+				             		          .add("kreditinstitut", kreditinstitut)
+				             		          .add("iban", iban)
+				             		          .add("swift", swift)
+				             		          .build())
 				             		  .add("geburtsdatum", geburtsdatum)
 		                              .build();
 
@@ -392,108 +421,4 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// Then
 		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
    	}
-@Ignore
-	@Test
-	public void uploadDownload() throws IOException {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final Long kundeId = KUNDE_ID_UPLOAD;
-		final String fileName = FILENAME_UPLOAD;
-		final String username = USERNAME;
-		final String password = PASSWORD;
-		
-		// Datei als byte[] einlesen
-		byte[] bytes;
-		try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-			Files.copy(Paths.get(fileName), stream);
-			bytes = stream.toByteArray();
-		}
-		
-		// byte[] als Inhalt eines JSON-Datensatzes mit Base64-Codierung
-		JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-	                            .add("bytes", DatatypeConverter.printBase64Binary(bytes))
-	                            .build();
-		
-		// When
-		Response response = given().contentType(APPLICATION_JSON)
-				                   .body(jsonObject.toString())
-                                   .auth()
-                                   .basic(username, password)
-                                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-                                   .post(KUNDEN_ID_FILE_PATH);
-
-		// Then
-		assertThat(response.getStatusCode(), is(HTTP_CREATED));
-		// id extrahieren aus http://localhost:8080/shop2/rest/kunden/<id>/file
-		final String idStr = response.getHeader(LOCATION)
-				                     .replace(BASEURI + ":" + PORT + BASEPATH + KUNDEN_PATH + '/', "")
-				                     .replace("/file", "");
-		assertThat(idStr, is(kundeId.toString()));
-		
-		// When (2)
-		// Download der zuvor hochgeladenen Datei
-		response = given().header(ACCEPT, APPLICATION_JSON)
-				          .auth()
-                          .basic(username, password)
-                          .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-                          .get(KUNDEN_ID_FILE_PATH);
-		
-		try (final JsonReader jsonReader =
-				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-			jsonObject = jsonReader.readObject();
-		}
-		final String base64String = jsonObject.getString("bytes");
-		final byte[] downloaded = DatatypeConverter.parseBase64Binary(base64String);
-		
-		// Then (2)
-		// Dateigroesse vergleichen: hochgeladene Datei als byte[] einlesen
-		byte[] uploaded;
-		try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-			Files.copy(Paths.get(fileName), stream);
-			uploaded = stream.toByteArray();
-		}
-		assertThat(uploaded.length, is(downloaded.length));
-		
-		// Abspeichern der heruntergeladenen Datei im Unterverzeichnis target zur manuellen Inspektion
-		try (ByteArrayInputStream inputStream = new ByteArrayInputStream(downloaded)) {
-			Files.copy(inputStream, Paths.get(FILENAME_DOWNLOAD), COPY_OPTIONS);
-		}
-
-		LOGGER.info("Heruntergeladene Datei abgespeichert: " + FILENAME_DOWNLOAD);
-		LOGGER.finer("ENDE");
-	}
-	@Ignore
-	@Test
-	public void uploadInvalidMimeType() throws IOException {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final Long kundeId = KUNDE_ID_UPLOAD;
-		final String fileName = FILENAME_UPLOAD_INVALID_MIMETYPE;
-		final String username = USERNAME;
-		final String password = PASSWORD;
-		
-		// Datei als byte[] einlesen
-		byte[] bytes;
-		try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-			Files.copy(Paths.get(fileName), stream);
-			bytes = stream.toByteArray();
-		}
-		
-		// byte[] als Inhalt eines JSON-Datensatzes mit Base64-Codierung
-		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-	                                  .add("bytes", DatatypeConverter.printBase64Binary(bytes))
-	                                  .build();
-		
-		// When
-		final Response response = given().contentType(APPLICATION_JSON)
-				                         .body(jsonObject.toString())
-				                         .auth()
-				                         .basic(username, password)
-				                         .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-				                         .post(KUNDEN_ID_FILE_PATH);
-		
-		assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
-	}
 }
