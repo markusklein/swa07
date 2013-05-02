@@ -9,6 +9,7 @@ import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static de.shop.util.TestConstants.LOCATION;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_CREATED;
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -73,7 +74,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final String IBAN_NEU ="DE54666500859995054284";
 	private static final String SWIFT_NEU ="PZHSDE66YYY";
 	
-	//private static final String FILENAME = "video.mp4";
 	
 	
 	@Test
@@ -81,11 +81,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		assertThat(true, is(true));
 	}
 	
-	@Ignore
-	@Test
-	public void notYetImplemented() {
-		fail();
-	}
+
 	
 	@Test
 	public void findKundeById() {
@@ -250,25 +246,69 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 	
-	@Ignore
+	
 	@Test
 	public void createKundeFalschesPassword() {
 		LOGGER.finer("BEGINN");
 		
 		// Given
-		final String username = USERNAME_ADMIN;
-		final String password = PASSWORD_FALSCH;
-		final String nachname = NEUER_NACHNAME;
+				final String username = USERNAME_ADMIN;
+				final String passwort = PASSWORD_FALSCH;
+				
+				final String nachname = NEUER_NACHNAME;
+				final String vorname = NEUER_VORNAME;
+				final String email = NEUE_EMAIL;
+				final String geschlecht = NEU_GESCHLECHT;
+				final String telefon = NEU_TELEFON;
+				final String geburtsdatum = NEU_GEBURT;
+				
+				final String kontoinhaber = KONTOINHABER_NEU;
+				final Long kontonummer = KONTONUMMER_NEU;
+				final Long blz = BLZ_NEU;
+				final String kreditinstitut = KREDITINSTITUT_NEU;
+				final String iban = IBAN_NEU;
+				final String swift = SWIFT_NEU;
+				
+				final String strasse = STRASSE_NEU;
+				final String plz = PLZ_NEU;
+				final String ort = ORT_NEU;
+				final String land = LAND_NEU;
 		
 		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
-            		                  .add("nachname", nachname)
-            		                  .build();
+				  .add("vorname", vorname)
+		          .add("nachname", nachname)
+		          .add("email", email)
+		          .add("geschlecht", geschlecht)
+		          .add("passwort", passwort)
+		          .add("telefonnummer",telefon)
+		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
+				          .add("strasse", strasse)
+				          .add("plz", plz)
+				          .add("ort", ort)
+				          .add("land", land)
+				          .build())
+				  .add("rechnungsadresse", getJsonBuilderFactory().createObjectBuilder()
+				          .add("strasse", strasse)
+				          .add("plz", plz)
+				          .add("ort", ort)
+				          .add("land", land)
+				          .build())
+				  .add("zahlungsinformation", getJsonBuilderFactory().createObjectBuilder()
+       		          .add("kontoinhaber", kontoinhaber)
+       		          .add("kontonummer", kontonummer)
+       		          .add("blz", blz)
+       		          .add("kreditinstitut", kreditinstitut)
+       		          .add("iban", iban)
+       		          .add("swift", swift)
+       		          .build())
+       		  .add("geburtsdatum", geburtsdatum)
+                .build();
 		
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
 				                         .body(jsonObject.toString())
                                          .auth()
-                                         .basic(username, password)
+                                         .basic(username, passwort)
                                          .post(KUNDEN_PATH);
 		
 		// Then
@@ -276,6 +316,78 @@ public class KundeResourceTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
+	
+	
+	@Test
+	public void createKundeFalscheRolle() {
+		LOGGER.finer("BEGINN");
+		
+		// Given
+				final String username = USERNAME;
+				final String passwort = PASSWORD;
+				
+				final String nachname = NEUER_NACHNAME;
+				final String vorname = NEUER_VORNAME;
+				final String email = NEUE_EMAIL;
+				final String geschlecht = NEU_GESCHLECHT;
+				final String telefon = NEU_TELEFON;
+				final String geburtsdatum = NEU_GEBURT;
+				
+				final String kontoinhaber = KONTOINHABER_NEU;
+				final Long kontonummer = KONTONUMMER_NEU;
+				final Long blz = BLZ_NEU;
+				final String kreditinstitut = KREDITINSTITUT_NEU;
+				final String iban = IBAN_NEU;
+				final String swift = SWIFT_NEU;
+				
+				final String strasse = STRASSE_NEU;
+				final String plz = PLZ_NEU;
+				final String ort = ORT_NEU;
+				final String land = LAND_NEU;
+		
+		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+				  .add("vorname", vorname)
+		          .add("nachname", nachname)
+		          .add("email", email)
+		          .add("geschlecht", geschlecht)
+		          .add("passwort", passwort)
+		          .add("telefonnummer",telefon)
+		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
+				          .add("strasse", strasse)
+				          .add("plz", plz)
+				          .add("ort", ort)
+				          .add("land", land)
+				          .build())
+				  .add("rechnungsadresse", getJsonBuilderFactory().createObjectBuilder()
+				          .add("strasse", strasse)
+				          .add("plz", plz)
+				          .add("ort", ort)
+				          .add("land", land)
+				          .build())
+				  .add("zahlungsinformation", getJsonBuilderFactory().createObjectBuilder()
+       		          .add("kontoinhaber", kontoinhaber)
+       		          .add("kontonummer", kontonummer)
+       		          .add("blz", blz)
+       		          .add("kreditinstitut", kreditinstitut)
+       		          .add("iban", iban)
+       		          .add("swift", swift)
+       		          .build())
+       		  .add("geburtsdatum", geburtsdatum)
+                .build();
+		
+		// When
+		final Response response = given().contentType(APPLICATION_JSON)
+				                         .body(jsonObject.toString())
+                                         .auth()
+                                         .basic(username, passwort)
+                                         .post(KUNDEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_FORBIDDEN));
+		
+		LOGGER.finer("ENDE");
+	}
+	
 	
 	@Ignore
 	@Test
