@@ -25,7 +25,6 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.jboss.arquillian.junit.Arquillian;
@@ -71,7 +70,7 @@ public class AdresseResourceConcurrencyTest extends AbstractResourceTest {
 		
 		// Konkurrierendes Update
 		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuer Strasse bauen
-		JsonObjectBuilder job2 = getJsonBuilderFactory().createObjectBuilder();
+		final JsonObjectBuilder job2 = getJsonBuilderFactory().createObjectBuilder();
 		Set<String> keys = jsonObject.keySet();
 		    for (String k : keys) {
 		    	if ("strasse".equals(k)) {
@@ -91,7 +90,7 @@ public class AdresseResourceConcurrencyTest extends AbstractResourceTest {
 				
 		// Fehlschlagendes Update
 		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuer Strasse bauen
-		JsonObjectBuilder job1 = getJsonBuilderFactory().createObjectBuilder();
+		final JsonObjectBuilder job1 = getJsonBuilderFactory().createObjectBuilder();
 		keys = jsonObject.keySet();
 		for (String k : keys) {
 		    if ("strasse".equals(k)) {

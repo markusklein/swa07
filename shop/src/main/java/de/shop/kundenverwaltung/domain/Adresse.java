@@ -1,13 +1,14 @@
 package de.shop.kundenverwaltung.domain;
 
-import static javax.persistence.EnumType.STRING;
 import static de.shop.util.Constants.ERSTE_VERSION;
+import static javax.persistence.EnumType.STRING;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -15,14 +16,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -33,9 +32,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jboss.logging.Logger;
 
 import de.shop.util.IdGroup;
-
-import java.sql.Timestamp;
-import java.util.Date;
 
 
 /**
@@ -257,7 +253,7 @@ public class Adresse implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adresse other = (Adresse) obj;
+		final Adresse other = (Adresse) obj;
 		if (land == null) {
 			if (other.land != null)
 				return false;

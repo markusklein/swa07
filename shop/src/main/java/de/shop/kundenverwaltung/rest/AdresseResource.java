@@ -71,7 +71,7 @@ public class AdresseResource {
 	@GET
 	@Wrapped(element = "adressen") // RESTEasy, nicht Standard
 	public Collection<Adresse> findAlleAdressen() {
-		Collection<Adresse> adressen = as.findAlleAdressen();
+		final Collection<Adresse> adressen = as.findAlleAdressen();
 		return adressen;
 	}
 	
@@ -109,7 +109,7 @@ public class AdresseResource {
 		// Vorhandene Adressen ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		Adresse origAdresse = as.findAdresseById(adresse.getAdresseId(), locale);
+		final Adresse origAdresse = as.findAdresseById(adresse.getAdresseId(), locale);
 		if (origAdresse == null) {
 			// TODO msg passend zu locale
 			final String msg = "Keine Adresse gefunden mit der ID " + adresse.getAdresseId();

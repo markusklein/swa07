@@ -23,9 +23,11 @@ import com.jayway.restassured.response.Response;
 
 import static com.jayway.restassured.RestAssured.given;
 import static java.net.HttpURLConnection.HTTP_CREATED;
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -134,6 +136,39 @@ public class AdresseResourceTest extends AbstractResourceTest {
 	}
 	
 	@Test
+	public void wrongPasswordCreateAdresse() {
+		LOGGER.debugf("BEGINN wrongPasswordCreateAdresse");
+		
+		//Given
+		final String strasse = STRASSE_NEU;
+		final String plz = PLZ_NEU;
+		final String ort = ORT_NEU;
+		final String land = LAND_NEU;
+		
+		final String username = USERNAME_ADMIN;
+		final String passwort = PASSWORD_FALSCH;
+		
+		final JsonObject jsonObject =  getJsonBuilderFactory().createObjectBuilder()
+		          .add("strasse", strasse)
+		          .add("plz", plz)
+		          .add("ort", ort)
+		          .add("land", land)
+		          .build();
+		
+		// When
+		final Response response = given().contentType(APPLICATION_JSON)
+						                 .body(jsonObject.toString())
+		                                 .auth()
+		                                 .basic(username, passwort)
+		                                 .post(ADRESSEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
+
+		LOGGER.debugf("ENDE wrongPasswordCreateAdresse");
+	}
+	
+	@Test
 	public void updateAdresse() {
 		final Long adresseId = ADRESSE_ID_VORHANDEN;
 		final String strasseUpdate = STRASSE_UPDATE;
@@ -174,5 +209,48 @@ public class AdresseResourceTest extends AbstractResourceTest {
 		
 		// Then
 		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+	}
+	
+	@Test
+	public void notAllowedUpdateAdresse() {
+		final Long adresseId = ADRESSE_ID_VORHANDEN;
+		final String strasseUpdate = STRASSE_UPDATE;
+		
+		final String username = USERNAME;
+		final String passwort = PASSWORD;
+		
+		//When
+		Response response = given().header(ACCEPT, APPLICATION_JSON)
+										 .pathParam(ADRESSEN_ID_PATH_PARAM, adresseId)
+										 .get(ADRESSEN_ID_PATH);
+		
+		JsonObject jsonObject;
+		try (final JsonReader jsonReader =
+				 getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+			jsonObject = jsonReader.readObject();
+		}
+    	assertThat(jsonObject.getJsonNumber("adresseId").longValue(), is(adresseId.longValue()));
+		
+    	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
+    	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
+    	final Set<String> keys = jsonObject.keySet();
+    	for (String k : keys) {
+    		if ("strasse".equals(k)) {
+    			job.add("strasse", strasseUpdate);
+    		}
+    		else {
+    			job.add(k, jsonObject.get(k));
+    		}
+    	}
+    	jsonObject = job.build();
+    	
+		response = given().contentType(APPLICATION_JSON)
+				          .body(jsonObject.toString())
+                          .auth()
+                          .basic(username, passwort)
+                          .put(ADRESSEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_FORBIDDEN));
 	}
 }
