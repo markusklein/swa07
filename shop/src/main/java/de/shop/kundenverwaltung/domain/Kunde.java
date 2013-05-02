@@ -3,10 +3,12 @@ package de.shop.kundenverwaltung.domain;
 import static de.shop.util.Constants.ERSTE_VERSION;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.EAGER;
-import javax.persistence.UniqueConstraint;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -27,6 +29,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -36,14 +39,7 @@ import javax.validation.constraints.Size;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 
-
-
-
 import de.shop.auth.service.jboss.AuthService.RolleType;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Set;
 
 
 /**
@@ -305,11 +301,11 @@ public class Kunde implements Serializable {
 	}
 
 	public Date getGeburtsdatum() {
-		return this.geburtsdatum;
+		return new Date(geburtsdatum.getDate());
 	}
 
 	public void setGeburtsdatum(Date geburtsdatum) {
-		this.geburtsdatum = geburtsdatum;
+		this.geburtsdatum = new Date(geburtsdatum.getDate());
 	}
 
 	public KundeGeschlechtType getGeschlecht() {

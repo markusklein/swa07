@@ -1,5 +1,4 @@
 package de.shop.kundenverwaltung.rest;
-
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
@@ -17,7 +16,6 @@ import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.io.StringReader;
@@ -59,7 +57,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final String NEUE_EMAIL_INVALID = "falsch@falsch";
 	private static final String NEU_GEBURT ="1999-02-02";
 	private static final String NEU_TELEFON = "0721 123456";
-	private static final String NEU_GESCHLECHT ="M";
+	private static final String NEU_GESCHLECHT = "M";
 	
 	private static final String STRASSE_NEU = "Karlsstraﬂe 30";
 	private static final String PLZ_NEU = "76133";
@@ -71,8 +69,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final Long KONTONUMMER_NEU = Long.valueOf(9191221);
 	private static final Long BLZ_NEU = Long.valueOf(66650081);
 	private static final String KREDITINSTITUT_NEU = "Sparkasse Chemnitz";
-	private static final String IBAN_NEU ="DE54666500859995054284";
-	private static final String SWIFT_NEU ="PZHSDE66YYY";
+	private static final String IBAN_NEU = "DE54666500859995054284";
+	private static final String SWIFT_NEU = "PZHSDE66YYY";
 	
 	
 	
@@ -204,8 +202,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		             		          .add("email", email)
 		             		          .add("geschlecht", geschlecht)
 		             		          .add("passwort", passwort)
-		             		          .add("telefonnummer",telefon)
-		             		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
+		             		          .add("telefonnummer", telefon)
+		             		          .add("lieferadresse", getJsonBuilderFactory().createObjectBuilder()
 		             				          .add("strasse", strasse)
 		             				          .add("plz", plz)
 		             				          .add("ort", ort)
@@ -280,8 +278,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		          .add("email", email)
 		          .add("geschlecht", geschlecht)
 		          .add("passwort", passwort)
-		          .add("telefonnummer",telefon)
-		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
+		          .add("telefonnummer", telefon)
+		          .add("lieferadresse", getJsonBuilderFactory().createObjectBuilder()
 				          .add("strasse", strasse)
 				          .add("plz", plz)
 				          .add("ort", ort)
@@ -351,8 +349,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		          .add("email", email)
 		          .add("geschlecht", geschlecht)
 		          .add("passwort", passwort)
-		          .add("telefonnummer",telefon)
-		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
+		          .add("telefonnummer", telefon)
+		          .add("lieferadresse", getJsonBuilderFactory().createObjectBuilder()
 				          .add("strasse", strasse)
 				          .add("plz", plz)
 				          .add("ort", ort)
@@ -425,8 +423,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		             		          .add("email", email)
 		             		          .add("geschlecht", geschlecht)
 		             		          .add("passwort", passwort)
-		             		          .add("telefonnummer",telefon)
-		             		          .add("lieferadresse",getJsonBuilderFactory().createObjectBuilder()
+		             		          .add("telefonnummer", telefon)
+		             		          .add("lieferadresse", getJsonBuilderFactory().createObjectBuilder()
 		             				          .add("strasse", strasse)
 		             				          .add("plz", plz)
 		             				          .add("ort", ort)
