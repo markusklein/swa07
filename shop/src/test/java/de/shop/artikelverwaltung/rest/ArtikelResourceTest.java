@@ -255,5 +255,75 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
 	}
 	
+	@Test
+	public void invalidcreateArtikel() {
+		LOGGER.debugf("BEGINN invalidartikelcreate");
+		
+		// Given
+		final String bezeichnung = NEUE_BEZEICHNUNG;
+		final String name = NEUER_NAME;
+		final Float preis = NEUER_PREIS;
+		final Long kategorie = NEUE_KATEGORIE_ID;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_FALSCH;
+		
+		
+		
+		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+		             		          .add("beschreibung", bezeichnung)
+		             		          .add("name", name)
+		             		          .add("preis", preis)
+		             		          .add("kategorie",getJsonBuilderFactory().createObjectBuilder().add("kategorieId",kategorie))
+		             		          .build();
+
+		// When
+		final Response response = given().contentType(APPLICATION_JSON)
+				                         .body(jsonObject.toString())
+				                         .auth()
+				                         .basic(username, password)
+                                         .post(ARTIKEL_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
+		
+
+		LOGGER.debugf("ENDE invalidartikelcreate");
+	}
+	
+	@Test
+	public void invalidrollcreateArtikel() {
+		LOGGER.debugf("BEGINN invalidrollartikelcreate");
+		
+		// Given
+		final String bezeichnung = NEUE_BEZEICHNUNG;
+		final String name = NEUER_NAME;
+		final Float preis = NEUER_PREIS;
+		final Long kategorie = NEUE_KATEGORIE_ID;
+		final String username = USERNAME;
+		final String password = PASSWORD;
+		
+		
+		
+		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+		             		          .add("beschreibung", bezeichnung)
+		             		          .add("name", name)
+		             		          .add("preis", preis)
+		             		          .add("kategorie",getJsonBuilderFactory().createObjectBuilder().add("kategorieId",kategorie))
+		             		          .build();
+
+		// When
+		final Response response = given().contentType(APPLICATION_JSON)
+				                         .body(jsonObject.toString())
+				                         .auth()
+				                         .basic(username, password)
+                                         .post(ARTIKEL_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_FORBIDDEN));
+		
+
+		LOGGER.debugf("ENDE invalidrollartikelcreate");
+	}
+	
 	
 }

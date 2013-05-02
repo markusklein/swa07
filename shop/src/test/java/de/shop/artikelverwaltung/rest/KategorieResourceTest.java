@@ -92,7 +92,7 @@ public class KategorieResourceTest extends AbstractResourceTest {
 		//TODO Auth
 		@Test
 		public void findKategorieById() {
-			LOGGER.debugf("BEGINN");
+			LOGGER.debugf("BEGINN findKategorieById");
 			
 			// Given
 			final Long kategorieId = KATEGORIE_ID_VORHANDEN;
@@ -111,12 +111,12 @@ public class KategorieResourceTest extends AbstractResourceTest {
 				assertThat(jsonObject.getJsonNumber("kategorieId").longValue(), is(kategorieId.longValue()));
 			}
 			
-			LOGGER.debugf("ENDE");
+			LOGGER.debugf("ENDE findKategorieById");
 		}
 		
 		@Test
 		public void findKategorieByIdNichtVorhanden() {
-			LOGGER.debugf("BEGINN");
+			LOGGER.debugf("BEGINN findKategorieByIdNichtVorhanden");
 			
 			// Given
 			final Long kategorieId = KATEGORIE_ID_NICHT_VORHANDEN;
@@ -128,12 +128,12 @@ public class KategorieResourceTest extends AbstractResourceTest {
 
 	    	// Then
 	    	assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
-			LOGGER.debugf("ENDE");
+			LOGGER.debugf("ENDE findKategorieByIdNichtVorhanden");
 		}
 		
 		@Test
 		public void createKategorie() {
-			LOGGER.debugf("BEGINN");
+			LOGGER.debugf("BEGINN createKategorie");
 			
 			// Given
 			final String bezeichnung = NEUE_BEZEICHNUNG;
@@ -160,12 +160,12 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			final Long id = Long.valueOf(idStr);
 			assertThat(id.longValue() > 0, is(true));
 
-			LOGGER.debugf("ENDE");
+			LOGGER.debugf("ENDE createKategorie");
 		}
 		
 		public void updateKategorie() {
 			
-			LOGGER.debugf("BEGINN");
+			LOGGER.debugf("BEGINN updateKategorie");
 			
 			//Given
 			 
@@ -209,5 +209,60 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			
 			// Then
 			assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+			LOGGER.debugf("ENDE updateKategorie");
+		}
+		
+		@Test
+		public void invalidcreateKategorie() {
+			LOGGER.debugf("BEGINN invalidcreateKategorie");
+			
+			// Given
+			final String bezeichnung = NEUE_BEZEICHNUNG;
+			final String username = USERNAME_ADMIN;
+			final String password = PASSWORD_FALSCH;
+			
+			
+			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+			             		          .add("bezeichnung", bezeichnung)
+			             		          .build();
+
+			// When
+			final Response response = given().contentType(APPLICATION_JSON)
+					                         .body(jsonObject.toString())
+					                         .auth()
+					                         .basic(username, password)
+	                                         .post(KATEGORIE_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
+		
+			LOGGER.debugf("ENDE invalidcreateKategorie");
+		}
+		
+		@Test
+		public void invalidrollcreateKategorie() {
+			LOGGER.debugf("BEGINN invalidrollcreateKategorie");
+			
+			// Given
+			final String bezeichnung = NEUE_BEZEICHNUNG;
+			final String username = USERNAME;
+			final String password = PASSWORD;
+			
+			
+			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+			             		          .add("bezeichnung", bezeichnung)
+			             		          .build();
+
+			// When
+			final Response response = given().contentType(APPLICATION_JSON)
+					                         .body(jsonObject.toString())
+					                         .auth()
+					                         .basic(username, password)
+	                                         .post(KATEGORIE_PATH);
+			
+			// Then
+			assertThat(response.getStatusCode(), is(HTTP_FORBIDDEN));
+		
+			LOGGER.debugf("ENDE invalidrollcreateKategorie");
 		}
 }
