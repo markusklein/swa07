@@ -171,8 +171,8 @@ public class BestellungResource {
 		}
 		
 		// persistente Artikel ermitteln
-		Collection<Bestellposition> bestellpositionen = bestellung.getBestellpositionen();
-		List<Long> artikelIds = new ArrayList<>(bestellpositionen.size());
+		final Collection<Bestellposition> bestellpositionen = bestellung.getBestellpositionen();
+		final List<Long> artikelIds = new ArrayList<>(bestellpositionen.size());
 		for (Bestellposition bp : bestellpositionen) {
 			if (bp.getArtikelUri() == null) {
 				throw new NotFoundException("Hallo");
@@ -222,7 +222,7 @@ public class BestellungResource {
 			
 			// Wurde der Artikel beim DB-Zugriff gefunden?
 			for (Long aId : artikelIds) {
-				Artikel a = as.findArtikelById(aId, locale);
+				final Artikel a = as.findArtikelById(aId, locale);
 				if (a.getArtikelId().longValue() == artikelId) {
 					// Der Artikel wurde gefunden
 					bp.setArtikel(a);

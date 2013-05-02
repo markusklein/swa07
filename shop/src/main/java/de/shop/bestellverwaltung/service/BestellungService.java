@@ -43,7 +43,7 @@ public class BestellungService implements Serializable {
 	}
 
 	@PersistenceContext
-	private EntityManager em;
+	private transient EntityManager em;
 	
 	@Inject
 	private KundeService ks;

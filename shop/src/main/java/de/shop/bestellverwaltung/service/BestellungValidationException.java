@@ -29,7 +29,7 @@ public class BestellungValidationException extends AbstractBestellungServiceExce
 		}
 		else {
 			this.erzeugt = bestellung.getErzeugt();
-			Kunde kunde = bestellung.getKunde();
+			final Kunde kunde = bestellung.getKunde();
 			kundeId = kunde == null ? null : kunde.getKundeId();
 		}
 		this.violations = violations;	
