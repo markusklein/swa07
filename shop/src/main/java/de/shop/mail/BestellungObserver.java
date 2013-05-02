@@ -2,13 +2,15 @@ package de.shop.mail;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.invoke.MethodHandles;
-import java.util.logging.Logger;
+
+import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.Stateful;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -19,49 +21,61 @@ import javax.mail.internet.MimeMessage;
 import de.shop.bestellverwaltung.domain.Bestellposition;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.service.NeueBestellung;
-import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.util.Config;
 import de.shop.util.Log;
 
 @ApplicationScoped
+@Stateful
 @Log
 public class BestellungObserver implements Serializable {
 	private static final long serialVersionUID = -1567643645881819340L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	private static final String NEWLINE = System.getProperty("line.separator");
 	
 	@Resource(lookup = "java:jboss/mail/Default")
 	private transient Session mailSession;
 	
-	private String mailAbsender;   // in META-INF\seam-beans.xml setzen
-	private String nameAbsender;   // in META-INF\seam-beans.xml setzen
-
+	@Inject
+	private Logger logger;
+	
+	
+	@Inject
+	private Config config;
+	
+	private String absenderMail;
+	private String absenderName;
+	private String empfaengerMail;
+	private String empfaengerName;
+	
 	@PostConstruct
-	private void init() {
-		if (mailAbsender == null) {
-			LOGGER.warning("Der Absender fuer Bestellung-Emails ist nicht gesetzt.");
+	// Attribute mit @Inject sind initialisiert
+	private void postConstruct() {
+		absenderMail = config.getAbsenderMail();
+		absenderName = config.getAbsenderName();
+		empfaengerMail = config.getEmpfaengerMail();
+		empfaengerName = config.getEmpfaengerName();
+		
+		if (absenderMail == null || empfaengerMail == null) {
+			logger.warn("Absender oder Empfaenger fuer Markteting-Emails sind nicht gesetzt.");
 			return;
 		}
-		LOGGER.info("Absender fuer Bestellung-Emails: " + mailAbsender);
+		logger.infof("Absender fuer Markteting-Emails: %s", absenderMail);
+		logger.infof("Empfaenger fuer Markteting-Emails: %s", empfaengerMail);
 	}
 	
 	public void onCreateBestellung(@Observes @NeueBestellung Bestellung bestellung) {
-		final Kunde kunde = bestellung.getKunde();
-		final String mailEmpfaenger = kunde.getEmail();
-		if (mailAbsender == null || mailEmpfaenger == null) {
+		if (absenderMail == null || empfaengerMail == null) {
 			return;
 		}
-		final String vorname = kunde.getVorname() == null ? "" : kunde.getVorname();
-		final String nameEmpfaenger = vorname + kunde.getNachname();
-		
+
 		final MimeMessage message = new MimeMessage(mailSession);
 
 		try {
 			// Absender setzen
-			final InternetAddress absenderObj = new InternetAddress(mailAbsender, nameAbsender);
+			final InternetAddress absenderObj = new InternetAddress(absenderMail, absenderName);
 			message.setFrom(absenderObj);
 			
 			// Empfaenger setzen
-			final InternetAddress empfaenger = new InternetAddress(mailEmpfaenger, nameEmpfaenger);
+			final InternetAddress empfaenger = new InternetAddress(empfaengerMail, empfaengerName);
 			message.setRecipient(RecipientType.TO, empfaenger);   // RecipientType: TO, CC, BCC
 
 			// Subject setzen
@@ -74,7 +88,7 @@ public class BestellungObserver implements Serializable {
 				sb.append(bp.getBestellmenge() + "\t" + bp.getArtikel().getName() + NEWLINE);
 			}
 			final String text = sb.toString();
-			LOGGER.finest(text);
+			logger.infof(text);
 			message.setText(text);
 
 			// Hohe Prioritaet einstellen
@@ -85,7 +99,7 @@ public class BestellungObserver implements Serializable {
 			Transport.send(message);
 		}
 		catch (MessagingException | UnsupportedEncodingException e) {
-			LOGGER.severe(e.getMessage());
+			logger.error(e.getMessage());
 			return;
 		}
 	}
