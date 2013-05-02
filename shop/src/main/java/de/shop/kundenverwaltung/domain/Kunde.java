@@ -39,7 +39,7 @@ import org.hibernate.validator.constraints.Email;
 
 
 
-import de.auth.service.jboss.AuthService.RolleType;
+import de.shop.auth.service.jboss.AuthService.RolleType;
 
 import java.sql.Timestamp;
 import java.util.Date;

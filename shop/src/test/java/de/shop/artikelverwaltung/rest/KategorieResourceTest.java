@@ -9,6 +9,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.jboss.logging.Logger;
+
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.BASEPATH;
@@ -50,6 +51,8 @@ import java.util.List;
 import java.util.Set;
 
 
+
+
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -63,6 +66,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
+
+
 
 
 import de.shop.util.AbstractResourceTest;
@@ -132,6 +137,8 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			
 			// Given
 			final String bezeichnung = NEUE_BEZEICHNUNG;
+			final String username = USERNAME_ADMIN;
+			final String password = PASSWORD_ADMIN;
 			
 			
 			final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
@@ -141,6 +148,8 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			// When
 			final Response response = given().contentType(APPLICATION_JSON)
 					                         .body(jsonObject.toString())
+					                         .auth()
+					                         .basic(username, password)
 	                                         .post(KATEGORIE_PATH);
 			
 			// Then
@@ -162,10 +171,14 @@ public class KategorieResourceTest extends AbstractResourceTest {
 			 
 			final Long kategorieId = KATEGORIE_ID_VORHANDEN;
 			final String neue_bezeichnung = NEUE_BEZEICHNUNG_UPDATE;
+			final String username = USERNAME_ADMIN;
+			final String password = PASSWORD_ADMIN;
 			
 			// When
 			Response response = given().header(ACCEPT, APPLICATION_JSON)
 					                   .pathParameter(KATEGORIE_ID_PATH_PARAM, kategorieId)
+					                   .auth()
+					                   .basic(username, password)
 	                                   .get(KATEGORIE_ID_PATH);
 			
 			JsonObject jsonObject;

@@ -176,6 +176,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		final String name = NEUER_NAME;
 		final Float preis = NEUER_PREIS;
 		final Long kategorie = NEUE_KATEGORIE_ID;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		
 		
@@ -189,6 +191,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
 				                         .body(jsonObject.toString())
+				                         .auth()
+				                         .basic(username, password)
                                          .post(ARTIKEL_PATH);
 		
 		// Then
@@ -211,6 +215,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		 
 		final Long artikelId = ARTIKEL_ID_UPDATE;
 		final String neue_bezeichnung = UPDATE_BEZEICHNUNG;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -241,8 +247,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
     	
 		response = given().contentType(APPLICATION_JSON)
 				          .body(jsonObject.toString())
-                          //.auth()
-                          //.basic(username, password)
+                          .auth()
+                          .basic(username, password)
                           .put(ARTIKEL_PATH);
 		
 		// Then
