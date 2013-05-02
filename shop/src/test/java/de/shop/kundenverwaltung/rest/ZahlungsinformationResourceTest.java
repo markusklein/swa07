@@ -2,62 +2,33 @@ package de.shop.kundenverwaltung.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
-import static de.shop.util.TestConstants.BASEPATH;
-import static de.shop.util.TestConstants.BASEURI;
 import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_ID_PATH;
 import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_PATH;
-import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_URI;
 import static de.shop.util.TestConstants.LOCATION;
-import static de.shop.util.TestConstants.PORT;
-import static java.net.HttpURLConnection.HTTP_CONFLICT;
+
 import static java.net.HttpURLConnection.HTTP_CREATED;
-import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
-import java.math.BigDecimal;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.Timestamp;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
-
 import org.jboss.logging.Logger;
-
-import javax.inject.Inject;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.xml.bind.DatatypeConverter;
-
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import com.jayway.restassured.response.Response;
-
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.util.AbstractResourceTest;
 
@@ -79,7 +50,7 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 	private static final String SWIFT_NEU ="PZHSDE66YYY";
 	
 	private static final String KONTOINHABER_UPDATE = "Dennis Santos";
-	
+	private static final String PASSWORT_FALSCH = "wrong";
 	@Test
 	public void validate() {
 		assertThat(true, is(true));
@@ -212,6 +183,51 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 		
 		// Then
 		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+   	}
+	
+	@Test
+	public void updateUnauothrisedZahlungsinformation() {
+		LOGGER.debugf("BEGINN");
+		
+		// Given
+		final Long zahlId = ZAHLUNGSINFORMATION_ID_VORHANDEN;
+		final String neuerKontoinhaber = KONTOINHABER_UPDATE;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORT_FALSCH;
+		
+		// When
+		Response response = given().header(ACCEPT, APPLICATION_JSON)
+				                   .pathParameter(ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM, zahlId)
+                                   .get(ZAHLUNGSINFORMATIONEN_ID_PATH);
+		
+		JsonObject jsonObject;
+		try (final JsonReader jsonReader =
+				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+			jsonObject = jsonReader.readObject();
+		}
+    	assertThat(jsonObject.getJsonNumber("zahlId").longValue(), is(zahlId.longValue()));
+    	
+    	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
+    	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
+    	final Set<String> keys = jsonObject.keySet();
+    	for (String k : keys) {
+    		if ("kontoinhaber".equals(k)) {
+    			job.add("kontoinhaber", neuerKontoinhaber);
+    		}
+    		else {
+    			job.add(k, jsonObject.get(k));
+    		}
+    	}
+    	jsonObject = job.build();
+    	
+		response = given().contentType(APPLICATION_JSON)
+				          .body(jsonObject.toString())
+                          .auth()
+                          .basic(username, password)
+                          .put(ZAHLUNGSINFORMATIONEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
    	}
 	
 }
