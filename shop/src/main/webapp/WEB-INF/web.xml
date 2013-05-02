@@ -10,7 +10,7 @@
   <env-entry>
     <env-entry-name>absenderMail</env-entry-name>
     <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>abcd0011@hs-karlsruhe.de</env-entry-value>
+    <env-entry-value>mabe1015@hs-karlsruhe.de</env-entry-value>
   </env-entry>
   <env-entry>
     <env-entry-name>absenderName</env-entry-name>
@@ -20,7 +20,7 @@
   <env-entry>
     <env-entry-name>empfaengerMail</env-entry-name>
     <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>abcd0011@hs-karlsruhe.de</env-entry-value>
+    <env-entry-value>mabe1015@hs-karlsruhe.de</env-entry-value>
   </env-entry>
   <env-entry>
     <env-entry-name>empfaengerName</env-entry-name>
@@ -61,7 +61,7 @@
    <role-name>mitarbeiter</role-name>
   </auth-constraint>
  </security-constraint>-->
-<!-- <security-constraint>
+<security-constraint>
   <web-resource-collection>
    <web-resource-name>Bestellungen erzeugen</web-resource-name>
    <url-pattern>/rest/bestellungen</url-pattern>
@@ -72,7 +72,7 @@
    <role-name>mitarbeiter</role-name>
    <role-name>kunde</role-name>
   </auth-constraint>
- </security-constraint> -->
+ </security-constraint>
  <security-constraint>
   <web-resource-collection>
    <web-resource-name>Zahlungsinformation erzeugen und modifizieren</web-resource-name>
