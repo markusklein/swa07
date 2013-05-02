@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.enterprise.event.Event;
 
+import javax.enterprise.event.Event;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -23,6 +23,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import de.shop.auth.service.jboss.AuthService;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.kundenverwaltung.domain.Adresse;
@@ -59,6 +60,10 @@ public class KundeService implements Serializable {
 	
 	@Inject
 	private ValidatorProvider validationProvider;
+	
+	@Inject
+	private AuthService authService;
+	
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -260,6 +265,7 @@ public class KundeService implements Serializable {
 		kunde.setRechnungsadresse(rechnungsadresse);
 		rechnungsadresse.setAdresseId(KEINE_ID);
 		
+		passwordVerschluesseln(kunde);
 		
 		em.persist(kunde);
 		event.fire(kunde);
@@ -291,9 +297,19 @@ public class KundeService implements Serializable {
 		catch (NoResultException e) {
 			LOGGER.finest("Neue Email-Adresse");
 		}
-	
+		passwordVerschluesseln(kunde);
 		em.merge(kunde);
 		return kunde;
+	}
+	
+	private void passwordVerschluesseln(Kunde kunde) {
+		LOGGER.finest("passwordVerschluesseln BEGINN:");
+
+		final String unverschluesselt = kunde.getPasswort();
+		final String verschluesselt = authService.verschluesseln(unverschluesselt);
+		kunde.setPasswort(verschluesselt);
+
+		LOGGER.finest("passwordVerschluesseln ENDE:");
 	}
 	
 	
