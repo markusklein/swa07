@@ -154,7 +154,7 @@ public class BestellungResourceTest extends AbstractResourceTest {
 
 	
 	@Test
-	public void createBestellungInvalidUser(){
+	public void createBestellungInvalidUser() {
 		LOGGER.finer("BEGINN");
 		
 		// Given

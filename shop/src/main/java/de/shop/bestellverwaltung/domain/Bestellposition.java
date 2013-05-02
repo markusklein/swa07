@@ -270,4 +270,3 @@ public class Bestellposition implements Serializable {
 		return true;
 	}
 }
-
