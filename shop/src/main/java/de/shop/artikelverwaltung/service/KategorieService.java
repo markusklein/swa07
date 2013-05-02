@@ -1,7 +1,6 @@
 package de.shop.artikelverwaltung.service;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;

@@ -70,7 +70,7 @@ public class KategorieResource {
 	@GET
 	@Wrapped(element = "kategorien") // RESTEasy, nicht Standard
 	public Collection<Kategorie> findAlleKategorien() {
-		Collection<Kategorie> kategorien = ks.findAllKategorie();
+		final Collection<Kategorie> kategorien = ks.findAllKategorie();
 		return kategorien;
 	}
 	
@@ -112,7 +112,7 @@ public class KategorieResource {
 		// Vorhandene Kategorie ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		Kategorie origKategorie = ks.findKategorieById(kategorie.getKategorieId(), locale);
+		final Kategorie origKategorie = ks.findKategorieById(kategorie.getKategorieId(), locale);
 		if (origKategorie == null) {
 			// TODO msg passend zu locale
 			final String msg = "Keine Kategorie gefunden mit der ID " + kategorie.getKategorieId();

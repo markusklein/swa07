@@ -53,7 +53,7 @@ import de.shop.util.IdGroup;
 	@NamedQuery (name = Kategorie.KATEGORIE_BY_ERZEUGT,
 				query = "SELECT      a"
 				+ " FROM Kategorie a"
-				+ " WHERE a.erzeugt = :" + Kategorie.PARAMETER_ERZEUGT), 
+				+ " WHERE a.erzeugt = :" + Kategorie.PARAMETER_ERZEUGT)
 				
 	
 				
@@ -189,7 +189,7 @@ public class Kategorie implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Kategorie other = (Kategorie) obj;
+		final Kategorie other = (Kategorie) obj;
 		if (bezeichnung == null) {
 			if (other.bezeichnung != null)
 				return false;

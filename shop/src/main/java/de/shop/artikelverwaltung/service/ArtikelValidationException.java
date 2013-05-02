@@ -44,3 +44,4 @@ import de.shop.util.AbstractShopException;
 			return violations;
 		}
 }
+	

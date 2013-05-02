@@ -1,10 +1,6 @@
 package de.shop.artikelverwaltung.rest;
 
-import org.jboss.logging.Logger;
-
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -28,6 +24,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.artikelverwaltung.domain.Artikel;
@@ -69,7 +66,7 @@ public class ArtikelResource {
 	@GET
 	@Wrapped(element = "artikel") // RESTEasy, nicht Standard
 	public Collection<Artikel> findAlleArtikel() {
-		Collection<Artikel> artikel = as.findAllArtikel();
+		final Collection<Artikel> artikel = as.findAllArtikel();
 		return artikel;
 	}
 	
@@ -110,7 +107,7 @@ public class ArtikelResource {
 		// Vorhandenen Kunden ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		Artikel origArtikel = as.findArtikelById(artikel.getArtikelId(), locale);
+		final Artikel origArtikel = as.findArtikelById(artikel.getArtikelId(), locale);
 		if (origArtikel == null) {
 			// TODO msg passend zu locale
 			final String msg = "Keine Artikel gefunden mit der ID " + artikel.getArtikelId();

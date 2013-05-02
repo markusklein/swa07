@@ -18,5 +18,5 @@ public class KategorieExistsException extends AbstractShopException {
 	public Long getId() {
 		return id;
 	}
-	}
+}
 

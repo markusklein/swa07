@@ -260,7 +260,7 @@ public class Artikel implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Artikel other = (Artikel) obj;
+		final Artikel other = (Artikel) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -269,12 +269,5 @@ public class Artikel implements Serializable {
 			return false;
 		return true;
 	}
-
-	
-	
-
-
-
-	
-
 }
+
