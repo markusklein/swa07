@@ -52,7 +52,7 @@ public class BestellungResourceTest extends AbstractResourceTest {
 		LOGGER.finer("BEGINN");
 		
 		// Given
-		final Long bestellungId = BESTELLUNG_ID_NICHT_VORHANDEN;
+		final Long bestellungId = BESTELLUNG_ID_VORHANDEN;
 		
 		// When
 		final Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -77,7 +77,7 @@ public class BestellungResourceTest extends AbstractResourceTest {
 		LOGGER.finer("BEGINN");
 		
 		// Given
-		final Long bestellungId = BESTELLUNG_ID_VORHANDEN;
+		final Long bestellungId = BESTELLUNG_ID_NICHT_VORHANDEN;
 		
 		// When
 		final Response response = given().header(ACCEPT, APPLICATION_JSON)
