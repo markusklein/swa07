@@ -68,7 +68,7 @@ public class BestellungResourceTest extends AbstractResourceTest {
 			assertThat(jsonObject.getJsonNumber("id").longValue(), is(bestellungId.longValue()));
 			assertThat(jsonObject.getString("kundeUri"), is(notNullValue()));
 		}
-
+		
 		LOGGER.finer("ENDE");
 	}
 	
@@ -86,13 +86,6 @@ public class BestellungResourceTest extends AbstractResourceTest {
 		
 		// Then
 		assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
-		
-		try (final JsonReader jsonReader =
-				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-			final JsonObject jsonObject = jsonReader.readObject();
-			assertThat(jsonObject.getJsonNumber("id").longValue(), is(bestellungId.longValue()));
-			assertThat(jsonObject.getString("kundeUri"), is(notNullValue()));
-		}
 
 		LOGGER.finer("ENDE");
 	}
