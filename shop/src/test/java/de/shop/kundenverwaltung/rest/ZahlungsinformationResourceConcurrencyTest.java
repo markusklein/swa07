@@ -2,43 +2,33 @@ package de.shop.kundenverwaltung.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
-import static de.shop.util.TestConstants.BASEPATH;
-import static de.shop.util.TestConstants.BASEURI;
 import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_ID_PATH;
 import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_PATH;
-import static de.shop.util.TestConstants.ZAHLUNGSINFORMATIONEN_URI;
-import static de.shop.util.TestConstants.LOCATION;
-import static de.shop.util.TestConstants.PORT;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
-
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
+
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import org.jboss.logging.Logger;
 
+import org.jboss.logging.Logger;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import com.jayway.restassured.response.Response;
-
-import de.shop.util.ConcurrentDelete;
 import de.shop.util.AbstractResourceTest;
 import de.shop.util.ConcurrentUpdate;
 
@@ -78,7 +68,7 @@ public class ZahlungsinformationResourceConcurrencyTest extends AbstractResource
 
     	// Konkurrierendes Update
 		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
-    	JsonObjectBuilder job2 = getJsonBuilderFactory().createObjectBuilder();
+    	final JsonObjectBuilder job2 = getJsonBuilderFactory().createObjectBuilder();
     	Set<String> keys = jsonObject.keySet();
     	for (String k : keys) {
     		if ("kontoinhaber".equals(k)) {
@@ -98,7 +88,7 @@ public class ZahlungsinformationResourceConcurrencyTest extends AbstractResource
 		
     	// Fehlschlagendes Update
 		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
-		JsonObjectBuilder job1 = getJsonBuilderFactory().createObjectBuilder();
+		final JsonObjectBuilder job1 = getJsonBuilderFactory().createObjectBuilder();
     	keys = jsonObject.keySet();
     	for (String k : keys) {
     		if ("kontoinhaber".equals(k)) {
