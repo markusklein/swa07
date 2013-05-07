@@ -164,6 +164,7 @@ public class Kunde implements Serializable {
 	public static final String PARAM_KUNDE_USERNAME = "username";
 	public static final String PARAM_USERNAME_PREFIX = "usernamePrefix";
 
+	public static final String FIND_KUNDEN_BY_ID_PREFIX = PREFIX + "findKundenByIdPrefix";
 	
 
 	
