@@ -29,7 +29,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.jayway.restassured.response.Response;
-import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.util.AbstractResourceTest;
 
 
@@ -46,8 +45,8 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 	private static final Long KONTONUMMER_NEU = Long.valueOf(9191221);
 	private static final Long BLZ_NEU = Long.valueOf(66650081);
 	private static final String KREDITINSTITUT_NEU = "Sparkasse Chemnitz";
-	private static final String IBAN_NEU ="DE54666500859995054284";
-	private static final String SWIFT_NEU ="PZHSDE66YYY";
+	private static final String IBAN_NEU = "DE54666500859995054284";
+	private static final String SWIFT_NEU = "PZHSDE66YYY";
 	
 	private static final String KONTOINHABER_UPDATE = "Dennis Santos";
 	private static final String PASSWORT_FALSCH = "wrong";
@@ -65,7 +64,8 @@ public class ZahlungsinformationResourceTest extends AbstractResourceTest {
 		
 		// When
 		final Response response = given().header(ACCEPT, APPLICATION_JSON)
-				                         .pathParameter(ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM, zahlId)                       
+				                         .pathParameter(ZAHLUNGSINFORMATIONEN_ID_PATH_PARAM,
+				                        		 		zahlId)                       
 				                         .get(ZAHLUNGSINFORMATIONEN_ID_PATH);
 
 		// Then
