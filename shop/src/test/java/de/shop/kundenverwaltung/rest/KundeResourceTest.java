@@ -53,7 +53,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final String NEUER_NACHNAME = "Feurer";
 	private static final String NEUER_NACHNAME_INVALID = "!";
 	private static final String NEUER_VORNAME = "Christian";
-	private static final String NEUE_EMAIL = NEUER_NACHNAME + "@test.de";
+	private static final String NEUE_EMAIL = "feurer.christian@gmail.com";
 	private static final String NEUE_EMAIL_INVALID = "falsch@falsch";
 	private static final String NEU_GEBURT ="1999-02-02";
 	private static final String NEU_TELEFON = "0721 123456";

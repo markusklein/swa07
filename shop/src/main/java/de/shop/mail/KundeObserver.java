@@ -2,13 +2,12 @@ package de.shop.mail;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.invoke.MethodHandles;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -16,39 +15,56 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.jboss.logging.Logger;
+
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.NeuerKunde;
+import de.shop.util.Config;
 import de.shop.util.Log;
+
+
 
 @ApplicationScoped
 @Log
 public class KundeObserver implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8081997720730732302L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	private static final String NEWLINE = System.getProperty("line.separator");
 	
 	@Resource(lookup = "java:jboss/mail/Default")
 	private transient Session mailSession;
 	
-	private String mailAbsender;   // in META-INF\seam-beans.xml setzen
-	private String nameAbsender;   // in META-INF\seam-beans.xml setzen
-
+	
+	@Inject
+	private Logger logger;
+	
+	
+	@Inject
+	private Config config;
+	
+	private String absenderMail;
+	private String absenderName;
+	private String empfaengerMail;
+	
 	@PostConstruct
-	private void init() {
-		if (mailAbsender == null) {
-			LOGGER.warning("Der Absender fuer Kunde-Emails ist nicht gesetzt.");
+	// Attribute mit @Inject sind initialisiert
+	private void postConstruct() {
+		absenderMail = config.getAbsenderMail();
+		absenderName = config.getAbsenderName();
+		empfaengerMail = config.getEmpfaengerMail();
+		
+		if (absenderMail == null || empfaengerMail == null) {
+			logger.warn("Absender oder Empfaenger fuer Markteting-Emails sind nicht gesetzt.");
 			return;
 		}
-		LOGGER.info("Absender fuer Kunde-Emails: " + mailAbsender);
+		logger.infof("Absender fuer Markteting-Emails: %s", absenderMail);
+		logger.infof("Empfaenger fuer Markteting-Emails: %s", empfaengerMail);
 	}
+
 	
 	public void onCreateKunde(@Observes @NeuerKunde Kunde kunde) {
 		final String mailEmpfaenger = kunde.getEmail();
-		if (mailAbsender == null || mailEmpfaenger == null) {
+		if (absenderMail == null || mailEmpfaenger == null) {
 			return;
 		}
 		final String vorname = kunde.getVorname() == null ? "" : kunde.getVorname();
@@ -58,7 +74,7 @@ public class KundeObserver implements Serializable {
 
 		try {
 			// Absender setzen
-			final InternetAddress absenderObj = new InternetAddress(mailAbsender, nameAbsender);
+			final InternetAddress absenderObj = new InternetAddress(absenderMail, absenderName);
 			message.setFrom(absenderObj);
 			
 			// Empfaenger setzen
@@ -76,7 +92,7 @@ public class KundeObserver implements Serializable {
 			sb.append("Ihre Kundennummer lautet: ");
 			sb.append(kunde.getKundeId());
 			final String text = sb.toString();
-			LOGGER.finest(text);
+			logger.infof(text);
 			message.setText(text);
 
 			// Hohe Prioritaet einstellen
@@ -87,7 +103,7 @@ public class KundeObserver implements Serializable {
 			Transport.send(message);
 		}
 		catch (MessagingException | UnsupportedEncodingException e) {
-			LOGGER.severe(e.getMessage());
+			logger.error(e.getMessage());
 			return;
 		}
 	}
