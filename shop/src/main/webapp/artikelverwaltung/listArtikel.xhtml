@@ -22,10 +22,10 @@
 						               value="#{msgAv['listArtikel.bezeichnung']}"
 						               for="bezeichnung"/>
 		
-						<h:inputText id="bezeichnung" value="#{ac.bezeichnung}"/>
+						<h:inputText id="bezeichnung" value="#{ac.name}"/>
 		
 						<a4j:commandButton id="findButton"
-						                   action="#{ac.findArtikelByBezeichnung}"
+						                   action="#{ac.findArtikelByName}"
 								           value="#{msgAv['listArtikel.submit']}"
 								           render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
 						

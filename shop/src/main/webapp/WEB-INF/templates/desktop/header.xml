@@ -18,14 +18,14 @@
 				<f:facet name="label">
 					#{msg['header.schnellsuche']}
 				</f:facet>
-<!--
+
 				<rich:menuItem id="schnellsucheItem">
 					<h:panelGrid id="schnellsucheGrid" columns="3">
 						<h:outputLabel id="artikelBezLabel"
 						               value="#{msg['header.schnellsuche.artikelBezeichnung']}"
 						               for="artikelBezeichnung"/>
-						<h:inputText id="artikelBezeichnung" value="#{ac.bezeichnung}"/>
-						<h:commandButton id="artikelButton" action="#{ac.findArtikelByBezeichnung}" value="#{msg['header.schnellsuche.button']}"/>
+						<h:inputText id="artikelBezeichnung" value="#{ac.name}"/>
+						<h:commandButton id="artikelButton" action="#{ac.findArtikelByName}" value="#{msg['header.schnellsuche.button']}"/>
 
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"

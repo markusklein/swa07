@@ -1,5 +1,10 @@
-INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(200, 'Hose Schwarz Groesse S', 100, 'Herrenhose', 500, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(210, 'T-Shirt Weiss Groesse XL', 30, 'Herren T-Shirt', 500, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(220, 'Pullover Bunt Groesse M', 90, 'Kinderpullover', 575, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(230, 'Kleid Gestreift Groesse S', 15, 'Damenkleid', 525, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(231, 'Mantel Grau Groesse M', 23, 'Damenmantel', 525, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(200, 'Hose', 100, 'Hose schwarz Groesse S', 500, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(210, 'T-Shirt', 30, 'T-Shirt weiss Groesse XL', 500, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(220, 'Pullover', 90, 'Pullover bunt Groesse M', 575, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(230, 'Kleid', 15, 'Kleid gestreift Groesse S', 525, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(231, 'Mantel', 23, 'Mantel grau Groesse M', 525, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(201, 'Hose', 100, 'Hose schwarz Groesse S', 500, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(211, 'T-Shirt', 30, 'T-Shirt lila Groesse XL', 500, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(221, 'Pullover', 90, 'Pullover bunt Groesse XL', 575, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(232, 'Kleid', 15, 'Kleid gestreift Groesse XXL', 525, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO artikel (artikel_id, name, preis, beschreibung, kategorie_id, erzeugt, aktualisiert, version) VALUES(233, 'Mantel', 23, 'Mantel blau Groesse M', 525, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

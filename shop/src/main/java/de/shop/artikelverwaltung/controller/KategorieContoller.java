@@ -80,12 +80,6 @@ public class KategorieContoller implements Serializable {
 		return JSF_LIST_KATEGORIE;
 	}
 	
-//TODO 
-//	@Transactional
-//	public void loadLadenhueter() {
-//		ladenhueter = as.ladenhueter(ANZAHL_LADENHUETER);
-//	}
-	
 	@Transactional
 	public String selectKategorie() {
 		if (session.getAttribute(SESSION_VERFUEGBARE_KATEGORIE) != null) {

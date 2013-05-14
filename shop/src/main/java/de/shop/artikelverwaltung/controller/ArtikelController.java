@@ -81,7 +81,7 @@ public class ArtikelController implements Serializable {
 	}
 	//TODO locale statt null
 	@Transactional
-	public String findArtikelByBezeichnung() {
+	public String findArtikelByName() {
 		final List<Artikel> artikel = as.findArtikelByNamen(name, null);
 		flash.put(FLASH_ARTIKEL, artikel);
 
