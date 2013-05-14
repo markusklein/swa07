@@ -1,20 +1,20 @@
 package de.shop.kundenverwaltung.service;
 
 
-import static java.util.logging.Level.FINER;
 import static de.shop.util.Constants.KEINE_ID;
+import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Event;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -24,9 +24,9 @@ import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 import de.shop.auth.service.jboss.AuthService;
+import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
-import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.util.IdGroup;
 import de.shop.util.ValidatorProvider;
 
@@ -318,9 +318,10 @@ public class KundeService implements Serializable {
 		final Validator validator = validationProvider.getValidator(locale);		
 		final Set<ConstraintViolation<Kunde>> violations = validator.validate(kunde, groups);
 		if (!violations.isEmpty()) {
-			throw new KundeValidationException(kunde, violations);
+			throw new InvalidKundeException(kunde, violations);
 		}
 	}
+
 	private void validateKundeId(Long kundeId, Locale locale) {
 		final Validator validator = validationProvider.getValidator(locale);
 		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
@@ -353,7 +354,7 @@ public class KundeService implements Serializable {
 			throw new InvalidEmailException(email, violations);
 	}
 
-	public Collection<String> findNachnamenByPrefix(String nachnamePrefix) {
+	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
 		final List<String> nachnamen = em.createNamedQuery(Kunde.FIND_NACHNAMEN_BY_PREFIX,
                 String.class)
                 						.setParameter(Kunde.PARAM_KUNDE_NACHNAME_PREFIX, nachnamePrefix + '%')
@@ -368,5 +369,31 @@ public class KundeService implements Serializable {
 		return ids;
 	}
 
+	public List<Kunde> findKundenByIdPrefix(Long id) {
+		if (id == null) {
+			return Collections.emptyList();
+		}
+		
+		final List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_BY_ID_PREFIX,
+				                                               Kunde.class)
+				                             .setParameter(Kunde.PARAM_KUNDE_ID_PREFIX, id.toString() + '%')
+				                             .getResultList();
+		return kunden;
+	
+	}
+
+	public Kunde findKundeByUserName(String userName) {
+		Kunde kunde;
+		try {
+			kunde = em.createNamedQuery(Kunde.FIND_KUNDE_BY_USERNAME,Kunde.class)
+					  .setParameter(Kunde.PARAM_KUNDE_USERNAME, userName)
+					  .getSingleResult();
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+		
+		return kunde;
+	}
 	
 }
