@@ -18,7 +18,7 @@
 				<f:facet name="label">
 					#{msg['header.schnellsuche']}
 				</f:facet>
-
+<!--
 				<rich:menuItem id="schnellsucheItem">
 					<h:panelGrid id="schnellsucheGrid" columns="3">
 						<h:outputLabel id="artikelBezLabel"
@@ -33,10 +33,10 @@
 						<h:inputText id="kundeId" value="#{kc.kundeId}"/>
 						<h:commandButton id="kundeButton" action="#{kc.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
 					</h:panelGrid>
-				</rich:menuItem>
-			</rich:dropDownMenu>
+				</rich:menuItem>-->
+			</rich:dropDownMenu>	
 		</h:form>
-				
+			
 		<rich:toolbarGroup id="rightGroup" location="right">
 			<h:form id="loginFormHeader" rendered="#{not auth.loggedIn}">
 				<h:panelGrid id="loginGrid" columns="3">
