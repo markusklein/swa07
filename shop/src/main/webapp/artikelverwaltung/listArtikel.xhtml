@@ -19,15 +19,15 @@
 				<rich:panel id="suchePanel" header="#{msgAv['listArtikel.sucheNeu']}">
 					<h:panelGrid id="sucheGrid" columns="4">
 						<h:outputLabel id="bezeichnungLabel"
-						               value="#{msgAv['listArtikel.bezeichnung']}"
-						               for="bezeichnung"/>
+						               value="#{msgAv['listArtikel.name']}"
+						               for="name"/>
 		
-						<h:inputText id="bezeichnung" value="#{ac.name}"/>
+						<h:inputText id="name" value="#{ac.name}"/>
 		
 						<a4j:commandButton id="findButton"
 						                   action="#{ac.findArtikelByName}"
 								           value="#{msgAv['listArtikel.submit']}"
-								           render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
+								           render="artikelPanel sucheForm:fehlermeldungName"/>
 						
 						<a4j:status id="statusStart">
 							<f:facet name="start">
@@ -52,7 +52,7 @@
 						<rich:dataTable id="artikelTabelle"
 						                value="#{ac.artikel}"
 						                var="art"
-						                rows="5"
+						                rows="8"
 						                noDataLabel="#{msgAv['listArtikel.keineDaten']}"
 						                rowClasses="odd-row, even-row"
 						                styleClass="tabelleMitZebrastil"
@@ -65,19 +65,35 @@
 								#{art.artikelId}
 							</rich:column>
 							
-							<rich:column id="bezeichnungSpalte">
+							<rich:column id="nameSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.bezeichnung']}
+									#{msgAv['listArtikel.name']}
 								</f:facet>
 								#{art.name}
 							</rich:column>
 							
+							<rich:column id="kategorieSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.kategorie']}
+								</f:facet>
+								#{art.kategorie.bezeichnung}
+							</rich:column>
+							
+							<rich:column id="bezeichnungSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.beschreibung']}
+								</f:facet>
+								#{art.beschreibung}
+							</rich:column>
+							
 							<rich:column id="preisSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.bezeichnung']}
+									#{msgAv['listArtikel.preis']}
 								</f:facet>
 								#{art.preis}
 							</rich:column>
+							
+							
 							
 							<rich:column id="buttonSpalte"
 							             rendered="#{not empty artikel}">
