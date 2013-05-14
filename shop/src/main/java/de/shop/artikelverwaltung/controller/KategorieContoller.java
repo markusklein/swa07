@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
 
-import de.shop.artikelverwaltung.domain.Kategorie;ö
+import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.service.KategorieService;
 import de.shop.util.Log;
 import de.shop.util.Transactional;
