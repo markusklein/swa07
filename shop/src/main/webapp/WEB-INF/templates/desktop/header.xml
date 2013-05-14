@@ -74,7 +74,7 @@
 				<rich:dropDownMenu id="warenkorb">
 					<f:facet name="label">
 						<h:graphicImage id="warenkorbImage"
-			    	                    name="warenkorb.gif"
+			    	                    name="warenkorb.png"
 			        	                library="images"
 			            	            alt="#{msg['header.warenkorb.alt']}"/>
 					</f:facet>
