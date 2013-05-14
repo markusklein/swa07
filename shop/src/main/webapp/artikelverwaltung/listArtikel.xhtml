@@ -50,7 +50,7 @@
 						<c:set target="#{flash}" property="artikel" value="#{artikel}"/>
 						
 						<rich:dataTable id="artikelTabelle"
-						                value="#{artikel}"
+						                value="#{ac.artikel}"
 						                var="art"
 						                rows="5"
 						                noDataLabel="#{msgAv['listArtikel.keineDaten']}"
@@ -62,14 +62,21 @@
 								<f:facet name="header">
 									#{msgAv['listArtikel.id']}
 								</f:facet>
-								#{art.id}
+								#{art.artikelId}
 							</rich:column>
 							
 							<rich:column id="bezeichnungSpalte">
 								<f:facet name="header">
 									#{msgAv['listArtikel.bezeichnung']}
 								</f:facet>
-								#{art.bezeichnung}
+								#{art.name}
+							</rich:column>
+							
+							<rich:column id="preisSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.bezeichnung']}
+								</f:facet>
+								#{art.preis}
 							</rich:column>
 							
 							<rich:column id="buttonSpalte"

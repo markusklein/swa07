@@ -2,7 +2,9 @@ package de.shop.artikelverwaltung.controller;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,6 +18,8 @@ import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
+import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.util.Client;
 import de.shop.util.Log;
 import de.shop.util.Transactional;
 
@@ -38,12 +42,17 @@ public class ArtikelController implements Serializable {
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
 
-	private String name;
-	
+	private Long artikel_id;	
+	private List<Artikel> artikel = Collections.emptyList();
+	private String name;	
 	private List<Artikel> ladenhueter;
 
 	@Inject
 	private ArtikelService as;
+	
+	@Inject
+	@Client
+	private Locale locale;
 	
 	@Inject
 	private Flash flash;
@@ -82,7 +91,7 @@ public class ArtikelController implements Serializable {
 	//TODO locale statt null
 	@Transactional
 	public String findArtikelByName() {
-		final List<Artikel> artikel = as.findArtikelByNamen(name, null);
+		artikel = as.findArtikelByNamen(name, locale);
 		flash.put(FLASH_ARTIKEL, artikel);
 
 		return JSF_LIST_ARTIKEL;
@@ -103,5 +112,21 @@ public class ArtikelController implements Serializable {
 		final List<Artikel> alleArtikel = as.findAllArtikel();
 		session.setAttribute(SESSION_VERFUEGBARE_ARTIKEL, alleArtikel);
 		return JSF_SELECT_ARTIKEL;
+	}
+
+	public Long getArtikel_id() {
+		return artikel_id;
+	}
+
+	public void setArtikel_id(Long artikel_id) {
+		this.artikel_id = artikel_id;
+	}
+
+	public List<Artikel> getArtikel() {
+		return artikel;
+	}
+
+	public void setArtikel(List<Artikel> artikel) {
+		this.artikel = artikel;
 	}
 }
