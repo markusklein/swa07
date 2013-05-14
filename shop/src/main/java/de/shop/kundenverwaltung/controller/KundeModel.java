@@ -9,14 +9,11 @@ import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,30 +29,28 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
-import javax.xml.bind.DatatypeConverter;
 
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
 import org.richfaces.component.SortOrder;
 import org.richfaces.component.UIPanelMenuItem;
-import org.richfaces.event.FileUploadEvent;
-import org.richfaces.model.UploadedFile;
 
 import de.shop.auth.controller.AuthController;
 import de.shop.kundenverwaltung.domain.Adresse;
-import de.shop.kundenverwaltung.domain.PasswordGroup;
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.kundenverwaltung.domain.PasswordGroup;
+import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.kundenverwaltung.service.EmailExistsException;
 import de.shop.kundenverwaltung.service.InvalidKundeException;
 import de.shop.kundenverwaltung.service.InvalidNachnameException;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
+import de.shop.kundenverwaltung.service.KundeService.OrderType;
 import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
 import de.shop.util.ConcurrentDeletedException;
-import de.shop.util.Messages;
-import de.shop.util.File;
 import de.shop.util.FileHelper;
+import de.shop.util.Messages;
 
 /**
  * Dialogsteuerung fuer die Kundenverwaltung
@@ -76,9 +71,6 @@ public class KundeModel implements Serializable {
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
 	private static final String JSF_UPDATE_KUNDE = JSF_KUNDENVERWALTUNG + "updatePrivatkunde";
 	private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
-	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
-	
-	private static final String REQUEST_KUNDE_ID = "kundeId";
 
 	private static final String CLIENT_ID_KUNDEID = "form:kundeIdInput";
 	private static final String MSG_KEY_KUNDE_NOT_FOUND_BY_ID = "viewKunde.notFound";
@@ -99,13 +91,7 @@ public class KundeModel implements Serializable {
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_UPDATE = "updateFirmenkunde.concurrentUpdate";
 	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_DELETE = "updatePrivatkunde.concurrentDelete";
 	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE = "updateFirmenkunde.concurrentDelete";
-	
-	//private static final String CLIENT_ID_SELECT_DELETE_BUTTON_PREFIX = "form:kundenTabelle:";
-	//private static final String CLIENT_ID_SELECT_DELETE_BUTTON_SUFFIX = ":deleteButton";
-	private static final String MSG_KEY_SELECT_DELETE_KUNDE_BESTELLUNG = "listKunden.deleteKundeBestellung";
-	
-	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
-	private static final String MSG_KEY_DELETE_KUNDE_BESTELLUNG = "viewKunde.deleteKundeBestellung";
+
 	
 	@PersistenceContext(type = EXTENDED)
 	private transient EntityManager em;
@@ -139,20 +125,18 @@ public class KundeModel implements Serializable {
 
 	private Long kundeId;
 	private Kunde kunde;
-	private List<String> hobbies;
-	
 	private String nachname;
-	
 	private List<Kunde> kunden = Collections.emptyList();
-	
 	private SortOrder vornameSortOrder = SortOrder.unsorted;
 	private String vornameFilter = "";
-	
 	private boolean geaendertKunde;    // fuer ValueChangeListener
 	private Kunde neuerKunde;
+	private Adresse neueLAdresse;
+	private Adresse neueRAdresse;
+	private Zahlungsinformation neueZahlungsinformation;
 	
-	private byte[] bytes;
-	private String contentType;
+//	private byte[] bytes;
+//	private String contentType;
 
 	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
@@ -203,13 +187,6 @@ public class KundeModel implements Serializable {
 		return kunde;
 	}
 
-	public List<String> getHobbies() {
-		return hobbies;
-	}
-	
-	public void setHobbies(List<String> hobbies) {
-		this.hobbies = hobbies;
-	}
 
 	public String getNachname() {
 		return nachname;
@@ -340,12 +317,12 @@ public class KundeModel implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public String findKundenByNachname() {
 		if (nachname == null || nachname.isEmpty()) {
-			kunden = ks.findAllKunden(FetchType.MIT_BESTELLUNGEN, OrderByType.UNORDERED);
+			kunden = ks.findAllKunden(FetchType.MIT_ADRESSE_UND_ZAHLUNGSINFORMATION, OrderType.KEINE);
 			return JSF_LIST_KUNDEN;
 		}
 
 		try {
-			kunden = ks.findKundenByNachname(nachname, FetchType.MIT_BESTELLUNGEN, locale);
+			kunden = ks.findKundenByNachname(nachname, FetchType.MIT_ADRESSE_UND_ZAHLUNGSINFORMATION, locale);
 		}
 		catch (InvalidNachnameException e) {
 			final Collection<ConstraintViolation<Kunde>> violations = e.getViolations();
@@ -382,7 +359,7 @@ public class KundeModel implements Serializable {
 		}
 		
 		// Bestellungen nachladen
-		this.kunde = ks.findKundeById(ausgewaehlterKunde.getKundeId(), FetchType.MIT_BESTELLUNGEN, locale);
+		this.kunde = ks.findKundeById(ausgewaehlterKunde.getKundeId(), FetchType.MIT_ADRESSE_UND_ZAHLUNGSINFORMATION, locale);
 		this.kundeId = this.kunde.getKundeId();
 		
 		return JSF_VIEW_KUNDE;
@@ -392,7 +369,7 @@ public class KundeModel implements Serializable {
 	public String createKunde() {
 		
 		try {
-			neuerKunde = (Kunde) ks.createKunde(neuerKunde, locale);
+			neuerKunde = (Kunde) ks.createKunde(neuerKunde, neueZahlungsinformation,neueLAdresse,neueRAdresse ,locale);
 		}
 		catch (InvalidKundeException | EmailExistsException e) {
 			final String outcome = createKundeErrorMsg(e);
@@ -406,7 +383,6 @@ public class KundeModel implements Serializable {
 		kundeId = neuerKunde.getKundeId();
 		kunde = neuerKunde;
 		neuerKunde = null;  // zuruecksetzen
-		hobbies = null;
 		
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
@@ -430,10 +406,12 @@ public class KundeModel implements Serializable {
 		}
 
 		neuerKunde = new Kunde();
-		final Adresse adresse = new Adresse();
-		adresse.setKunde(neuerKunde);
-		neuerKunde.setAdresse(adresse);
-		
+		neueLAdresse = new Adresse();
+		neueRAdresse = new Adresse();
+		neueZahlungsinformation = new Zahlungsinformation();
+		neuerKunde.setLieferadresse(neueLAdresse);
+		neuerKunde.setRechnungsadresse(neueRAdresse);
+		neuerKunde.setZahlungsinformation(neueZahlungsinformation);
 	}
 	
 	/**
@@ -474,14 +452,10 @@ public class KundeModel implements Serializable {
 			return JSF_INDEX;
 		}
 		
-		if (kunde.getClass().equals(Kunde.class)) {
-			final Kunde kunde = (Kunde) kunde;
-
-		}
 		
 		LOGGER.tracef("Aktualisierter Kunde: %s", kunde);
 		try {
-			kunde = ks.updateKunde(kunde, locale, false);
+			kunde = ks.updateKunde(kunde, locale);
 		}
 		catch (EmailExistsException | InvalidKundeException
 			  | OptimisticLockException | ConcurrentDeletedException e) {
@@ -496,7 +470,7 @@ public class KundeModel implements Serializable {
 		geaendertKunde = false;
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		kundeId = kunde.getId();
+		kundeId = kunde.getKundeId();
 		
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
@@ -536,35 +510,7 @@ public class KundeModel implements Serializable {
 		return null;
 	}
 	
-	/**
-	 * Action Methode, um einen zuvor gesuchten Kunden zu l&ouml;schen
-	 * @return URL fuer Startseite im Erfolgsfall, sonst wieder die gleiche Seite
-	 */
-	@TransactionAttribute(REQUIRED)
-	public String deleteAngezeigtenKunden() {
-		if (kunde == null) {
-			return null;
-		}
-		
-		LOGGER.trace(kunde);
-		try {
-			ks.deleteKunde(kunde);
-		}
-		catch (KundeDeleteBestellungException e) {
-			messages.error(KUNDENVERWALTUNG, MSG_KEY_DELETE_KUNDE_BESTELLUNG, CLIENT_ID_DELETE_BUTTON,
-					       e.getKundeId(), e.getAnzahlBestellungen());
-			return null;
-		}
-		
-		// Aufbereitung fuer ok.xhtml
-		request.setAttribute(REQUEST_KUNDE_ID, kunde.getKundeId());
-		
-		// Zuruecksetzen
-		kunde = null;
-		kundeId = null;
-
-		return JSF_DELETE_OK;
-	}
+	
 	
 	public String selectForUpdate(Kunde ausgewaehlterKunde) {
 		if (ausgewaehlterKunde == null) {
@@ -578,53 +524,40 @@ public class KundeModel implements Serializable {
 			   : JSF_UPDATE_FIRMENKUNDE;
 	}
 
-	@TransactionAttribute(REQUIRED)
-	public String delete(Kunde ausgewaehlterKunde) {
-		try {
-			ks.deleteKunde(ausgewaehlterKunde);
-		}
-		catch (KundeDeleteBestellungException e) {
-			messages.error(KUNDENVERWALTUNG, MSG_KEY_SELECT_DELETE_KUNDE_BESTELLUNG, null,
-					       e.getKundeId(), e.getAnzahlBestellungen());
-			return null;
-		}
-
-		kunden.remove(ausgewaehlterKunde);
-		return null;
-	}
-
-	public void uploadListener(FileUploadEvent event) {
-		final UploadedFile uploadedFile = event.getUploadedFile();
-		contentType = uploadedFile.getContentType();
-		bytes = uploadedFile.getData();
-	}
-
-	@TransactionAttribute(REQUIRED)
-	public String upload() {
-		kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
-		if (kunde == null) {
-			return null;
-		}
-		ks.setFile(kunde, bytes, contentType);
-
-		kundeId = null;
-		bytes = null;
-		contentType = null;
-		kunde = null;
-
-		return JSF_INDEX;
-	}
 	
-	public String getFilename(File file) {
-		if (file == null) {
-			return "";
-		}
-		
-		fileHelper.store(file);
-		return file.getFilename();
-	}
-	
-	public String getBase64(File file) {
-		return DatatypeConverter.printBase64Binary(file.getBytes());
-	}
+
+//	public void uploadListener(FileUploadEvent event) {
+//		final UploadedFile uploadedFile = event.getUploadedFile();
+//		contentType = uploadedFile.getContentType();
+//		bytes = uploadedFile.getData();
+//	}
+
+//	@TransactionAttribute(REQUIRED)
+//	public String upload() {
+//		kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
+//		if (kunde == null) {
+//			return null;
+//		}
+//		ks.setFile(kunde, bytes, contentType);
+//
+//		kundeId = null;
+//		bytes = null;
+//		contentType = null;
+//		kunde = null;
+//
+//		return JSF_INDEX;
+//	}
+//	
+//	public String getFilename(File file) {
+//		if (file == null) {
+//			return "";
+//		}
+//		
+//		fileHelper.store(file);
+//		return file.getFilename();
+//	}
+//	
+//	public String getBase64(File file) {
+//		return DatatypeConverter.printBase64Binary(file.getBytes());
+//	}
 }

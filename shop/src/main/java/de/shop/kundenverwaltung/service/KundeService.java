@@ -1,21 +1,20 @@
 package de.shop.kundenverwaltung.service;
 
 
-import static java.util.logging.Level.FINER;
 import static de.shop.util.Constants.KEINE_ID;
+import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Event;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -24,11 +23,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-
 import de.shop.auth.service.jboss.AuthService;
+import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
-import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.util.IdGroup;
 import de.shop.util.ValidatorProvider;
 
