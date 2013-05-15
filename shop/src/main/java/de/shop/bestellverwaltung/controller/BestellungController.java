@@ -1,6 +1,7 @@
 package de.shop.bestellverwaltung.controller;
 
 import static de.shop.util.Constants.JSF_DEFAULT_ERROR;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
@@ -26,8 +28,8 @@ import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.Client;
 import de.shop.util.Log;
 import de.shop.util.Transactional;
-
 import de.shop.bestellverwaltung.service.AbstractBestellungValidationException;
+import de.shop.bestellverwaltung.service.BestellungService.BestellungFetchType;
 
 
 @Named("bc")
@@ -39,6 +41,9 @@ public class BestellungController implements Serializable {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
 	private static final String JSF_VIEW_BESTELLUNG = "/bestellverwaltung/viewBestellung";
+	
+	private Long bestellungId;
+	private Bestellung bestellung;
 
 	
 	@Inject
@@ -65,6 +70,37 @@ public class BestellungController implements Serializable {
 	private Flash flash;
 	
 	
+	public Long getBestellungId() {
+		return bestellungId;
+	}
+
+
+	public void setBestellungId(Long bestellungId) {
+		this.bestellungId = bestellungId;
+	}
+	
+	
+	/**
+	 * Action Methode, um eine Bestellung anhand der ID zu suchen
+	 * @return URL fuer Anzeige der gefundenen Bestellung
+	 * @throws Exception 
+	 */
+	@TransactionAttribute(REQUIRED)
+	public String findBestellungById() throws Exception {
+		bestellung = bs.findBestellungById(bestellungId, BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
+		
+		if (bestellung == null) {
+			// Keine Bestellung zu gegebener ID gefunden
+			//TODO implement method findBestellungByIdErrorMsg(String);
+			//return findBestellungByIdErrorMsg(bestellungId.toString());
+			System.out.println("es wurde keine Bestellung mit BestellId "+bestellungId+" gefunden");
+		}
+
+		flash.put("bestellung", bestellung);
+		return JSF_VIEW_BESTELLUNG;
+	}
+
+
 	@Transactional
 	public String bestellen() {
 		auth.preserveLogin();
