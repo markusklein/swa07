@@ -32,6 +32,13 @@
 						               for="kundeId"/>
 						<h:inputText id="kundeId" value="#{kc.kundeId}"/>
 						<h:commandButton id="kundeButton" action="#{kc.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
+						
+						<h:outputLabel id="bestellungIdLabel"
+						               value="#{msg['header.schnellsuche.bestellungid']}"
+						               for="bestellungId"/>
+						<h:inputText id="bestellungId" value="#{bc.bestellungId}"/>
+						<h:commandButton id="bestellungButton" action="#{bc.findBestellungById}" value="#{msg['header.schnellsuche.button']}"/>
+												
 					</h:panelGrid>
 				</rich:menuItem>-->
 			</rich:dropDownMenu>	
