@@ -203,11 +203,11 @@ public class BestellungResource {
 			throw new NotFoundException(sb.toString());
 		}
 
-		//TODO Implement this
-//		Collection<Artikel> gefundeneArtikel = as.findArtikelByIds(artikelIds);
+		//TODO Implement method findArtikelByIds(List<Long> ids) in ArtikelService
+//		Collection<Artikel> gefundeneArtikel = as.findArtikelByIds(artikelIds);s
 //		if (gefundeneArtikel.isEmpty()) {
 //			throw new NotFoundException("Keine Artikel vorhanden mit den IDs: " + artikelIds);
-//		}
+//		}s
 		
 		// Bestellpositionen haben URLs fuer persistente Artikel.
 		// Diese persistenten Artikel wurden in einem DB-Zugriff ermittelt (s.o.)
