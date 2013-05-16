@@ -50,7 +50,7 @@
 			<p id="abstandZuMeldungen">
 				<rich:messages id="globaleFehlermeldungen" globalOnly="true"/>
 			</p>
-		
+	 
 			<a4j:outputPanel id="kundenPanel">
 				<rich:dataTable id="kundenTabelle"
 				                value="#{kc.kunden}"
@@ -66,7 +66,7 @@
 						<f:facet name="header">
 			                 #{msgKv['listKunden.kundenr']}
 						</f:facet>
-						#{kunde.id}
+						#{kunde.kundeId}
 					</rich:column>
 					
 					<rich:column id="nachnameSpalte">
@@ -76,11 +76,11 @@
 						<h:commandLink id="nachnamePopup" value="#{kunde.nachname}">
 							<rich:componentControl target="popup" operation="show"/>
 						</h:commandLink>
-	
+ 
 						<rich:popupPanel id="popup" modal="false" autosized="true" resizeable="false">
 							<f:facet name="header">
 								<h:outputFormat id="popupTitle" value="#{msgKv['viewKundePopup.title']}">
-									<f:param id="popupTitleId" value="#{kunde.id}"/>
+									<f:param id="popupTitleId" value="#{kunde.kundeId}"/>
 								</h:outputFormat>
 							</f:facet>
 							<f:facet name="controls">
@@ -119,11 +119,6 @@
 								           action="#{kc.selectForUpdate(kunde)}"/>
 							<rich:menuSeparator id="menuSeparatorDelete"
 							                    rendered="#{rich:isUserInRole('admin')}"/>
-							<rich:menuItem id="deleteContext"
-								           label="#{msgKv['listKunden.deleteButtonAlt']}"
-								           icon="#{resource['images:delete.gif']}"
-								           action="#{kc.delete(kunde)}"
-								           rendered="#{rich:isUserInRole('admin')}"/>
 						</rich:contextMenu>
 
 					</rich:column>
@@ -167,7 +162,7 @@
 						          image="#{resource['images:details2.gif']}"
 								  outcome="/kundenverwaltung/viewKundeGET"
 								  alt="#{msgKv['listKunden.detailsButtonGETAlt']}">
-							<f:param id="idParam" name="kundeId" value="#{kunde.id}"/>
+							<f:param id="idParam" name="kundeId" value="#{kunde.kundeId}"/>
 						</h:button>
 					</rich:column>
 									
@@ -178,14 +173,6 @@
 								         alt="#{msgKv['listKunden.editButtonAlt']}"/>
 					</rich:column>
 					
-					<rich:column id="deleteSpalte" rendered="#{not empty kc.kunden and rich:isUserInRole('admin')}">
-						<a4j:commandButton id="deleteButton"
-										   image="#{resource['images:delete.gif']}"
-								           action="#{kc.delete(kunde)}"
-								           alt="#{msgKv['listKunden.deleteButtonAlt']}"
-								           onclick="return confirm('#{msgKc['listKunden.deleteKundeBestaetigung']}')"
-								           render="@form :globaleFehlermeldungen"/>
-					</rich:column>
 				</rich:dataTable>
 				
 				<p id="abstandZuScroller">
