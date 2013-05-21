@@ -141,7 +141,7 @@
 							</rich:panel>
 						</rich:tab>
 						
-						<rich:tab id="multimediaTab" rendered="#{not empty kc.kunde.file}">
+						<!--  <rich:tab id="multimediaTab" rendered="#{not empty kc.kunde.file}">
 							<f:facet name="header">
 								<h:panelGroup id="multimediaLabel">
 									<h:graphicImage id="multimediaGif"
@@ -150,29 +150,29 @@
 									#{' '}
 									#{msgKv['viewKunde.kunde.bildVideoAudio']}
 								</h:panelGroup>
-							</f:facet>
+							</f:facet> 
 							
-							<c:set var="file" value="${kc.kunde.file}" scope="view"/>
+							<c:set var="file" value="${kc.kunde.file}" scope="view"/> 
 							<c:set var="multimediaType" value="${file.multimediaType}" scope="view"/>
 							<c:set var="filename" value="#{kc.getFilename(file)}" scope="view"/>
-							<c:choose>
+							<c:choose> 
 								<c:when test="${multimediaType eq 'IMAGE'}">
 									<h:graphicImage id="bild"
 													name="#{filename}"
 													library="filesDb"
-													alt="#{msgKv['viewKunde.kunde.bild.alt']}"/>
+													alt="#{msgKv['viewKunde.kunde.bild.alt']}"/> -->
 									<!--
 									<h:graphicImage id="bild"
 													value="data:#{file.mimeType};base64,#{kc.getBase64(file)}"
 													alt="#{msgKv['viewKunde.kunde.bild.alt']}"/>
 									-->
-								</c:when>
+								 <!--  </c:when> 
 									
-								<c:when test="${multimediaType eq 'VIDEO'}">
+								<c:when test="${multimediaType eq 'VIDEO'}"> -->
 									<!-- MediaElement von http://mediaelementjs.com und https://github.com/johndyer/mediaelement/tree/master/build -->
 									<!-- Alternativen siehe http://html5video.org/wiki/HTML5_Video_Player_Comparison -->
 									<!-- Funktioniert mit Chrome, aber nicht mit FF 19.0.2 -->
-									<h:outputScript id="jsVideo" library="js" name="mediaelement-and-player.min.js"/>
+									<!--<h:outputScript id="jsVideo" library="js" name="mediaelement-and-player.min.js"/>
 									<h:outputStylesheet id="cssVideo" library="css" name="mediaelementplayer.css"/>
 									<video id="video"
 										   controls="controls"
@@ -187,7 +187,7 @@
 									TODO: AUDIO
 								</c:when>
 							</c:choose>
-						</rich:tab>
+						</rich:tab> -->
 						
 						<rich:tab id="bestellungenTab" rendered="#{not empty kc.kunde.bestellungen}">
 							<f:facet name="header">

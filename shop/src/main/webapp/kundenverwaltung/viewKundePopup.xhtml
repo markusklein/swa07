@@ -45,6 +45,50 @@
 				</h:panelGrid>
 			</rich:panel>
 		</rich:tab>
+		
+<rich:tab id="ZahlungsinformationenTab" >	
+	<f:facet name="header">
+		<h:panelGroup id="ZahlungsinformationLabel">
+					<h:graphicImage id="zahlungsinformationenGif"
+					                name="stammdaten.gif"
+					                library="images"/>
+					#{' '}
+					#{msgKv['viewKundePopup.kunde.zahlungsinformationen']}
+		</h:panelGroup>
+	</f:facet>	
+	
+	<rich:panel id="zahlungsinformationenPanel">
+				<h:panelGrid id="zahlungsinformationenGrid" columns="2">
+					<h:outputText id="kontoinhaberLabel" value="#{msgKv['viewKundePopup.kontoinhaber']}"/>
+					<h:outputText id="kontoinhaber" value="#{kunde.zahlungsinformation.getKontoinhaber()}"/>
+					
+					<h:outputText id="kontonummerLabel" value="#{msgKv['viewKundePopup.kontonummer']}"/>
+					<h:outputText id="kontonummer" value="#{kunde.zahlungsinformation.getKontonummer()}"/>
+					
+					<h:outputText id="blzLabel" value="#{msgKv['viewKundePopup.blz']}"/>
+					<h:outputText id="blz" value="#{kunde.zahlungsinformation.getBlz()}"/>
+					
+					<h:outputText id="kreditinstitutLabel" value="#{msgKv['viewKundePopup.kreditinstitut']}"/>
+					<h:outputText id="kreditinstitut" value="#{kunde.zahlungsinformation.getKreditinstitut()}"/>
+					
+					<h:outputText id="swiftLabel" value="#{msgKv['viewKundePopup.swift']}"/>
+					<h:outputText id="swift" value="#{kunde.zahlungsinformation.getSwift()}"/>
+					
+					<h:outputText id="ibanLabel" value="#{msgKv['viewKundePopup.iban']}"/>
+					<h:outputText id="iban" value="#{kunde.zahlungsinformation.getIban()}"/>
+					
+					
+					
+					
+				</h:panelGrid>
+	</rich:panel>
+</rich:tab>
+
+		
+		
+		
+		
+		
 		<!-- 
 		<rich:tab id="bestellungenTab" rendered="#{not empty kunde.bestellungen}">
 			<f:facet name="header">
