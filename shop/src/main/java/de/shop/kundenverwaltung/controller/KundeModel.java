@@ -412,6 +412,7 @@ public class KundeModel implements Serializable {
 		neuerKunde.setLieferadresse(neueLAdresse);
 		neuerKunde.setRechnungsadresse(neueRAdresse);
 		neuerKunde.setZahlungsinformation(neueZahlungsinformation);
+		neuerKunde.setGeburtsdatum(getAktuellesDatum());
 	}
 	
 	/**
@@ -509,7 +510,6 @@ public class KundeModel implements Serializable {
 		}
 		return null;
 	}
-	
 	
 	
 	public String selectForUpdate(Kunde ausgewaehlterKunde) {

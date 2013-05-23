@@ -23,6 +23,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -207,6 +208,10 @@ public class Kunde implements Serializable {
 	@Column(length = 45, nullable = false)
 	private String passwort;
 	
+	@Transient
+	@JsonIgnore
+	private String passwortWdh;
+	
 	@NotNull
 	@Size(max = 45)
 	@Column(length = 45, nullable = false)
@@ -268,6 +273,11 @@ public class Kunde implements Serializable {
 		aktualisiert =  new Timestamp(new Date().getTime());
 	}
 	
+	@PostLoad
+	protected void postLoad() {
+		passwortWdh = passwort;
+	}
+	
 	
 	
 	
@@ -300,11 +310,16 @@ public class Kunde implements Serializable {
 	public Timestamp getErzeugt() {
 		return erzeugt == null ? null : (Timestamp) erzeugt.clone();
 	}
+	
+	public void setErzeugt(Date erzeugt) {
+		this.erzeugt = erzeugt == null ? null : (Timestamp) erzeugt.clone();
+	}
 
 	public Date getGeburtsdatum() {
 		return new Date(geburtsdatum.getDate());
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setGeburtsdatum(Date geburtsdatum) {
 		this.geburtsdatum = new Date(geburtsdatum.getDate());
 	}
@@ -339,6 +354,14 @@ public class Kunde implements Serializable {
 
 	public void setPasswort(String passwort) {
 		this.passwort = passwort;
+	}
+	
+	public String getPasswortWdh() {
+		return passwortWdh;
+	}
+	
+	public void setPasswortWdh(String passwordWdh) {
+		this.passwortWdh = passwordWdh;
 	}
 
 	public Adresse getRechnungsadresse() {
@@ -416,6 +439,7 @@ public class Kunde implements Serializable {
 				+ ", geburtsdatum=" + geburtsdatum + ", geschlecht="
 				+ geschlecht
 				+ ", nachname=" + nachname + ", passwort=" + passwort
+				+ ",passwortWdh=" + passwortWdh
 				+ ", telefonnummer="
 				+ telefonnummer + ", vorname=" + vorname + "]";
 	}
@@ -429,6 +453,7 @@ public class Kunde implements Serializable {
 			this.email = kunde.email;
 			this.geschlecht = kunde.geschlecht;
 			this.passwort = kunde.passwort;
+			this.passwortWdh = kunde.passwortWdh;
 			this.telefonnummer = kunde.telefonnummer;
 			this.lieferadresse.setValues(kunde.lieferadresse);
 			this.rechnungsadresse.setValues(kunde.rechnungsadresse);
@@ -452,6 +477,28 @@ public class Kunde implements Serializable {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		final Kunde neuesObjekt = (Kunde) super.clone();
+		neuesObjekt.kundeid = kundeid;
+		neuesObjekt.version = version;
+		neuesObjekt.nachname = nachname;
+		neuesObjekt.vorname = vorname;
+		//neuesObjekt.kategorie = kategorie;
+		//neuesObjekt.umsatz = umsatz;
+		neuesObjekt.email = email;
+		//neuesObjekt.newsletter = newsletter;
+		neuesObjekt.passwort = passwort;
+		neuesObjekt.passwortWdh = passwortWdh;
+		//neuesObjekt.agbAkzeptiert = agbAkzeptiert;
+		neuesObjekt.lieferadresse = lieferadresse;
+		neuesObjekt.rechnungsadresse = rechnungsadresse;
+		//neuesObjekt.bemerkungen = bemerkungen;
+		neuesObjekt.erzeugt = erzeugt;
+		neuesObjekt.aktualisiert = aktualisiert;
+		return neuesObjekt;
 	}
 	 
 }

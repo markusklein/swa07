@@ -9,7 +9,7 @@
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:define name="metadata">
-			<f:event type="preRenderView" listener="#{kc.createEmptyPrivatkunde}"/>
+			<f:event type="preRenderView" listener="#{kc.createEmptyKunde}"/>
 		</ui:define>
 		
 		<ui:param name="pageTitle" value="#{msgKv['createPrivatkunde.title']}"/>
@@ -30,7 +30,7 @@
 					http://community.jboss.org/thread/169487 
 				-->
 				<rich:graphValidator id="kundeValidator"
-				                     value="#{kc.neuerPrivatkunde}"
+				                     value="#{kc.neuerKunde}"
 				                     groups="#{kc.passwordGroup}">
 					<rich:messages for="kundeValidator"/>
 					<rich:messages id="fehlermeldungPassword" globalOnly="true"/>
@@ -40,78 +40,108 @@
 					             columns="3">
 			
 						<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['createPrivatkunde.nachname']}"/>
-						<h:inputText id="nachname" value="#{kc.neuerPrivatkunde.nachname}">
+						<h:inputText id="nachname" value="#{kc.neuerKunde.nachname}">
 							<rich:validator oninvalid="$(#{rich:element('nachname')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('nachname')}).removeClass('invalid')"/>
 						</h:inputText>
 						<rich:messages id="fehlermeldungenNachname" for="nachname"/>
-			
+			            
 						<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['createPrivatkunde.vorname']}"/>
-						<h:inputText id="vorname" value="#{kc.neuerPrivatkunde.vorname}"/>
-						<f:verbatim/>
+						<h:inputText id="vorname" value="#{kc.neuerKunde.vorname}"/>
+											
 						
-						<h:outputLabel id="kategorieLabel" value="#{msgKv['createPrivatkunde.kategorie']}" for="kategorie"/>
+						<h:selectOneRadio id="RadioButtonGeschlecht" value="#{kc.neuerKunde.geschlecht}"> 
+						<f:selectItem id="valuegeschlechtM" itemValue="M"
+											 itemLabel="#{msgKv['createPrivatkunde.geschlecht.maennlich']}"/>
+						<f:selectItem id="valuegeschlechtW" itemValue="W"
+											 itemLabel="#{msgKv['createPrivatkunde.geschlecht.weiblich']}"/>
+					    </h:selectOneRadio>		    
+						
+						
+						 <h:outputLabel id="geburtstagLabel"
+						               for="geburtstag"
+						               value="#{msgKv['createPrivatkunde.geburtstag']}"/>
+						<rich:calendar id="geburtstag"
+						               datePattern="#{msgKv['createPrivatkunde.calendar.pattern']}"
+						               value="#{kc.neuerKunde.geburtsdatum}"
+						               timezone="CET">  
+						    <!-- https://issues.jboss.org/browse/RF-10224
+							<rich:validator/>
+							-->
+						 	<rich:placeholder id="geburtstagPlaceholder" value="#{msgKv['createPrivatkunde.seit.placeholder']}" />
+						</rich:calendar>	
+						<rich:messages id="geburstagSeit" for="geburtstag"/>  
+						
+						
+						<h:outputLabel id="telefonnummerLabel" for="telefonnummer" value="#{msgKv['createPrivatkunde.telefonnummer']}"/>
+						<h:inputText id="telefonnummer" value="#{kc.neuerKunde.telefonnummer}">
+							<rich:validator oninvalid="$(#{rich:element('telefonnummer')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('telefonnummer')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungenTelefonnummer" for="telefonnummer"/>
+						
+						<!-- <h:outputLabel id="kategorieLabel" value="#{msgKv['createPrivatkunde.kategorie']}" for="kategorie"/>
 						<rich:inputNumberSlider id="kategorie"
-						                        value="#{kc.neuerPrivatkunde.kategorie}"
+						                        value="#{kc.neuerKunde.rollen}"
 						                        minValue="0"
 						                        maxValue="5"
 						                        inputSize="1"
 						                        width="100"/>
-						<f:verbatim/>
+						<f:verbatim/>  -->
 						
-						<h:outputLabel id="seitLabel"
+						<!-- <h:outputLabel id="seitLabel"
 						               for="seit"
 						               value="#{msgKv['createPrivatkunde.seit']}"/>
 						<rich:calendar id="seit"
 						               datePattern="#{msgKv['createPrivatkunde.calendar.pattern']}"
-						               value="#{kc.neuerPrivatkunde.seit}"
-						               timezone="CET">
+						               value="#{kc.neuerKunde.erzeugt}"
+						               timezone="CET">  -->
 						    <!-- https://issues.jboss.org/browse/RF-10224
 							<rich:validator/>
 							-->
-							<rich:placeholder id="seitPlaceholder" value="#{msgKv['createPrivatkunde.seit.placeholder']}" />
+						<!-- 	<rich:placeholder id="seitPlaceholder" value="#{msgKv['createPrivatkunde.seit.placeholder']}" />
 						</rich:calendar>
-						<rich:messages id="fehlermeldungenSeit" for="seit"/>
+						<rich:messages id="fehlermeldungenSeit" for="seit"/>  -->
 						
-						<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['createPrivatkunde.umsatz']}"/>
+						<!--  <h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['createPrivatkunde.umsatz']}"/>
 						<h:inputText id="umsatz"
-						             value="#{kc.neuerPrivatkunde.umsatz}"
+						             value="#{kc.neuerKunde.umsatz}"
 						             converterMessage="#{msgKv['createPrivatkunde.umsatz.convert']}">
 						    <f:convertNumber type="currency"
 							                 currencyCode="EUR"
 							                 maxFractionDigits="2"/>
-							<f:ajax event="blur" render="fehlermeldungenUmsatz"/>
+							<f:ajax event="blur" render="fehlermeldungenUmsatz"/> -->
 							<!-- https://issues.jboss.org/browse/RF-10224
 							<rich:validator/>
 							-->
-						</h:inputText>
-						<rich:messages id="fehlermeldungenUmsatz" for="umsatz"/>
+					<!--  	</h:inputText>
+						<rich:messages id="fehlermeldungenUmsatz" for="umsatz"/> -->
 			
-						<h:outputLabel id="familienstandLabel" for="familienstand" value="#{msgKv['createPrivatkunde.familienstand']}"/>
+					<!--  	<h:outputLabel id="familienstandLabel" for="familienstand" value="#{msgKv['createPrivatkunde.familienstand']}"/>
 						<rich:select id="familienstand"
 						             enableManualInput="true"
 						             defaultLabel="#{msgKv['createPrivatkunde.familienstand']}"
-						             value="#{kc.neuerPrivatkunde.familienstand}">
+						             value="#{kc.neuerKunde.familienstand}">
 							<f:selectItem id="ledig" itemValue="LEDIG" itemLabel="#{msgKv['createPrivatkunde.familienstand.ledig']}"/>
 							<f:selectItem id="verheiratet" itemValue="VERHEIRATET" itemLabel="#{msgKv['createPrivatkunde.familienstand.verheiratet']}"/>
 							<f:selectItem id="geschieden" itemValue="GESCHIEDEN" itemLabel="#{msgKv['createPrivatkunde.familienstand.geschieden']}"/>
 							<f:selectItem id="verwitwet" itemValue="VERWITWET" itemLabel="#{msgKv['createPrivatkunde.familienstand.verwitwet']}"/>
 						</rich:select>
-						<f:verbatim/>
+						<f:verbatim/> -->
 						
-						<h:outputText id="geschlechtLabel" value="#{msgKv['createPrivatkunde.geschlecht']}"/>
-						<h:selectOneRadio id="geschlecht" value="#{kc.neuerPrivatkunde.geschlecht}">
+						<!--  <h:outputText id="geschlechtLabel" value="#{msgKv['createPrivatkunde.geschlecht']}"/>
+						<h:selectOneRadio id="geschlecht" value="#{kc.neuerKunde.geschlecht}">
 							<f:selectItem id="weiblich" itemValue="WEIBLICH" itemLabel="#{msgKv['createPrivatkunde.geschlecht.weiblich']}"/>
 							<f:selectItem id="maennlich" itemValue="MAENNLICH" itemLabel="#{msgKv['createPrivatkunde.geschlecht.maennlich']}"/>
 						</h:selectOneRadio>
-						<f:verbatim/>
+						<f:verbatim/> -->
 						
-						<h:outputLabel id="newsletterLabel" value="#{msgKv['createPrivatkunde.newsletter']}"/>
-						<h:selectBooleanCheckbox id="newsletter" value="#{kc.neuerPrivatkunde.newsletter}"/>
-						<f:verbatim/>
+						<!--  <h:outputLabel id="newsletterLabel" value="#{msgKv['createPrivatkunde.newsletter']}"/>
+						<h:selectBooleanCheckbox id="newsletter" value="#{kc.neuerKunde.newsletter}"/>
+						<f:verbatim/> -->
 		
 						
-						<h:outputText id="hobbiesLabel" value="#{msgKv['createPrivatkunde.hobbies']}"/>
+						<!--  <h:outputText id="hobbiesLabel" value="#{msgKv['createPrivatkunde.hobbies']}"/>
 						<h:selectManyCheckbox id="hobbies" value="#{kc.hobbies}"
 						                      layout="pageDirection">
 							<f:selectItem id="sport" itemValue="SPORT"
@@ -121,10 +151,10 @@
 							<f:selectItem id="reisen" itemValue="REISEN" 
 										  itemLabel="#{msgKv['createPrivatkunde.reisen']}"/>
 						</h:selectManyCheckbox>
-						<f:verbatim/>
+						<f:verbatim/> -->
 										
 						<h:outputLabel id="emailLabel" for="email" value="#{msgKv['createPrivatkunde.email']}"/>
-						<h:inputText id="email" value="#{kc.neuerPrivatkunde.email}">
+						<h:inputText id="email" value="#{kc.neuerKunde.email}">
 							<rich:validator oninvalid="$(#{rich:element('email')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
 						</h:inputText>
@@ -134,7 +164,7 @@
 						               for="password"
 						               value="#{msgKv['createPrivatkunde.password']}"/>
 						<h:inputSecret id="password"
-						               value="#{kc.neuerPrivatkunde.password}"
+						               value="#{kc.neuerKunde.passwort}"
 						               redisplay="true"/>
 						<f:verbatim/>
 						
@@ -142,13 +172,13 @@
 						               for="passwordWdh"
 						               value="#{msgKv['createPrivatkunde.passwordWdh']}"/>
 						<h:inputSecret id="passwordWdh"
-						               value="#{kc.neuerPrivatkunde.passwordWdh}"
+						               value="#{kc.neuerKunde.passwortWdh}"
 						               redisplay="true"/>
 						<f:verbatim/>
 		
 						<h:outputLabel id="plzLabel" for="plz" value="#{msgKv['createPrivatkunde.plz']}"/>
 						<h:inputText id="plz"
-						             value="#{kc.neuerPrivatkunde.adresse.plz}">
+						             value="#{kc.neuerKunde.lieferadresse.plz}">
 							<rich:validator oninvalid="$(#{rich:element('plz')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('plz')}).removeClass('invalid')"/>
 						</h:inputText>
@@ -156,7 +186,7 @@
 						
 						<h:outputLabel id="ortLabel" for="ort" value="#{msgKv['createPrivatkunde.ort']}"/>
 						<h:inputText id="ort"
-						             value="#{kc.neuerPrivatkunde.adresse.ort}">
+						             value="#{kc.neuerKunde.lieferadresse.ort}">
 							<rich:validator oninvalid="$(#{rich:element('ort')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('ort')}).removeClass('invalid')"/>
 						</h:inputText>
@@ -164,25 +194,115 @@
 						
 						<h:outputLabel id="strasseLabel" for="strasse" value="#{msgKv['createPrivatkunde.strasse']}"/>
 						<h:inputText id="strasse"
-						             value="#{kc.neuerPrivatkunde.adresse.strasse}">
+						             value="#{kc.neuerKunde.lieferadresse.strasse}">
 							<rich:validator oninvalid="$(#{rich:element('strasse')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('strasse')}).removeClass('invalid')"/>
 						</h:inputText>
 						<rich:messages id="fehlermeldungStrasse" for="strasse"/>
 						
-						<h:outputLabel id="hausnrLabel" for="hausnr" value="#{msgKv['createPrivatkunde.hausnr']}"/>
-						<h:inputText id="hausnr" value="#{kc.neuerPrivatkunde.adresse.hausnr}"/>
-						<f:verbatim/>
+					    <h:selectOneRadio id="RadioButtonLieferLand" value="#{kc.neuerKunde.lieferadresse.land}"> 
+						<f:selectItem id="valuelieferDE" itemValue="DE"
+											 itemLabel="#{msgKv['createPrivatkunde.de']}"/>
+						<f:selectItem id="valuelieferCH" itemValue="CH"
+											 itemLabel="#{msgKv['createPrivatkunde.ch']}"/>
+					    <f:selectItem id="valuelieferA" itemValue="A"
+											 itemLabel="#{msgKv['createPrivatkunde.a']}"/>
+					    </h:selectOneRadio>
+					    <f:verbatim/>
+						<rich:messages id="rechnungsfehlermeldungLieferLand" for="land"/>
 						
-						<h:outputLabel id="agbLabel" for="agb" value="#{msgKv['createPrivatkunde.agb']}"/>
+						
+						
+						<h:outputLabel id="rechnungsplzLabel" for="plz" value="#{msgKv['createPrivatkunde.plz']}"/>
+						<h:inputText id="rechnungsplz"
+						             value="#{kc.neuerKunde.rechnungsadresse.plz}">
+							<rich:validator oninvalid="$(#{rich:element('plz')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('plz')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="rechnungsfehlermeldungPlz" for="plz"/>
+						
+						<h:outputLabel id="rechnungsortLabel" for="ort" value="#{msgKv['createPrivatkunde.ort']}"/>
+						<h:inputText id="rechnungsort"
+						             value="#{kc.neuerKunde.rechnungsadresse.ort}">
+							<rich:validator oninvalid="$(#{rich:element('ort')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('ort')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="rechnungsfehlermeldungOrt" for="ort"/>
+						
+						<h:outputLabel id="rechnungsstrasseLabel" for="strasse" value="#{msgKv['createPrivatkunde.strasse']}"/>
+						<h:inputText id="rechnungsstrasse"
+						             value="#{kc.neuerKunde.rechnungsadresse.strasse}">
+							<rich:validator oninvalid="$(#{rich:element('strasse')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('strasse')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="rechnungsfehlermeldungStrasse" for="strasse"/>
+						
+						<h:selectOneRadio id="RadioButtonRechnungsLand" value="#{kc.neuerKunde.rechnungsadresse.land}"> 
+						<f:selectItem id="valueDE" itemValue="DE"
+											 itemLabel="#{msgKv['createPrivatkunde.de']}"/>
+						<f:selectItem id="valueCH" itemValue="CH"
+											 itemLabel="#{msgKv['createPrivatkunde.ch']}"/>
+					    <f:selectItem id="valueA" itemValue="A"
+											 itemLabel="#{msgKv['createPrivatkunde.a']}"/>
+					    </h:selectOneRadio>
+					    <f:verbatim/>
+						<rich:messages id="rechnungsfehlermeldungRechnungsLand" for="land"/>
+						
+						<h:outputLabel id="kontoinhaberLabel" for="kontoinhaber" value="#{msgKv['createPrivatkunde.kontoinhaber']}"/>
+						<h:inputText id="kontoinhaber" value="#{kc.neuerKunde.zahlungsinformation.kontoinhaber}">
+							<rich:validator oninvalid="$(#{rich:element('kontoinhaber')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('kontoinhaber')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungKontoinhaber" for="kontoinhaber"/>
+						
+						<h:outputLabel id="kontonummerLabel" for="kontonummer" value="#{msgKv['createPrivatkunde.kontonummer']}"/>
+						<h:inputText id="kontonummer" value="#{kc.neuerKunde.zahlungsinformation.kontonummer}">
+							<rich:validator oninvalid="$(#{rich:element('kontonummer')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('kontonummer')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungKontonummer" for="kontonummer"/>
+						
+						<h:outputLabel id="blzLabel" for="blz" value="#{msgKv['createPrivatkunde.bankleitzahl']}"/>
+						<h:inputText id="blz" value="#{kc.neuerKunde.zahlungsinformation.blz}">
+							<rich:validator oninvalid="$(#{rich:element('blz')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('blz')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungBlz" for="blz"/>
+						
+						<h:outputLabel id="kreditinstitutLabel" for="kreditinstitut" value="#{msgKv['createPrivatkunde.kreditinstitut']}"/>
+						<h:inputText id="kreditinstitut" value="#{kc.neuerKunde.zahlungsinformation.kreditinstitut}">
+							<rich:validator oninvalid="$(#{rich:element('kreditinstitut')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('kreditinstitut')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungKreditinstitut" for="kreditinstitut"/>
+						
+						<h:outputLabel id="swiftLabel" for="swift" value="#{msgKv['createPrivatkunde.swift']}"/>
+						<h:inputText id="swift" value="#{kc.neuerKunde.zahlungsinformation.swift}">
+							<rich:validator oninvalid="$(#{rich:element('swift')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('swift')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungSwift" for="swift"/>
+						
+						<h:outputLabel id="ibanlabel" for="iban" value="#{msgKv['createPrivatkunde.iban']}"/>
+						<h:inputText id="iban" value="#{kc.neuerKunde.zahlungsinformation.iban}">
+							<rich:validator oninvalid="$(#{rich:element('iban')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('iban')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungIban" for="iban"/>
+						
+						<!--  <h:outputLabel id="hausnrLabel" for="hausnr" value="#{msgKv['createPrivatkunde.hausnr']}"/>
+						<h:inputText id="hausnr" value="#{kc.neuerKunde.lieferadresse.hausnr}"/> 
+						<f:verbatim/> -->
+						
+						<!--  <h:outputLabel id="agbLabel" for="agb" value="#{msgKv['createPrivatkunde.agb']}"/>
 						<h:selectBooleanCheckbox id="agb" value="#{kc.neuerPrivatkunde.agbAkzeptiert}">
 							<rich:validator/>
 						</h:selectBooleanCheckbox>
-						<rich:message id="fehlermeldungAgb" for="agb"/>
+						<rich:message id="fehlermeldungAgb" for="agb"/> -->
 					</h:panelGrid>
 		
 					<p id="buttons">
-						<h:commandButton id="createSubmit" action="#{kc.createPrivatkunde}" value="#{msgKv['createPrivatkunde.submit']}"/>
+						<h:commandButton id="createSubmit" action="#{kc.createKunde}" value="#{msgKv['createPrivatkunde.submit']}"/>
 						#{' '}
 						<h:commandButton id="reset" type="reset" value="#{msgKv['createPrivatkunde.reset']}"/>
 					</p>
