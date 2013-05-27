@@ -2,6 +2,7 @@ package de.shop.artikelverwaltung.controller;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -36,6 +37,7 @@ public class KategorieContoller implements Serializable {
 	private static final String SESSION_VERFUEGBARE_KATEGORIE = "verfuegbareKategorie";
 
 	private String bezeichnung;
+	private List<Kategorie> kategorien = Collections.emptyList();
 	
 
 	@Inject
@@ -81,6 +83,14 @@ public class KategorieContoller implements Serializable {
 	}
 	
 	@Transactional
+	public String findAllKategorien() {
+		kategorien = ks.findAllKategorie();
+		flash.put(FLASH_KATEGORIE, kategorien);
+
+		return JSF_LIST_KATEGORIE;
+	}
+	
+	@Transactional
 	public String selectKategorie() {
 		if (session.getAttribute(SESSION_VERFUEGBARE_KATEGORIE) != null) {
 			return JSF_SELECT_KATEGORIE;
@@ -89,5 +99,15 @@ public class KategorieContoller implements Serializable {
 		final List<Kategorie> alleKategorie = ks.findAllKategorie();
 		session.setAttribute(SESSION_VERFUEGBARE_KATEGORIE, alleKategorie);
 		return JSF_SELECT_KATEGORIE;
+	}
+
+	public List<Kategorie> getKategorien() {
+		kategorien = ks.findAllKategorie();
+		flash.put(FLASH_KATEGORIE, kategorien);
+		return kategorien;
+	}
+
+	public void setKategorien(List<Kategorie> kategorien) {
+		this.kategorien = kategorien;
 	}
 }

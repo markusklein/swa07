@@ -57,6 +57,48 @@
 				-->
 			</rich:panelMenuGroup>
 
+			<rich:panelMenuGroup id="kategorieverwaltung"
+			                     label="#{msg['nav.kategorieverwaltung']}"
+			                     expanded="true">
+					<c:forEach items="#{kac.kategorien}" var="kat">
+					    <c:choose>
+					        <c:when test="#{kat.bezeichnung eq 'Herren'}">
+					            <rich:panelMenuItem id="kategorieverwaltung1">
+					            <h:link id="herrenLink"
+					                outcome="/artikelverwaltung/listArtikel"
+					                value="Herren">
+					                <f:param id="herrenParam"
+					                    param="kategorie"
+					                    value="herren" />
+					             </h:link>
+					             </rich:panelMenuItem>
+					        </c:when>
+					        <c:when test="#{kat.bezeichnung eq 'Damen'}">
+					            <rich:panelMenuItem id="kategorieverwaltung2">
+					            <h:link id="damenLink"
+					                outcome="/artikelverwaltung/listArtikel"
+					                value="Damen">
+					                <f:param id="damenParam"
+					                    param="kategorie"
+					                    value="damen" />
+					             </h:link>
+					             </rich:panelMenuItem>
+					        </c:when>
+					        <c:when test="#{kat.bezeichnung eq 'Kinder'}">
+					            <rich:panelMenuItem id="kategorieverwaltung3">
+					            <h:link id="kinderLink"
+					                outcome="/artikelverwaltung/listArtikel"
+					                value="Kinder">
+					                <f:param id="kinderParam"
+					                    param="kategorie"
+					                    value="kinder" />
+					             </h:link>
+					             </rich:panelMenuItem>
+					        </c:when>
+					    </c:choose>
+					</c:forEach>			
+			</rich:panelMenuGroup>
+			
 			<rich:panelMenuGroup id="artikelverwaltung"
 			                     label="#{msg['nav.artikelverwaltung']}"
 			                     expanded="true">

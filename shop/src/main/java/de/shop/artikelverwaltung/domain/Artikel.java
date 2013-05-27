@@ -76,7 +76,7 @@ import de.shop.util.IdGroup;
 	@NamedQuery (name = Artikel.ARTIKEL_BY_KATEGORIE,
 				query = "SELECT      a"
 					+ " FROM Artikel a"
-				+ " WHERE a.erzeugt = :" + Artikel.PARAMETER_ERZEUGT)
+				+ " WHERE a.kategorie = :" + Artikel.PARAMETER_KATEGORIE_ID)			
 
 								
 									
@@ -100,6 +100,7 @@ public class Artikel implements Serializable {
 	public static final String PARAMETER_PREIS = "preis";
 	public static final String PARAMETER_AKTUALISIERT = "aktualisiert";
 	public static final String PARAMETER_ERZEUGT = "erzeugt";
+	public static final String PARAMETER_KATEGORIE_ID = "kategorie_id";
 	
 	public Artikel(Long artikel_id, Kategorie kategorie, String beschreibung,
 			String name, float preis, Date erzeugt, Date aktualisiert) {

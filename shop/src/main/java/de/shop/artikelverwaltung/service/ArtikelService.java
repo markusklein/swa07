@@ -63,6 +63,18 @@ public class ArtikelService implements Serializable {
 		return artikel;
 	}
 	
+	public List<Artikel> findArtikelByKategorie(Long id, Locale locale) {
+		
+		if (id == null)
+			return null;
+		
+		final List<Artikel> artikel = em.createNamedQuery(Artikel.ARTIKEL_BY_KATEGORIE, Artikel.class)
+									.setParameter(Artikel.PARAMETER_NAME, "%" + id + "%")
+									.getResultList();
+		
+		return artikel;
+	}
+	
 	public List<Artikel> findArtikelByNamen(String name, Locale locale) {
 		
 		if (name == null)
