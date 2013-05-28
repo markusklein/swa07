@@ -5,6 +5,12 @@
 			    xmlns:rich="http://richfaces.org/rich"
 			    xmlns:a4j="http://richfaces.org/a4j">
 			    
+	<h:outputStylesheet>
+        .head {
+        color: #000000;
+        }
+    </h:outputStylesheet>
+			    
 	<rich:tabPanel id="tabPanel" switchType="client">
 		<rich:tab id="stammdatenTab">
 			<f:facet name="header">
@@ -44,6 +50,56 @@
 	
 				</h:panelGrid>
 			</rich:panel>
+		</rich:tab>
+		
+		<rich:tab id="adressenTab">
+			<f:facet name="header">
+				<h:panelGroup id="adressenLabel">
+					<h:graphicImage id="adressenGif"
+					                name="stammdaten.gif"
+					                library="images"/>
+					#{' '}
+					#{msgKv['viewKundePopup.kunde.adressen']}
+				</h:panelGroup>
+			</f:facet>
+			
+			<rich:collapsiblePanel id="LAdressenPanel" header="#{msgKv['viewKundePopup.kunde.lieferadresse']}" expanded="false" switchType="client" headerClass="head">
+            	<h:panelGrid id="LAdressenGrid" columns="2">
+            		<h:outputText id="LAdressenIdLabel" value="#{msgKv['viewKundePopup.adressenId']}"/>
+					<h:outputText id="LAdressenId" value="#{kunde.lieferadresse.adresseId}"/>
+					
+					<h:outputText id="LAdressenStrasseLabel" value="#{msgKv['viewKundePopup.adressenStrasse']}"/>
+					<h:outputText id="LAdressenStrasse" value="#{kunde.lieferadresse.strasse}"/>
+					
+					<h:outputText id="LAdressenPlzLabel" value="#{msgKv['viewKundePopup.adressenPlz']}"/>
+					<h:outputText id="LAdressenPlz" value="#{kunde.lieferadresse.plz}"/>
+					
+					<h:outputText id="LAdressenOrtLabel" value="#{msgKv['viewKundePopup.adressenOrt']}"/>
+					<h:outputText id="LAdressenOrt" value="#{kunde.lieferadresse.ort}"/>
+					
+					<h:outputText id="LAdressenLandLabel" value="#{msgKv['viewKundePopup.adressenLand']}"/>
+					<h:outputText id="LAdressenLand" value="#{kunde.lieferadresse.land}"/>
+            	</h:panelGrid>
+        	</rich:collapsiblePanel>
+        	
+        	<rich:collapsiblePanel id="RAdressenPanel" header="#{msgKv['viewKundePopup.kunde.rechnungsadresse']}" expanded="false" switchType="client" headerClass="head">
+            	<h:panelGrid id="RAdressenGrid" columns="2">
+            		<h:outputText id="RAdressenIdLabel" value="#{msgKv['viewKundePopup.adressenId']}"/>
+					<h:outputText id="RAdressenId" value="#{kunde.rechnungsadresse.adresseId}"/>
+					
+					<h:outputText id="RAdressenStrasseLabel" value="#{msgKv['viewKundePopup.adressenStrasse']}"/>
+					<h:outputText id="RAdressenStrasse" value="#{kunde.rechnungsadresse.strasse}"/>
+					
+					<h:outputText id="RAdressenPlzLabel" value="#{msgKv['viewKundePopup.adressenPlz']}"/>
+					<h:outputText id="RAdressenPlz" value="#{kunde.rechnungsadresse.plz}"/>
+					
+					<h:outputText id="RAdressenOrtLabel" value="#{msgKv['viewKundePopup.adressenOrt']}"/>
+					<h:outputText id="RAdressenOrt" value="#{kunde.rechnungsadresse.ort}"/>
+					
+					<h:outputText id="RAdressenLandLabel" value="#{msgKv['viewKundePopup.adressenLand']}"/>
+					<h:outputText id="RAdressenLand" value="#{kunde.rechnungsadresse.land}"/>
+            	</h:panelGrid>
+        	</rich:collapsiblePanel>
 		</rich:tab>
 		
 <rich:tab id="ZahlungsinformationenTab" >	

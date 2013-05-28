@@ -60,4 +60,6 @@ h1 {
 	background-color: #FFEBDA;
 	cursor: pointer;
 }
-
+.rf-panel-header {
+        color: #0054BD;
+        }
