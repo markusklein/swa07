@@ -65,33 +65,36 @@
 					        <c:when test="#{kat.bezeichnung eq 'Herren'}">
 					            <rich:panelMenuItem id="kategorieverwaltung1">
 					            <h:link id="herrenLink"
-					                outcome="/artikelverwaltung/listArtikel"
+					                outcome="/artikelverwaltung/listArtikelByKategorie"
 					                value="Herren">
 					                <f:param id="herrenParam"
+					                    name = "Param"
 					                    param="kategorie"
-					                    value="herren" />
+					                    value="500" />
 					             </h:link>
 					             </rich:panelMenuItem>
 					        </c:when>
 					        <c:when test="#{kat.bezeichnung eq 'Damen'}">
 					            <rich:panelMenuItem id="kategorieverwaltung2">
 					            <h:link id="damenLink"
-					                outcome="/artikelverwaltung/listArtikel"
+					                outcome="/artikelverwaltung/listArtikelByKategorie"
 					                value="Damen">
 					                <f:param id="damenParam"
+					                    name = "Param"
 					                    param="kategorie"
-					                    value="damen" />
+					                    value="525" />
 					             </h:link>
 					             </rich:panelMenuItem>
 					        </c:when>
 					        <c:when test="#{kat.bezeichnung eq 'Kinder'}">
 					            <rich:panelMenuItem id="kategorieverwaltung3">
 					            <h:link id="kinderLink"
-					                outcome="/artikelverwaltung/listArtikel"
+					                outcome="/artikelverwaltung/listArtikelByKategorie"
 					                value="Kinder">
 					                <f:param id="kinderParam"
+					                    name = "Param"
 					                    param="kategorie"
-					                    value="kinder" />
+					                    value="575" />
 					             </h:link>
 					             </rich:panelMenuItem>
 					        </c:when>
@@ -112,12 +115,7 @@
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>
-				<rich:panelMenuItem id="artikelverwaltungSelectArtikelItem">
-					<h:commandLink id="artikelverwaltungSelectArtikel"
-					               action="#{ac.selectArtikel}">
-						#{msg['nav.artikelverwaltung.selectArtikel']}
-					</h:commandLink>
-				</rich:panelMenuItem>				
+								
 			</rich:panelMenuGroup>
 
 			<rich:panelMenuGroup id="bestellverwaltung"
