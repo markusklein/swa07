@@ -56,7 +56,8 @@
 						<rich:messages id="fehlermeldungenPreis" for="preis"/>
 						
 						<!-- TODO AUTOMATISIEREN -->
-			            <rich:select>
+			            <rich:select 
+			            value="#{ac.neuerArtikel.kategorie.kategorieId}">
 			            	<f:selectItem itemValue ="500" itemLabel="Herren"/>
 			            	<f:selectItem itemValue ="525" itemLabel="Damen"/>
 			            	<f:selectItem itemValue ="575" itemLabel="Kinder"/>
