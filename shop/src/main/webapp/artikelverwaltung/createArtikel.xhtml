@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:define name="metadata">
+			<f:event type="preRenderView" listener="#{ac.createEmptyArtikel()}"/>
+		</ui:define>
+		
+		<ui:param name="pageTitle" value="#{msgAv['createArtikel.title']}"/>
+	
+		<ui:define name="article">
+			<h1>
+				#{msgAv['createArtikel.heading']}
+			</h1>
+	
+			<h:form id="createKundeForm">
+				<!--<rich:jQuery id="nameFocus" selector="#name" query="focus()"/>
+				 fokussiert auf id="kategorie" statt auf id="nachname" WARUM?
+				<rich:focus id="createKundeFormFocus"/>
+				-->
+				
+				<!--
+					https://issues.jboss.org/browse/AS7-1348
+					http://community.jboss.org/thread/169487 
+				-->
+			
+					<p id="abstand"/>
+					
+					<h:panelGrid id="createArtikelTabelle"
+					             columns="3">
+			
+						<h:outputLabel id="nameLabel" for="name" value="#{msgAv['createArtikel.name']}"/>
+						<h:inputText id="name" value="#{ac.neuerArtikel.name}">
+							<rich:validator oninvalid="$(#{rich:element('name')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('name')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungenName" for="name"/>
+			            
+						<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['createArtikel.beschreibung']}"/>
+						<h:inputText id="beschreibung" value="#{ac.neuerArtikel.beschreibung}">
+							<rich:validator oninvalid="$(#{rich:element('beschreibung')}).addClass('invalid')" onvalid="$(#{rich:element('beschreibung')}).removeClass('invalid')"/>				
+						</h:inputText>
+						<rich:messages id="fehlermeldungenBeschreibung" for="beschreibung"/>
+						
+						<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['createArtikel.preis']}"/>
+						<h:inputText id="preis" value="#{ac.neuerArtikel.preis}">
+							<rich:validator oninvalid="$(#{rich:element('preis')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('preis')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungenPreis" for="preis"/>
+						
+						<!-- TODO AUTOMATISIEREN -->
+			            <rich:select>
+			            	<f:selectItem itemValue ="500" itemLabel="Herren"/>
+			            	<f:selectItem itemValue ="525" itemLabel="Damen"/>
+			            	<f:selectItem itemValue ="575" itemLabel="Kinder"/>
+			            </rich:select>
+			            
+					</h:panelGrid>
+		
+					<p id="buttons">
+						<h:commandButton id="createSubmit" action="#{ac.createArtikel()}" value="#{msgAv['createArtikel.submit']}"/>
+						#{' '}
+						<h:commandButton id="reset" type="reset" value="#{msgAv['createArtikel.reset']}"/>
+					</p>
+
+			</h:form>
+			
+			<p id="hinweisPflichtfelder">
+				#{msgKv['createPrivatkunde.required']}
+			</p>
+		</ui:define>
+	</ui:composition>
+</html>

@@ -1,5 +1,7 @@
 package de.shop.artikelverwaltung.controller;
 
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.Collections;
@@ -8,6 +10,7 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
@@ -17,8 +20,8 @@ import javax.servlet.http.HttpSession;
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
+import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.service.ArtikelService;
-import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.Client;
 import de.shop.util.Log;
 import de.shop.util.Transactional;
@@ -37,6 +40,7 @@ public class ArtikelController implements Serializable {
 	
 	private static final String JSF_LIST_ARTIKEL = "/artikelverwaltung/listArtikel";
 	private static final String FLASH_ARTIKEL = "artikel";
+	private static final String JSF_LIST_ARTIKEL_BY_KATEGORIE = "/artikelverwaltung/listArtikelByKategorie";
 	//private static final int ANZAHL_LADENHUETER = 5;
 	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
@@ -44,8 +48,11 @@ public class ArtikelController implements Serializable {
 
 	private Long artikel_id;	
 	private List<Artikel> artikel = Collections.emptyList();
-	private String name;	
+	private String name;
+	private Long id;
 	private List<Artikel> ladenhueter;
+	private Artikel neuerArtikel;
+	private Kategorie neueKategorie;
 
 	@Inject
 	private ArtikelService as;
@@ -97,6 +104,29 @@ public class ArtikelController implements Serializable {
 		return JSF_LIST_ARTIKEL;
 	}
 	
+	@TransactionAttribute(REQUIRED)
+	public void createArtikel() {
+		
+		
+			neuerArtikel = (Artikel) as.createArtikel(neuerArtikel, locale);
+		
+	}
+	@Transactional
+	public String findArtikelByKategorie() {
+		final List<Artikel> artikel = as.findArtikelByKategorie(id, locale);
+		flash.put(FLASH_ARTIKEL, artikel);
+
+		return JSF_LIST_ARTIKEL_BY_KATEGORIE;
+	}
+	public void createEmptyArtikel() {
+		if (neuerArtikel != null) {
+			return;
+		}
+		neuerArtikel = new Artikel();
+		neueKategorie = new Kategorie();
+		neuerArtikel.setKategorie(neueKategorie);
+		
+	}
 //TODO 
 //	@Transactional
 //	public void loadLadenhueter() {
@@ -128,5 +158,21 @@ public class ArtikelController implements Serializable {
 
 	public void setArtikel(List<Artikel> artikel) {
 		this.artikel = artikel;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Artikel getNeuerArtikel() {
+		return neuerArtikel;
+	}
+
+	public void setNeuerArtikel(Artikel neuerArtikel) {
+		this.neuerArtikel = neuerArtikel;
 	}
 }
