@@ -9,6 +9,7 @@
         .head {
         color: #000000;
         }
+
     </h:outputStylesheet>
 			    
 	<rich:tabPanel id="tabPanel" switchType="client">
@@ -36,6 +37,11 @@
 					
 					<h:outputText id="seitLabel" value="#{msgKv['viewKundePopup.seit']}"/>
 					<h:outputText id="seit" value="#{kunde.erzeugt}">
+						<f:convertDateTime type="date" dateStyle="long"/>
+					</h:outputText>
+					
+					<h:outputText id="gebLabel" value="#{msgKv['viewKundePopup.geburtsdatum']}"/>
+					<h:outputText id="geb" value="#{kunde.geburtsdatum}">
 						<f:convertDateTime type="date" dateStyle="long"/>
 					</h:outputText>
 		
