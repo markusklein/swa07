@@ -121,7 +121,7 @@
 				
 				<!-- Neue Artikel Anlegen!!! -->
 				
-				<rich:panelMenuItem id="artikelverwaltungCreateArtikel" rendered="#{rich:isUserInRole('admin')}">
+				<rich:panelMenuItem id="artikelverwaltungCreateArtikelItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:outputLink id="artikelverwaltungCreateArtikel"
 					              value="#{request.contextPath}/artikelverwaltung/createArtikel.jsf">
 						#{msg['nav.artikelverwaltung.createArtikel']}
