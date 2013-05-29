@@ -238,8 +238,9 @@ public class Kunde implements Serializable {
 	
 	@NotNull
 	@Past
+	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-	private Timestamp geburtsdatum;
+	private Date geburtsdatum;
 	
 	@JsonIgnore
 	@NotNull
@@ -318,13 +319,14 @@ public class Kunde implements Serializable {
 		this.erzeugt = erzeugt == null ? null : (Timestamp) erzeugt.clone();
 	}
 
-	public Timestamp getGeburtsdatum() {
-		return geburtsdatum == null ? null : (Timestamp) geburtsdatum.clone();
+	@SuppressWarnings("deprecation")
+	public Date getGeburtsdatum() {
+		return new Date(geburtsdatum.getDate());
 	}
 
 	@SuppressWarnings("deprecation")
 	public void setGeburtsdatum(Date geburtsdatum) {
-		this.geburtsdatum = geburtsdatum == null ? null : (Timestamp) geburtsdatum.clone();
+		this.geburtsdatum = new Date(geburtsdatum.getDate());
 	}
 
 	public KundeGeschlechtType getGeschlecht() {
