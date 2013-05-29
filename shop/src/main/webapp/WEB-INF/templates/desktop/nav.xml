@@ -41,6 +41,18 @@
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>
+				
+				<rich:panelMenuItem id="kundenverwaltungUpdatePrivatkundeItem" rendered="#{rich:isUserInRole('admin')}">
+					<h:outputLink id="kundenverwaltungUpdatePrivatkunde"
+					              value="#{request.contextPath}/kundenverwaltung/updatePrivatkunde.jsf">
+						#{msg['nav.kundenverwaltung.updatePrivatkunde']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="updatePrivatkundeCid" name="uid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>
+				
+				
 				<rich:panelMenuItem id="kundenverwaltungUploadItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:outputLink id="kundenverwaltungUpload"
 					              value="#{request.contextPath}/kundenverwaltung/upload.jsf"
