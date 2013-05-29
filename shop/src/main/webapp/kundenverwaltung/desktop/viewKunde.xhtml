@@ -82,6 +82,11 @@
 									<h:outputText id="seit" value="#{kc.kunde.erzeugt}">
 										<f:convertDateTime type="date" dateStyle="long"/>
 									</h:outputText>
+									
+									<h:outputText id="gebLabel" value="#{msgKv['viewKundePopup.geburtsdatum']}"/>
+									<h:outputText id="geb" value="#{kc.kunde.geburtsdatum}">
+										<f:convertDateTime type="date" dateStyle="long"/>
+									</h:outputText>
 						
 									<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
 									<h:outputText id="email" value="#{kc.kunde.email}"/>

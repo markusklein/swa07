@@ -18,9 +18,9 @@
 					<rich:select id="artikelName"
 					             defaultLabel="#{msgAv['selectArtikel.auswahl']}"
 					             value="#{wk.artikelId}">
-						<!--
+						
 						<f:selectItems id="artikelItems" values="#{verfuegbareArtikel}"/>
-						-->
+						
 						<c:forEach var="artikel" items="#{verfuegbareArtikel}">
 							<f:selectItem id="artikelItem#{artikel.id}" itemLabel="#{artikel.name}" itemValue="#{artikel.id}"/>
 						</c:forEach>
