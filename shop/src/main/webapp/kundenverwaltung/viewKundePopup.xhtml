@@ -42,11 +42,14 @@
 					<h:outputText id="emailLabel" value="#{msgKv['viewKundePopup.email']}"/>
 					<h:outputText id="email" value="#{kunde.email}"/>
 		
-					<h:outputText id="weiblichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'WEIBLICH'}"/>
-					<h:outputText id="weiblich" value="#{msgKv['viewKundePopup.geschlecht.weiblich']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'WEIBLICH'}"/>
+					<h:outputText id="weiblichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.geschlecht eq 'W'}"/>
+					<h:outputText id="weiblich" value="#{msgKv['viewKundePopup.geschlecht.weiblich']}" rendered="#{kunde.geschlecht eq 'W'}"/>
 		
-					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'MAENNLICH'}"/>
-					<h:outputText id="maennlich" value="#{msgKv['viewKundePopup.geschlecht.maennlich']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'MAENNLICH'}"/>
+					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.geschlecht eq 'M'}"/>
+					<h:outputText id="maennlich" value="#{msgKv['viewKundePopup.geschlecht.maennlich']}" rendered="#{kunde.geschlecht eq 'M'}"/>
+					
+					<h:outputText id="telLabel" value="#{msgKv['viewKunde.telefonnummer']}"/>
+					<h:outputText id="tel" value="#{kunde.telefonnummer}"/>
 	
 				</h:panelGrid>
 			</rich:panel>
@@ -77,8 +80,14 @@
 					<h:outputText id="LAdressenOrtLabel" value="#{msgKv['viewKundePopup.adressenOrt']}"/>
 					<h:outputText id="LAdressenOrt" value="#{kunde.lieferadresse.ort}"/>
 					
-					<h:outputText id="LAdressenLandLabel" value="#{msgKv['viewKundePopup.adressenLand']}"/>
-					<h:outputText id="LAdressenLand" value="#{kunde.lieferadresse.land}"/>
+					<h:outputText id="LAdressenDELabel" value="#{msgKv['viewKundePopup.adressenLand']}" rendered="#{kunde.lieferadresse.land eq 'DE'}"/>
+					<h:outputText id="LAdressenDE" value="#{msgKv['viewKundePopup.adressenDE']}" rendered="#{kunde.lieferadresse.land eq 'DE'}"/>
+					
+					<h:outputText id="LAdressenCHLabel" value="#{msgKv['viewKundePopup.adressenLand']}" rendered="#{kunde.lieferadresse.land eq 'CH'}"/>
+					<h:outputText id="LAdressenCH" value="#{msgKv['viewKundePopup.adressenCH']}" rendered="#{kunde.lieferadresse.land eq 'CH'}"/>
+					
+					<h:outputText id="LAdressenATLabel" value="#{msgKv['viewKundePopup.adressenLand']}" rendered="#{kunde.lieferadresse.land eq 'A'}"/>
+					<h:outputText id="LAdressenAT" value="#{msgKv['viewKundePopup.adressenAT']}" rendered="#{kunde.lieferadresse.land eq 'A'}"/>
             	</h:panelGrid>
         	</rich:collapsiblePanel>
         	
@@ -96,8 +105,14 @@
 					<h:outputText id="RAdressenOrtLabel" value="#{msgKv['viewKundePopup.adressenOrt']}"/>
 					<h:outputText id="RAdressenOrt" value="#{kunde.rechnungsadresse.ort}"/>
 					
-					<h:outputText id="RAdressenLandLabel" value="#{msgKv['viewKundePopup.adressenLand']}"/>
-					<h:outputText id="RAdressenLand" value="#{kunde.rechnungsadresse.land}"/>
+					<h:outputText id="RAdressenDELabel" value="#{msgKv['viewKundePopup.adressenLand']}" rendered="#{kunde.rechnungsadresse.land eq 'DE'}"/>
+					<h:outputText id="RAdressenDE" value="#{msgKv['viewKundePopup.adressenDE']}" rendered="#{kunde.rechnungsadresse.land eq 'DE'}"/>
+					
+					<h:outputText id="RAdressenCHLabel" value="#{msgKv['viewKundePopup.adressenLand']}" rendered="#{kunde.rechnungsadresse.land eq 'CH'}"/>
+					<h:outputText id="RAdressenCH" value="#{msgKv['viewKundePopup.adressenCH']}" rendered="#{kunde.rechnungsadresse.land eq 'CH'}"/>
+					
+					<h:outputText id="RAdressenATLabel" value="#{msgKv['viewKundePopup.adressenLand']}" rendered="#{kunde.rechnungsadresse.land eq 'A'}"/>
+					<h:outputText id="RAdressenAT" value="#{msgKv['viewKundePopup.adressenAT']}" rendered="#{kunde.rechnungsadresse.land eq 'A'}"/>
             	</h:panelGrid>
         	</rich:collapsiblePanel>
 		</rich:tab>
