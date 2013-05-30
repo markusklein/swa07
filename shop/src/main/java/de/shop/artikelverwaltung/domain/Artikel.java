@@ -249,7 +249,8 @@ public class Artikel implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((artikel_id == null) ? 0 : artikel_id.hashCode());
 		return result;
 	}
 
@@ -261,12 +262,11 @@ public class Artikel implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Artikel other = (Artikel) obj;
-		if (name == null) {
-			if (other.name != null)
+		Artikel other = (Artikel) obj;
+		if (artikel_id == null) {
+			if (other.artikel_id != null)
 				return false;
-		} 
-		else if (!name.equals(other.name))
+		} else if (!artikel_id.equals(other.artikel_id))
 			return false;
 		return true;
 	}

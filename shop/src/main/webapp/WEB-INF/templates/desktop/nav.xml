@@ -79,9 +79,10 @@
 					            <h:link id="herrenLink"
 					                outcome="/artikelverwaltung/listArtikelByKategorie"
 					                value="Herren">
-					                <f:param id="herrenParam"
-					                    name ="id"
-					                    value="500" />
+					                <f:param id="herrenParam" name ="id" value="500" />
+					                <c:if test="#{not empty javax.enterprise.context.conversation.id}">
+										<f:param id="viewKatid" name="kid" value="#{javax.enterprise.context.conversation.id}"/>
+									</c:if>
 					             </h:link>
 					             </rich:panelMenuItem>
 					        </c:when>
