@@ -119,11 +119,11 @@ public class ArtikelController implements Serializable {
 		
 	}
 	@Transactional
-	public String findArtikelByKategorie() {
+	public void findArtikelByKategorie() {
 		artikel = as.findArtikelByKategorie(selectedKatId, locale);
 		//flash.put(FLASH_ARTIKEL, artikel);
 
-		return JSF_LIST_ARTIKEL_BY_KATEGORIE;
+		//return JSF_LIST_ARTIKEL_BY_KATEGORIE;
 	}
 	public void createEmptyArtikel() {
 		if (neuerArtikel != null) {
