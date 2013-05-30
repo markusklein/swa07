@@ -35,6 +35,9 @@
 				
 				<h:panelGrid id="updateKundeTabelle"
 				             columns="3">
+				             <h3 style = "margin-bottom: 0px;">#{msgKv['viewKunde.kunde.stammdaten']}</h3> 
+				             <f:verbatim/>
+				             <f:verbatim/>
 					<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['updatePrivatkunde.nachname']}"/>
 					<h:inputText id="nachname"
 					             value="#{kc.kunde.nachname}"
@@ -47,6 +50,119 @@
 					<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['updatePrivatkunde.vorname']}"/>
 					<h:inputText id="vorname" value="#{kc.kunde.vorname}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
+					
+					<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>
+					<h:inputText id="email" value="#{kc.kunde.email}" valueChangeListener="#{kc.geaendert}">
+						<rich:validator oninvalid="$(#{rich:element('email')}).addClass('invalid')"
+                                        onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
+					</h:inputText>
+					<rich:messages id="fehlermeldungenEmail" for="email"/>
+					
+					<h:outputLabel id="telefonnummerLabel" for="telefonnummer" value="#{msgKv['updatePrivatkunde.telefonnummer']}"/>
+					<h:inputText id="telefonnummer" value="#{kc.kunde.telefonnummer}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					<h3 style = "margin-bottom: 0px;">#{msgKv['viewKundePopup.kunde.rechnungsadresse']} </h3>
+					<f:verbatim/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="rechnungsadresseStraßeLabel" for="rechnungsadresse" value="#{msgKv['updatePrivatkunde.adresse.straße']}"/>
+					<h:inputText id="rechnungsadresse" value="#{kc.kunde.rechnungsadresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="rechnungsadressePlzLabel" for="plz" value="#{msgKv['updatePrivatkunde.adresse.plz']}"/>
+					<h:inputText id="plz" value="#{kc.kunde.rechnungsadresse.plz}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="rechnungsadresseOrtLabel" for="ort" value="#{msgKv['updatePrivatkunde.adresse.ort']}"/>
+					<h:inputText id="ort" value="#{kc.kunde.rechnungsadresse.ort}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:selectOneRadio id="RadioButtonRechnungsLand" value="#{kc.kunde.rechnungsadresse.land}"> 
+						<f:selectItem id="valuerechnungsDE" itemValue="DE"
+											 itemLabel="#{msgKv['createPrivatkunde.de']}"/>
+						<f:selectItem id="valuerechnungsCH" itemValue="CH"
+											 itemLabel="#{msgKv['createPrivatkunde.ch']}"/>
+					    <f:selectItem id="valuerechnungsA" itemValue="A"
+											 itemLabel="#{msgKv['createPrivatkunde.a']}"/>
+					    </h:selectOneRadio>
+					    <f:verbatim/>
+					    <f:verbatim/>
+					
+					<h3 style = "margin-bottom: 0px;">#{msgKv['viewKundePopup.kunde.lieferadresse']} </h3>
+					<f:verbatim/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="lieferadresseStraßeLabel" for="lieferadresse" value="#{msgKv['updatePrivatkunde.adresse.straße']}"/>
+					<h:inputText id="lieferadresse" value="#{kc.kunde.lieferadresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="lieferadressePlzLabel" for="plz" value="#{msgKv['updatePrivatkunde.adresse.plz']}"/>
+					<h:inputText id="lieferadresseplz" value="#{kc.kunde.lieferadresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="lieferadresseOrtLabel" for="ort" value="#{msgKv['updatePrivatkunde.adresse.ort']}"/>
+					<h:inputText id="lieferadresseort" value="#{kc.kunde.lieferadresse.ort}" valueChangeListener="#{kc.geaendert}"/>
+					<f:verbatim/>
+					
+					<h:selectOneRadio id="RadioButtonLieferLand" value="#{kc.kunde.lieferadresse.land}"> 
+						<f:selectItem id="valuelieferDE" itemValue="DE"
+											 itemLabel="#{msgKv['createPrivatkunde.de']}"/>
+						<f:selectItem id="valuelieferCH" itemValue="CH"
+											 itemLabel="#{msgKv['createPrivatkunde.ch']}"/>
+					    <f:selectItem id="valuelieferA" itemValue="A"
+											 itemLabel="#{msgKv['createPrivatkunde.a']}"/>
+					    </h:selectOneRadio>
+					    <f:verbatim/>
+					    
+					<f:verbatim/>
+					
+					<h3 style = "margin-bottom: 0px;">#{msgKv['viewKundePopup.kunde.zahlungsinformationen']} </h3>
+					<f:verbatim/>
+					<f:verbatim/>
+					
+					<h:outputLabel id="kontoinhaberLabel" for="kontoinhaber" value="#{msgKv['createPrivatkunde.kontoinhaber']}"/>
+						<h:inputText id="kontoinhaber" value="#{kc.kunde.zahlungsinformation.kontoinhaber}" valueChangeListener="#{kc.geaendert}">
+							<rich:validator oninvalid="$(#{rich:element('kontoinhaber')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('kontoinhaber')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungKontoinhaber" for="kontoinhaber"/>
+						
+						<h:outputLabel id="kontonummerLabel" for="kontonummer" value="#{msgKv['createPrivatkunde.kontonummer']}"/>
+						<h:inputText id="kontonummer" value="#{kc.kunde.zahlungsinformation.kontonummer}" valueChangeListener="#{kc.geaendert}">
+							<rich:validator oninvalid="$(#{rich:element('kontonummer')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('kontonummer')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungKontonummer" for="kontonummer"/>
+						
+						<h:outputLabel id="blzLabel" for="blz" value="#{msgKv['createPrivatkunde.bankleitzahl']}"/>
+						<h:inputText id="blz" value="#{kc.kunde.zahlungsinformation.blz}" valueChangeListener="#{kc.geaendert}">
+							<rich:validator oninvalid="$(#{rich:element('blz')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('blz')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungBlz" for="blz"/>
+						
+						<h:outputLabel id="kreditinstitutLabel" for="kreditinstitut" value="#{msgKv['createPrivatkunde.kreditinstitut']}"/>
+						<h:inputText id="kreditinstitut" value="#{kc.kunde.zahlungsinformation.kreditinstitut}" valueChangeListener="#{kc.geaendert}">
+							<rich:validator oninvalid="$(#{rich:element('kreditinstitut')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('kreditinstitut')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungKreditinstitut" for="kreditinstitut"/>
+						
+						<h:outputLabel id="swiftLabel" for="swift" value="#{msgKv['createPrivatkunde.swift']}"/>
+						<h:inputText id="swift" value="#{kc.kunde.zahlungsinformation.swift}" valueChangeListener="#{kc.geaendert}">
+							<rich:validator oninvalid="$(#{rich:element('swift')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('swift')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungSwift" for="swift"/>
+						
+						<h:outputLabel id="ibanlabel" for="iban" value="#{msgKv['createPrivatkunde.iban']}"/>
+						<h:inputText id="iban" value="#{kc.kunde.zahlungsinformation.iban}" valueChangeListener="#{kc.geaendert}">
+							<rich:validator oninvalid="$(#{rich:element('iban')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('iban')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungIban" for="iban"/>
+					
 					
 					<!--  <h:outputLabel id="kategorieLabel" value="#{msgKv['updatePrivatkunde.kategorie']}" for="kategorie"/>
 					<rich:inputNumberSpinner id="kategorie"
@@ -124,12 +240,7 @@
 					</h:selectManyCheckbox>
 					<f:verbatim/> -->
 					
-					<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>
-					<h:inputText id="email" value="#{kc.kunde.email}" valueChangeListener="#{kc.geaendert}">
-						<rich:validator oninvalid="$(#{rich:element('email')}).addClass('invalid')"
-                                        onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
-					</h:inputText>
-					<rich:messages id="fehlermeldungenEmail" for="email"/>
+					
 				</h:panelGrid>
 	
 				<p id="buttons">
