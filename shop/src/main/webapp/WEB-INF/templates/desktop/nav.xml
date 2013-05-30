@@ -72,8 +72,22 @@
 			<rich:panelMenuGroup id="kategorieverwaltung"
 			                     label="#{msg['nav.kategorieverwaltung']}"
 			                     expanded="true">
+				
 					<c:forEach items="#{kac.kategorien}" var="kat">
-					    <c:choose>
+					    <rich:panelMenuItem id="kategorieverwaltung#{kat.kategorieId}">
+					        <h:link id="katLink#{kat.kategorieId}"
+					                outcome="/artikelverwaltung/listArtikelByKategorie"
+					                value="#{kat.bezeichnung}">
+					                <f:param id="katParam#{kat.kategorieId}" name ="id" value="#{kat.kategorieId}" />
+					                <c:if test="#{not empty javax.enterprise.context.conversation.id}">
+										<f:param id="viewKatid#{kat.kategorieId}" name="kid" value="#{javax.enterprise.context.conversation.id}"/>
+									</c:if>
+					         </h:link>
+					    </rich:panelMenuItem>
+					    
+					    
+					    
+					    <!--<c:choose>
 					        <c:when test="#{kat.bezeichnung eq 'Herren'}">
 					            <rich:panelMenuItem id="kategorieverwaltung1">
 					            <h:link id="herrenLink"
@@ -108,7 +122,7 @@
 					             </h:link>
 					             </rich:panelMenuItem>
 					        </c:when>
-					    </c:choose>
+					    </c:choose>-->
 					</c:forEach>			
 			</rich:panelMenuGroup>
 			
