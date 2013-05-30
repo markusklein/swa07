@@ -29,6 +29,7 @@ import de.shop.util.Log;
 import de.shop.util.Transactional;
 
 
+
 /**
  * Dialogsteuerung fuer die ArtikelService
  */
@@ -57,6 +58,9 @@ public class ArtikelController implements Serializable {
 	private List<Artikel> ladenhueter;
 	private Artikel neuerArtikel;
 	private Kategorie neueKategorie;
+	
+
+	private String selectedKatId;
 
 	@Inject
 	private ArtikelService as;
@@ -116,8 +120,8 @@ public class ArtikelController implements Serializable {
 	}
 	@Transactional
 	public String findArtikelByKategorie() {
-		final List<Artikel> artikel = as.findArtikelByKategorie(id, locale);
-		flash.put(FLASH_ARTIKEL, artikel);
+		artikel = as.findArtikelByKategorie(selectedKatId, locale);
+		//flash.put(FLASH_ARTIKEL, artikel);
 
 		return JSF_LIST_ARTIKEL_BY_KATEGORIE;
 	}
@@ -177,5 +181,19 @@ public class ArtikelController implements Serializable {
 
 	public void setNeuerArtikel(Artikel neuerArtikel) {
 		this.neuerArtikel = neuerArtikel;
+	}
+//	public void getKategorieParam(){
+//		
+//		FacesContext fc = FacesContext.getCurrentInstance();
+//		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+//		selectedKatId = Long.valueOf(params.get("id"));
+//	}
+
+	public String getSelectedKatId() {
+		return selectedKatId;
+	}
+
+	public void setSelectedKatId(String selectedKatId) {
+		this.selectedKatId = selectedKatId;
 	}
 }
