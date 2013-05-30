@@ -22,9 +22,10 @@
 	
 		<ui:define name="article">
 			<h:form id="form">
-	
 				<a4j:outputPanel id="artikelPanel">
 					<c:if test="#{not empty ac.artikel}">
+					
+					
 		
 						<rich:dataTable id="artikelTabelle"
 						                value="#{ac.artikel}"
@@ -72,8 +73,7 @@
 							
 							
 							
-							<rich:column id="buttonSpalte"
-							             rendered="#{not empty artikel}">
+							<rich:column id="buttonSpalte">
 								<h:commandButton id="warenkorbButton"
 												 image="#{resource['images:warenkorb.gif']}"
 										         action="#{wk.add(art)}"
@@ -107,6 +107,7 @@
 							             query="jQuery(this).removeClass('active-row')"
 							             timing="domready"/>
 						</a4j:outputPanel>
+						
 					</c:if>
 				</a4j:outputPanel>
 			</h:form>

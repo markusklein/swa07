@@ -98,14 +98,14 @@
 								<f:facet name="header">
 									#{msgBv['viewWarenkorb.artikel.id']}
 								</f:facet>
-								#{position.artikel.id}
+								#{position.artikel.artikelId}
 							</rich:column>
 								
 							<rich:column id="bezeichnungSpalte">
 								<f:facet name="header">
 									#{msgBv['viewWarenkorb.artikel.bezeichnung']}
 								</f:facet>
-								#{position.artikel.bezeichnung}
+								#{position.artikel.beschreibung}
 							</rich:column>
 					
 							<rich:column id="anzahlSpalte">
@@ -114,7 +114,7 @@
 								</f:facet>
 								
 								<rich:inputNumberSpinner id="anzahl"
-				                                         value="#{position.anzahl}"
+				                                         value="#{position.bestellmenge}"
 				                                         minValue="0"
 				                                         maxValue="99"
 				                                         inputSize="2"/>
