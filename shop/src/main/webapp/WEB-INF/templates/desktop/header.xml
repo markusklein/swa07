@@ -45,7 +45,7 @@
 			</rich:dropDownMenu>	
 		</h:form>
 		
-		<h:form id="registrierenForm">
+		<h:form id="registrierenForm" rendered="#{!auth.loggedIn}">
 					<h:outputLink id="kundenverwaltungCreatePrivatkunde"
 					              value="#{request.contextPath}/kundenverwaltung/createPrivatkunde.jsf"
 					              style="color: #FFFFFF; text-decoration: none;">
