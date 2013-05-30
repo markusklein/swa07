@@ -63,13 +63,13 @@ public class ArtikelService implements Serializable {
 		return artikel;
 	}
 	
-	public List<Artikel> findArtikelByKategorie(Long id, Locale locale) {
+	public List<Artikel> findArtikelByKategorie(String id, Locale locale) {
 		
-		if (id == null)
+		if (id == null || id.length() == 0)
 			return null;
 		
 		final List<Artikel> artikel = em.createNamedQuery(Artikel.ARTIKEL_BY_KATEGORIE, Artikel.class)
-									.setParameter(Artikel.PARAMETER_NAME, "%" + id + "%")
+									.setParameter(Artikel.PARAMETER_KATEGORIE_ID, ks.findKategorieById(Long.valueOf(id), locale))
 									.getResultList();
 		
 		return artikel;

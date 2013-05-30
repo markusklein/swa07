@@ -68,8 +68,7 @@
 					                outcome="/artikelverwaltung/listArtikelByKategorie"
 					                value="Herren">
 					                <f:param id="herrenParam"
-					                    name = "Param"
-					                    param="kategorie"
+					                    name ="id"
 					                    value="500" />
 					             </h:link>
 					             </rich:panelMenuItem>
@@ -80,8 +79,7 @@
 					                outcome="/artikelverwaltung/listArtikelByKategorie"
 					                value="Damen">
 					                <f:param id="damenParam"
-					                    name = "Param"
-					                    param="kategorie"
+					                    name = "id"
 					                    value="525" />
 					             </h:link>
 					             </rich:panelMenuItem>
@@ -92,8 +90,7 @@
 					                outcome="/artikelverwaltung/listArtikelByKategorie"
 					                value="Kinder">
 					                <f:param id="kinderParam"
-					                    name = "Param"
-					                    param="kategorie"
+					                    name = "id"
 					                    value="575" />
 					             </h:link>
 					             </rich:panelMenuItem>

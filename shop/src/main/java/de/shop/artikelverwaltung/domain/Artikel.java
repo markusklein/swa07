@@ -76,7 +76,7 @@ import de.shop.util.IdGroup;
 	@NamedQuery (name = Artikel.ARTIKEL_BY_KATEGORIE,
 				query = "SELECT      a"
 					+ " FROM Artikel a"
-				+ " WHERE a.kategorie = :" + Artikel.PARAMETER_KATEGORIE_ID)			
+				    + " WHERE a.kategorie.kategorie_id = :" + Artikel.PARAMETER_KATEGORIE_ID)			
 
 								
 									
