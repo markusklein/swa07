@@ -30,15 +30,27 @@
 
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
-						               for="kundeId"/>
-						<h:inputText id="kundeId" value="#{kc.kundeId}"/>
-						<h:commandButton id="kundeButton" action="#{kc.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
+						               for="kundeId"
+						               rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:inputText id="kundeId" 
+						    		 value="#{kc.kundeId}" 
+						    		 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:commandButton id="kundeButton" 
+						    			 action="#{kc.findKundeById}" 
+						    			 value="#{msg['header.schnellsuche.button']}"
+						    			 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
 						
 						<h:outputLabel id="bestellungIdLabel"
 						               value="#{msg['header.schnellsuche.bestellungid']}"
-						               for="bestellungId"/>
-						<h:inputText id="bestellungId" value="#{bc.bestellungId}"/>
-						<h:commandButton id="bestellungButton" action="#{bc.findBestellungById}" value="#{msg['header.schnellsuche.button']}"/>
+						               for="bestellungId"
+						               rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:inputText id="bestellungId" 
+						    		 value="#{bc.bestellungId}"
+						    		 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:commandButton id="bestellungButton" 
+						    			 action="#{bc.findBestellungById}" 
+						    			 value="#{msg['header.schnellsuche.button']}"
+						    			 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
 												
 					</h:panelGrid>
 				</rich:menuItem>-->
