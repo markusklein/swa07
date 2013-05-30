@@ -7,11 +7,14 @@
                 xmlns:a4j="http://richfaces.org/a4j">
 
 	<rich:toolbar id="headerToolbar" height="65px">
-    	<h:outputLink id="homeLink" value="#{request.contextPath}">
+    	<h:outputLink id="homeLink" value="#{request.contextPath}/index.jsf">
 			<h:graphicImage id="hsLogoImage"
 		    	            name="hs-logo.png"
 		        	        library="images"
 		            	    alt="#{msg['header.logo.alt']}"/>
+			 <c:if test="#{not empty javax.enterprise.context.conversation.id}">
+										<f:param id="indexCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+			</c:if>
 		</h:outputLink>
 
 		<h:form id="schnellsucheForm">

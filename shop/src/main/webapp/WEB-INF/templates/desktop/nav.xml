@@ -74,55 +74,16 @@
 			                     expanded="true">
 				
 					<c:forEach items="#{kac.kategorien}" var="kat">
+					    
 					    <rich:panelMenuItem id="kategorieverwaltung#{kat.kategorieId}">
-					        <h:link id="katLink#{kat.kategorieId}"
-					                outcome="/artikelverwaltung/listArtikelByKategorie"
-					                value="#{kat.bezeichnung}">
+					        <h:outputLink id="katLink#{kat.kategorieId}" value="#{request.contextPath}/artikelverwaltung/listArtikelByKategorie.jsf">
+							 #{kat.bezeichnung}
 					                <f:param id="katParam#{kat.kategorieId}" name ="id" value="#{kat.kategorieId}" />
 					                <c:if test="#{not empty javax.enterprise.context.conversation.id}">
-										<f:param id="viewKatid#{kat.kategorieId}" name="kid" value="#{javax.enterprise.context.conversation.id}"/>
+										<f:param id="listKatCid#{kat.kategorieId}" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 									</c:if>
-					         </h:link>
-					    </rich:panelMenuItem>
-					    
-					    
-					    
-					    <!--<c:choose>
-					        <c:when test="#{kat.bezeichnung eq 'Herren'}">
-					            <rich:panelMenuItem id="kategorieverwaltung1">
-					            <h:link id="herrenLink"
-					                outcome="/artikelverwaltung/listArtikelByKategorie"
-					                value="Herren">
-					                <f:param id="herrenParam" name ="id" value="500" />
-					                <c:if test="#{not empty javax.enterprise.context.conversation.id}">
-										<f:param id="viewKatid" name="kid" value="#{javax.enterprise.context.conversation.id}"/>
-									</c:if>
-					             </h:link>
-					             </rich:panelMenuItem>
-					        </c:when>
-					        <c:when test="#{kat.bezeichnung eq 'Damen'}">
-					            <rich:panelMenuItem id="kategorieverwaltung2">
-					            <h:link id="damenLink"
-					                outcome="/artikelverwaltung/listArtikelByKategorie"
-					                value="Damen">
-					                <f:param id="damenParam"
-					                    name = "id"
-					                    value="525" />
-					             </h:link>
-					             </rich:panelMenuItem>
-					        </c:when>
-					        <c:when test="#{kat.bezeichnung eq 'Kinder'}">
-					            <rich:panelMenuItem id="kategorieverwaltung3">
-					            <h:link id="kinderLink"
-					                outcome="/artikelverwaltung/listArtikelByKategorie"
-					                value="Kinder">
-					                <f:param id="kinderParam"
-					                    name = "id"
-					                    value="575" />
-					             </h:link>
-					             </rich:panelMenuItem>
-					        </c:when>
-					    </c:choose>-->
+					         </h:outputLink>
+					    </rich:panelMenuItem>	
 					</c:forEach>			
 			</rich:panelMenuGroup>
 			
