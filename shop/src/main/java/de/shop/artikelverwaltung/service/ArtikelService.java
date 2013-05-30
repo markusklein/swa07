@@ -69,7 +69,7 @@ public class ArtikelService implements Serializable {
 			return null;
 		
 		final List<Artikel> artikel = em.createNamedQuery(Artikel.ARTIKEL_BY_KATEGORIE, Artikel.class)
-									.setParameter(Artikel.PARAMETER_KATEGORIE_ID, ks.findKategorieById(Long.valueOf(id), locale))
+									.setParameter(Artikel.PARAMETER_KATEGORIE_ID, Long.valueOf(id))
 									.getResultList();
 		
 		return artikel;

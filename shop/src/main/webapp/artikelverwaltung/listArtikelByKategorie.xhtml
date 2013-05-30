@@ -22,9 +22,13 @@
 	
 		<ui:define name="article">
 			<h:form id="form">
-	
+				<h1>#{param.id}</h1>
 				<a4j:outputPanel id="artikelPanel">
 					<c:if test="#{not empty ac.artikel}">
+					
+					<c:if test="#{not empty flash.artikel or param.init ne 'true'}">
+						<c:set var="artikel" value="#{flash.artikel}" scope="view"/>
+						<c:set target="#{flash}" property="artikel" value="#{artikel}"/>
 		
 						<rich:dataTable id="artikelTabelle"
 						                value="#{ac.artikel}"
