@@ -45,6 +45,7 @@ public class BestellungController implements Serializable {
 	private Long bestellungId;
 	private Bestellung bestellung;
 
+
 	
 	@Inject
 	private Warenkorb warenkorb;
@@ -103,12 +104,20 @@ public class BestellungController implements Serializable {
 
 	@Transactional
 	public String bestellen() {
+		
+		if (!auth.isLoggedIn()) {
+			// Darf nicht passieren, wenn der Button zum Bestellen verfuegbar ist
+			return JSF_DEFAULT_ERROR;
+		}
+		
 		auth.preserveLogin();
 		
 		if (warenkorb == null || warenkorb.getPositionen() == null || warenkorb.getPositionen().isEmpty()) {
 			// Darf nicht passieren, wenn der Button zum Bestellen verfuegbar ist
 			return JSF_DEFAULT_ERROR;
 		}
+		
+		
 		
 		// Den eingeloggten Kunden mit seinen Bestellungen ermitteln, und dann die neue Bestellung zu ergaenzen
 		//TODO FetchType MIT_BESTELLUNGEN in KS implementieren
@@ -148,6 +157,13 @@ public class BestellungController implements Serializable {
 		return JSF_VIEW_BESTELLUNG;
 		
 	}
-	
-	
+
+
+	public int getAnzahlBestellungenByKunde() {
+		if (auth.isLoggedIn()) {
+			return bs.findBestellungenByKunde(kunde.getKundeId()).size();
+		}
+		return 0;
+	}
+
 }	
