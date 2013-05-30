@@ -92,7 +92,7 @@ import java.util.List;
 	@NamedQuery(name  = Bestellung.FIND_BESTELLUNGEN_BY_KUNDE,
 	query = "SELECT b"
 		    + " FROM   Bestellung b"
-			+ " WHERE  b.kunde = :" + Bestellung.PARAM_KUNDEID)	    
+			+ " WHERE  b.kunde.kundeid = :" + Bestellung.PARAM_KUNDEID)	    
 })
 
 @Cacheable
