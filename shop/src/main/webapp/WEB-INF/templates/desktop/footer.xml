@@ -1,6 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:a4j="http://richfaces.org/a4j">
 
 	<h:panelGroup id="event" rendered="#{auth.loggedIn}">
@@ -16,6 +18,15 @@
 	</h:panelGroup>
 
 	<h:panelGroup id="copyright">
-		<b>&#169; Beste SWA Gruppe</b>
+	    <div style="text-align: center; font-size: 12px;">
+		<b>&#169; 2013 by Christian Feurer, Benjamin Malik, Tobias Fischer, Thomas Beuz, Markus Klein</b><br />
+		<h:outputLink id="impressum"
+					              value="#{request.contextPath}/impressum.jsf">
+						#{msg['nav.impressum']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="viewKundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+		</div>
 	</h:panelGroup>
 </ui:composition>
