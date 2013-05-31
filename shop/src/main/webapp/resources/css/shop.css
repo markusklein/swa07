@@ -21,11 +21,17 @@
 	/* width: calc(85% - 2px); */
 	overflow: auto;
 	padding: 5px;
+	background-color: #F1F1F1;
 }
 
 #footer {
 	clear: left;    /* http://de.selfhtml.org/css/eigenschaften/positionierung.htm#clear */
 	padding: 10px;
+	
+}
+
+body {
+	background-color: #F1F1F1;
 }
 
 img {

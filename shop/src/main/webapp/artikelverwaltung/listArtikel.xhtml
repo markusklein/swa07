@@ -13,6 +13,7 @@
 		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/>
 	
 		<ui:define name="article">
+		
 			<h:form id="form">
 				<rich:focus id="sucheFocus"/>
 				
@@ -43,7 +44,7 @@
 				</rich:panel>
 			
 				<p id="abstand1"/>
-			
+			<rich:panel id="listFoundArticle" header="msgAv['listArtikel.found.header']">
 				<a4j:outputPanel id="artikelPanel">
 					<c:if test="#{not empty flash.artikel or param.init ne 'true'}">
 						<c:set var="artikel" value="#{flash.artikel}" scope="view"/>
@@ -133,6 +134,7 @@
 					</c:if>
 				</a4j:outputPanel>
 			</h:form>
+		
 		</ui:define>
 	</ui:composition>
 </html>

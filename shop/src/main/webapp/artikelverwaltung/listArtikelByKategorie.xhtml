@@ -21,6 +21,10 @@
 		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/>
 	
 		<ui:define name="article">
+		<!-- Als Variable für den Kategorienamen verwende ich aus der Artikelliste vom AC.. die 
+		zuvor mit der richtigen KAT ID nur Artikel einer Kategorie geholt hat... die erste Variable
+		davon die Kategorie davon die Bezeichnung. -->
+		<rich:panel id="listarticle" header="#{msgAv['listArtikelByKategorie.header']} #{ac.artikel[0].kategorie.bezeichnung}">
 			<h:form id="form">
 				<a4j:outputPanel id="artikelPanel">
 					<c:if test="#{not empty ac.artikel or not empty flash.artikel or param.init ne 'true'}">
@@ -111,6 +115,7 @@
 					</c:if>
 				</a4j:outputPanel>
 			</h:form>
+			</rich:panel>
 		</ui:define>
 	</ui:composition>
 </html>
