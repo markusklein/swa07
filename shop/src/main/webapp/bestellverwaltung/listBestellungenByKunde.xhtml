@@ -1,131 +1,120 @@
-<!-- <?xml version="1.0"?> -->
-<!-- <!DOCTYPE html> -->
+<?xml version="1.0"?>
+<!DOCTYPE html>
 
-<!-- <html xmlns="http://www.w3.org/1999/xhtml" -->
-<!-- 	  xmlns:ui="http://java.sun.com/jsf/facelets" -->
-<!-- 	  xmlns:h="http://java.sun.com/jsf/html" -->
-<!-- 	  xmlns:f="http://java.sun.com/jsf/core" -->
-<!-- 	  xmlns:c="http://java.sun.com/jsp/jstl/core" -->
-<!-- 	  xmlns:rich="http://richfaces.org/rich" -->
-<!-- 	  xmlns:a4j="http://richfaces.org/a4j"> -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
 
-<!-- 	<ui:composition template="/WEB-INF/templates/desktop/main.xml"> -->
-	
-<!-- 	<ui:define name="metadata"> -->
-<!-- 		<c:if test="#{not empty param.id}"> -->
-<!-- 			 	<c:set target="#{ac}" property="selectedKatId" value="#{param.id}"/> -->
-<!-- 			  	<f:event type="preRenderView" listener="#{ac.findArtikelByKategorie()}"/> -->
-<!-- 		</c:if> -->
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		
-<!-- 	</ui:define> -->
-<!-- 		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/> -->
+		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/>
 	
-<!-- 		<ui:define name="article"> -->
-<!-- 		<!-- Als Variable für den Kategorienamen verwende ich aus der Artikelliste vom AC.. die  -->
-<!-- 		zuvor mit der richtigen KAT ID nur Artikel einer Kategorie geholt hat... die erste Variable -->
-<!-- 		davon die Kategorie davon die Bezeichnung. --> -->
-<!-- 		<rich:panel id="listarticle" header="#{msgAv['listArtikelByKategorie.header']} #{ac.artikel[0].kategorie.bezeichnung}"> -->
-<!-- 			<h:form id="form"> -->
-<!-- 				<a4j:outputPanel id="artikelPanel"> -->
-<!-- 					<c:if test="#{not empty ac.artikel or not empty flash.artikel or param.init ne 'true'}"> -->
-<!-- 						<c:set var="artikel" value="#{flash.artikel}" scope="view"/> -->
-<!-- 						<c:set target="#{flash}" property="artikel" value="#{artikel}"/> -->
-		
-<!-- 						<rich:dataTable id="artikelTabelle" -->
-<!-- 						                value="#{ac.artikel}" -->
-<!-- 						                var="art" -->
-<!-- 						                rows="8" -->
-<!-- 						                noDataLabel="#{msgAv['listArtikel.keineDaten']}" -->
-<!-- 						                rowClasses="odd-row, even-row" -->
-<!-- 						                styleClass="tabelleMitZebrastil" -->
-<!-- 						                cellspacing="10" -->
-<!-- 						                rendered="#{not empty artikel or param.init ne 'true'}"> -->
-<!-- 							<rich:column id="idSpalte"> -->
+		<ui:define name="article">
+		<!-- Als Variable für den Kategorienamen verwende ich aus der Artikelliste vom AC.. die 
+		zuvor mit der richtigen KAT ID nur Artikel einer Kategorie geholt hat... die erste Variable
+		davon die Kategorie davon die Bezeichnung. -->
+		<rich:panel id="listarticle" header="#{msgAv['listArtikelByKategorie.header']} #{ac.artikel[0].kategorie.bezeichnung}">
+			<h:form id="form">
+				<a4j:outputPanel id="artikelPanel">
+				
+						<rich:dataTable id="artikelTabelle"
+						                value="#{bc.bestellungen}"
+						                var="best"
+						                rows="8"
+						                noDataLabel="#{msgAv['listArtikel.keineDaten']}"
+						                rowClasses="odd-row, even-row"
+						                styleClass="tabelleMitZebrastil"
+						                cellspacing="10"
+						                rendered="#{not empty artikel or param.init ne 'true'}">
+							<rich:column id="idSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.id']}
+								</f:facet>
+								#{best.id}
+							</rich:column>
+							
+							<rich:column id="nameSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.name']}
+								</f:facet>
+								#{best.status}
+							</rich:column>
+							
+							<rich:column id="kategorieSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.kategorie']}
+								</f:facet>
+								#{best.lieferverfolgungsnummer}
+							</rich:column>
+							
+							<rich:column id="bezeichnungSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.beschreibung']}
+								</f:facet>
+								#{best.erzeugt}
+							</rich:column>
+							
+<!-- 							<rich:column id="preisSpalte"> -->
 <!-- 								<f:facet name="header"> -->
-<!-- 									#{msgAv['listArtikel.id']} -->
+<!-- 									#{msgAv['listArtikel.preis']} -->
 <!-- 								</f:facet> -->
-<!-- 								#{art.artikelId} -->
+<!-- 								#{art.preis} -->
 <!-- 							</rich:column> -->
 							
-<!-- 							<rich:column id="nameSpalte"> -->
-<!-- 								<f:facet name="header"> -->
-<!-- 									#{msgAv['listArtikel.name']} -->
-<!-- 								</f:facet> -->
-<!-- 								#{art.name} -->
+							
+							
+<!-- 							<rich:column id="buttonSpalteWk"> -->
+<!-- 								<h:commandButton id="warenkorbButton" -->
+<!-- 												 image="#{resource['images:cart_add.png']}" -->
+<!-- 										         action="#{wk.add(art)}" -->
+<!-- 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/> -->
 <!-- 							</rich:column> -->
-							
-<!-- 							<rich:column id="kategorieSpalte"> -->
-<!-- 								<f:facet name="header"> -->
-<!-- 									#{msgAv['listArtikel.kategorie']} -->
-<!-- 								</f:facet> -->
-<!-- 								#{art.kategorie.bezeichnung} -->
+<!-- 								<rich:column id="buttonSpalteEd"  -->
+<!-- 								rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter') }"> -->
+<!-- 								<h:commandButton id="editButton" -->
+<!-- 												 image="#{resource['images:edit.png']}" -->
+<!-- 										         action="/artikelverwaltung/updateArtikel" -->
+<!-- 										         alt="#{msgAv['listArtikel.alt.warenkorb']}" -->
+<!-- 										         /> -->
+<!-- 									<f:param id="editArtikel" name="a" value="#{art}"/> -->
 <!-- 							</rich:column> -->
-							
-<!-- 							<rich:column id="bezeichnungSpalte"> -->
-<!-- 								<f:facet name="header"> -->
-<!-- 									#{msgAv['listArtikel.beschreibung']} -->
-<!-- 								</f:facet> -->
-<!-- 								#{art.beschreibung} -->
-<!-- 							</rich:column> -->
-							
-<!-- <!-- 							<rich:column id="preisSpalte"> --> -->
-<!-- <!-- 								<f:facet name="header"> --> -->
-<!-- <!-- 									#{msgAv['listArtikel.preis']} --> -->
-<!-- <!-- 								</f:facet> --> -->
-<!-- <!-- 								#{art.preis} --> -->
-<!-- <!-- 							</rich:column> --> -->
-							
-							
-							
-<!-- <!-- 							<rich:column id="buttonSpalteWk"> --> -->
-<!-- <!-- 								<h:commandButton id="warenkorbButton" --> -->
-<!-- <!-- 												 image="#{resource['images:cart_add.png']}" --> -->
-<!-- <!-- 										         action="#{wk.add(art)}" --> -->
-<!-- <!-- 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/> --> -->
-<!-- <!-- 							</rich:column> --> -->
-<!-- <!-- 								<rich:column id="buttonSpalteEd"  --> -->
-<!-- <!-- 								rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter') }"> --> -->
-<!-- <!-- 								<h:commandButton id="editButton" --> -->
-<!-- <!-- 												 image="#{resource['images:edit.png']}" --> -->
-<!-- <!-- 										         action="/artikelverwaltung/updateArtikel" --> -->
-<!-- <!-- 										         alt="#{msgAv['listArtikel.alt.warenkorb']}" --> -->
-<!-- <!-- 										         /> --> -->
-<!-- <!-- 									<f:param id="editArtikel" name="a" value="#{art}"/> --> -->
-<!-- <!-- 							</rich:column> --> -->
-<!-- 						</rich:dataTable> -->
+						</rich:dataTable>
 						
 					
-<!-- 						<p id="abstand2"/> -->
-<!-- 						<rich:dataScroller id="dataScroller" -->
-<!-- 						                   for="artikelTabelle" -->
-<!-- 						                   maxPages="10" -->
-<!-- 						                   rendered="#{not empty artikel}"/> -->
+						<p id="abstand2"/>
+						<rich:dataScroller id="dataScroller"
+						                   for="artikelTabelle"
+						                   maxPages="10"
+						                   rendered="#{not empty artikel}"/>
 						
-<!-- 						<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true"> -->
-<!-- 							<rich:jQuery id="odd" -->
-<!-- 							             selector=".tabelleMitZebrastil tr:odd" -->
-<!-- 							             query="addClass('odd-row')" -->
-<!-- 							             timing="domready"/> -->
-<!-- 							<rich:jQuery id="even" -->
-<!-- 							             selector=".tabelleMitZebrastil tr:even" -->
-<!-- 							             query="addClass('even-row')" -->
-<!-- 							             timing="domready"/> -->
-<!-- 							<rich:jQuery id="mouseover" -->
-<!-- 							             selector=".tabelleMitZebrastil tr" -->
-<!-- 							             event="mouseover" -->
-<!-- 							             query="jQuery(this).addClass('active-row')" -->
-<!-- 							             timing="domready"/> -->
-<!-- 							<rich:jQuery id="mouseout" -->
-<!-- 							             selector=".tabelleMitZebrastil tr" -->
-<!-- 							             event="mouseout" -->
-<!-- 							             query="jQuery(this).removeClass('active-row')" -->
-<!-- 							             timing="domready"/> -->
-<!-- 						</a4j:outputPanel> -->
+						<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
+							<rich:jQuery id="odd"
+							             selector=".tabelleMitZebrastil tr:odd"
+							             query="addClass('odd-row')"
+							             timing="domready"/>
+							<rich:jQuery id="even"
+							             selector=".tabelleMitZebrastil tr:even"
+							             query="addClass('even-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseover"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseover"
+							             query="jQuery(this).addClass('active-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseout"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseout"
+							             query="jQuery(this).removeClass('active-row')"
+							             timing="domready"/>
+						</a4j:outputPanel>
 						
-<!-- 					</c:if> -->
-<!-- 				</a4j:outputPanel> -->
-<!-- 			</h:form> -->
-<!-- 			</rich:panel> -->
-<!-- 		</ui:define> -->
-<!-- 	</ui:composition> -->
-<!-- </html> -->
+				</a4j:outputPanel>
+			</h:form>
+			</rich:panel>
+		</ui:define>
+	</ui:composition>
+</html>

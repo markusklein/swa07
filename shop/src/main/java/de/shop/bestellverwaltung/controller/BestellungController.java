@@ -82,6 +82,10 @@ public class BestellungController implements Serializable {
 		this.bestellungId = bestellungId;
 	}
 	
+	public List<Bestellung> getBestellungen() {
+		return bestellungen;
+	}
+	
 	
 	/**
 	 * Action Methode, um eine Bestellung anhand der ID zu suchen
@@ -163,15 +167,16 @@ public class BestellungController implements Serializable {
 	// Bestellungen des eingeloggten Kunden ermitteln
 	@Transactional
 	public void findBestellungenByKunde() {
-		bestellungen = bs.findBestellungenByKunde(kunde.getKundeId());
+		if (auth.isLoggedIn()) {
+			bestellungen = bs.findBestellungenByKunde(kunde.getKundeId());
+		}	
 	}
 
 	public int getAnzahlBestellungenByKunde() {
-		if (auth.isLoggedIn()) {
-			findBestellungenByKunde();
-			return bestellungen.size();
-		}
-		return 0;
+		return bestellungen.size();
 	}
+
+
+
 
 }	
