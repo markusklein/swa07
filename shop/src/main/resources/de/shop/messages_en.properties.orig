@@ -56,8 +56,11 @@ nav.kundenverwaltung.listKunden        = Search by lastname
 nav.kundenverwaltung.upload            = Upload a file
 nav.kundenverwaltung.viewKunde         = Search by ID
 nav.userAdmin                          = Access control
+<<<<<<< HEAD
 nav.artikelverwaltung.viewArtikel	   = Search articles by ID
+=======
 nav.impressum						   = Impressum
+>>>>>>> refs/remotes/origin/master
 
 pageNotFound.text  = The requested web page is not available.
 pageNotFound.title = Page not found

@@ -13,33 +13,24 @@
 		<ui:param name="pageTitle" value="#{msgAv['viewArtikel.title']}"/>
 	
 		<ui:define name="article">
+		
 			<h:form id="form">
-				<rich:focus id="formFocus"/>
+				<rich:focus id="sucheFocus"/>
 				
 				<rich:panel id="suchePanel" header="#{msgAv['viewArtikel.sucheNeu']}">
-					<h:panelGrid id="suchePanelGrid" columns="4">
-						<h:outputLabel id="artikelIdInputLabel"
+					<h:panelGrid id="sucheGrid" columns="7">
+						<h:outputLabel id="bezeichnungLabel"
 						               value="#{msgAv['viewArtikel.artikelnr']}"
-						               for="artikelIdInput"/>
-						             
-					  	<rich:autocomplete id="artikelIdInput"
-						                   value="#{ac.artikel_id}"
-						                   mode="ajax"
-						                   minChars="1"
-						                   autocompleteMethod="#{ac.findArtikelById}" 
-						                   var="artikel"
-						                   fetchValue="#{updateArtikel.artikel_id}"
-						                   converter="javax.faces.Number"
-						                   converterMessage="#{msgAv['viewArtikel.artikelnr.converterError']}">
-							#{neuerArtikel.artikel_id} : #{neuerArtikel.name}, #{neuerArtikel.beschreibung} 
-						</rich:autocomplete>   
-	
+						               for="Artikel_id"/>
+		
+						<h:inputText id="Artikel_id" value="#{ac.artikel_id}"/>
+		
 						<a4j:commandButton id="findButton"
 						                   action="#{ac.findArtikelById}"
-						                   value="#{msgAv['viewArtikel.submit']}"
-						                   render="gesuchterArtikelPanel fehlermeldungArtikelId"/>
-						                   
-						                   <a4j:status id="statusStart">
+								           value="#{msgAv['viewArtikel.submit']}"
+								           render="artikelPanel sucheForm:fehlermeldungName"/>
+						
+						<a4j:status id="statusStart">
 							<f:facet name="start">
 								<h:panelGroup id="waitingGroup">
 									<h:graphicImage id="waitingGif"
@@ -51,18 +42,18 @@
 						</a4j:status>
 					</h:panelGrid>
 				</rich:panel>
-						                   
-						
-						<a4j:outputPanel id="artikelPanel">
+			
+				<p id="abstand1"/>
+				<a4j:outputPanel id="artikelPanel">
 					<c:if test="#{not empty flash.artikel or param.init ne 'true'}">
-						<c:set var="artikel" value="#{flash.artikel}" scope="view"/>
-						<c:set target="#{flash}" property="artikel" value="#{artikel}"/>
+						<c:set var="updateArtikel" value="#{flash.updateArtikel}" scope="view"/>
+						<c:set target="#{flash}" property="updateArtikel" value="#{updateArtikel}"/>
 						
 						<rich:dataTable id="artikelTabelle"
-						                value="#{ac.artikel}"
+						                value="#{ac.updateArtikel}"
 						                var="art"
 						                rows="8"
-						                noDataLabel="#{msgAv['listArtikel.keineDaten']}"
+						                noDataLabel="#{msgAv['viewArtikel.keineDaten']}"
 						                rowClasses="odd-row, even-row"
 						                styleClass="tabelleMitZebrastil"
 						                cellspacing="10"
@@ -142,10 +133,7 @@
 					</c:if>
 				</a4j:outputPanel>
 			</h:form>
-			
-			<!--
-			<a4j:log id="log"/>
-			-->
+		
 		</ui:define>
 	</ui:composition>
 </html>
