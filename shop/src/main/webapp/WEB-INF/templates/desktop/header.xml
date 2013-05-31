@@ -3,14 +3,18 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:rich="http://richfaces.org/rich"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:a4j="http://richfaces.org/a4j">
 
 	<rich:toolbar id="headerToolbar" height="65px">
-    	<h:outputLink id="homeLink" value="#{request.contextPath}">
+    	<h:outputLink id="homeLink" value="#{request.contextPath}/index.jsf">
 			<h:graphicImage id="hsLogoImage"
 		    	            name="hs-logo.png"
 		        	        library="images"
 		            	    alt="#{msg['header.logo.alt']}"/>
+			 <c:if test="#{not empty javax.enterprise.context.conversation.id}">
+										<f:param id="indexCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+			</c:if>
 		</h:outputLink>
 
 		<h:form id="schnellsucheForm">
@@ -29,19 +33,42 @@
 
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
-						               for="kundeId"/>
-						<h:inputText id="kundeId" value="#{kc.kundeId}"/>
-						<h:commandButton id="kundeButton" action="#{kc.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
+						               for="kundeId"
+						               rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:inputText id="kundeId" 
+						    		 value="#{kc.kundeId}" 
+						    		 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:commandButton id="kundeButton" 
+						    			 action="#{kc.findKundeById}" 
+						    			 value="#{msg['header.schnellsuche.button']}"
+						    			 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
 						
 						<h:outputLabel id="bestellungIdLabel"
 						               value="#{msg['header.schnellsuche.bestellungid']}"
-						               for="bestellungId"/>
-						<h:inputText id="bestellungId" value="#{bc.bestellungId}"/>
-						<h:commandButton id="bestellungButton" action="#{bc.findBestellungById}" value="#{msg['header.schnellsuche.button']}"/>
+						               for="bestellungId"
+						               rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:inputText id="bestellungId" 
+						    		 value="#{bc.bestellungId}"
+						    		 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
+						<h:commandButton id="bestellungButton" 
+						    			 action="#{bc.findBestellungById}" 
+						    			 value="#{msg['header.schnellsuche.button']}"
+						    			 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
 												
 					</h:panelGrid>
 				</rich:menuItem>-->
 			</rich:dropDownMenu>	
+		</h:form>
+		
+		<h:form id="registrierenForm" rendered="#{!auth.loggedIn}">
+					<h:outputLink id="kundenverwaltungCreatePrivatkunde"
+					              value="#{request.contextPath}/kundenverwaltung/createPrivatkunde.jsf"
+					              style="color: #FFFFFF; text-decoration: none;">
+						#{msg['header.registrieren']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="createPrivatkundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
 		</h:form>
 			
 		<rich:toolbarGroup id="rightGroup" location="right">
