@@ -102,6 +102,15 @@
 										         action="#{wk.add(art)}"
 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
 							</rich:column>
+							<rich:column id="buttonSpalteEd" 
+								rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter') }">
+								<h:commandButton id="editButton"
+												 image="#{resource['images:edit.png']}"
+										         action="/artikelverwaltung/updateArtikel"
+										         alt="#{msgAv['listArtikel.alt.warenkorb']}"
+										         />
+									<f:param id="editArtikel" name="aid" value="#{art.artikelId}"/>
+							</rich:column>
 						</rich:dataTable>
 						
 						<p id="abstand2"/>

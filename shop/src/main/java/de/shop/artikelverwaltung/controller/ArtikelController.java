@@ -51,7 +51,6 @@ public class ArtikelController implements Serializable {
 	
 	private static final String JSF_LIST_ARTIKEL = "/artikelverwaltung/listArtikel";
 	private static final String FLASH_ARTIKEL = "artikel";
-	private static final String JSF_LIST_ARTIKEL_BY_KATEGORIE = "/artikelverwaltung/listArtikelByKategorie";
 	private static final String JSF_ARTIKELVERWALTUNG = "/artikelverwaltung/";
 	private static final String JSF_VIEW_ARTIKEL = JSF_ARTIKELVERWALTUNG + "viewArtikel";
 
@@ -71,7 +70,7 @@ public class ArtikelController implements Serializable {
 	private Artikel updateArtikel;
 	private boolean geaendertArtikel;
 	
-
+	private String selectedArtId;
 	private String selectedKatId;
 
 	@Inject
@@ -133,11 +132,8 @@ public class ArtikelController implements Serializable {
 	}
 	
 	@Transactional
-	public String findArtikelById() {
-		updateArtikel = as.findArtikelById(artikel_id, locale);
-		flash.put(FLASH_ARTIKEL, artikel);
-
- 	return JSF_VIEW_ARTIKEL;
+	public void findArtikelById() {
+		updateArtikel = as.findArtikelById(Long.valueOf(selectedArtId), locale);
 	}
 	
 	@TransactionAttribute(REQUIRED)
@@ -229,21 +225,21 @@ public class ArtikelController implements Serializable {
 	public String update() {
 		auth.preserveLogin();
 		
-		if (!geaendertArtikel || neuerArtikel == null) {
+		if (!geaendertArtikel || updateArtikel == null) {
 			return JSF_INDEX;
 		}
 		
-			neuerArtikel = as.updateArtikel(neuerArtikel, locale);
+		updateArtikel = as.updateArtikel(updateArtikel, locale);
 	
 
 		// Push-Event fuer Webbrowser
-		updateArtikelEvent.fire(String.valueOf(neuerArtikel.getArtikelId()));
+		updateArtikelEvent.fire(String.valueOf(updateArtikel.getArtikelId()));
 		
 		// ValueChangeListener zuruecksetzen
 		geaendertArtikel = false;
 		
-		// Aufbereitung fuer viewKunde.xhtml
-		artikel_id = neuerArtikel.getArtikelId();
+		// Aufbereitung fuer viewArtikel.xhtml
+		artikel_id = updateArtikel.getArtikelId();
 		
 		return JSF_VIEW_ARTIKEL + JSF_REDIRECT_SUFFIX;
 	}
@@ -253,7 +249,7 @@ public class ArtikelController implements Serializable {
 			return null;
 		}
 		
-		neuerArtikel = ausgewaehlterArtikel;
+		updateArtikel = ausgewaehlterArtikel;
 		
 		return JSF_UPDATE_ARTIKEL;
 			   
@@ -289,5 +285,13 @@ public class ArtikelController implements Serializable {
 
 	public void setGeaendertArtikel(boolean geaendertArtikel) {
 		this.geaendertArtikel = geaendertArtikel;
+	}
+
+	public String getSelectedArtId() {
+		return selectedArtId;
+	}
+
+	public void setSelectedArtId(String selectedArtId) {
+		this.selectedArtId = selectedArtId;
 	}
 }
