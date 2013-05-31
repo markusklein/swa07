@@ -77,14 +77,24 @@
 							
 							
 							
-							<rich:column id="buttonSpalte">
+							<rich:column id="buttonSpalteWk">
 								<h:commandButton id="warenkorbButton"
-												 image="#{resource['images:warenkorb.gif']}"
+												 image="#{resource['images:cart_add.png']}"
 										         action="#{wk.add(art)}"
 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
 							</rich:column>
+								<rich:column id="buttonSpalteEd" 
+								rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter') }">
+								<h:commandButton id="editButton"
+												 image="#{resource['images:edit.png']}"
+										         action="/artikelverwaltung/updateArtikel"
+										         alt="#{msgAv['listArtikel.alt.warenkorb']}"
+										         />
+									<f:param id="editArtikel" name="a" value="#{art}"/>
+							</rich:column>
 						</rich:dataTable>
 						
+					
 						<p id="abstand2"/>
 						<rich:dataScroller id="dataScroller"
 						                   for="artikelTabelle"
