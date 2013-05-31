@@ -222,17 +222,17 @@ public class Kunde implements Serializable {
 	private String telefonnummer;
 
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
-	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
+	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinColumn(name = "lieferadresse")
 	private Adresse lieferadresse;
 
 	@NotNull
-	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
+	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinColumn(name = "rechnungsadresse")
 	private Adresse rechnungsadresse;
 
 	@NotNull
-	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
+	@OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinColumn(name = "zahlungsinformation_ID")
 	private Zahlungsinformation zahlungsinformation;
 	
