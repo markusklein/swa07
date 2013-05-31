@@ -1,5 +1,7 @@
 package de.shop.artikelverwaltung.controller;
 
+import static de.shop.util.Constants.JSF_INDEX;
+import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
 
@@ -9,21 +11,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import javax.enterprise.event.Event;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.Flash;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
+import org.richfaces.cdi.push.Push;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.service.ArtikelService;
+import de.shop.auth.controller.AuthController;
 import de.shop.util.Client;
 import de.shop.util.Log;
 import de.shop.util.Transactional;
@@ -46,6 +52,10 @@ public class ArtikelController implements Serializable {
 	private static final String JSF_LIST_ARTIKEL = "/artikelverwaltung/listArtikel";
 	private static final String FLASH_ARTIKEL = "artikel";
 	private static final String JSF_LIST_ARTIKEL_BY_KATEGORIE = "/artikelverwaltung/listArtikelByKategorie";
+	private static final String JSF_ARTIKELVERWALTUNG = "/artikelverwaltung/";
+	private static final String JSF_VIEW_ARTIKEL = JSF_ARTIKELVERWALTUNG + "viewArtikel";
+
+	private static final String JSF_UPDATE_ARTIKEL = JSF_ARTIKELVERWALTUNG + "updateArtikel";
 	//private static final int ANZAHL_LADENHUETER = 5;
 	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
@@ -58,6 +68,8 @@ public class ArtikelController implements Serializable {
 	private List<Artikel> ladenhueter;
 	private Artikel neuerArtikel;
 	private Kategorie neueKategorie;
+	private Artikel updateArtikel;
+	private boolean geaendertArtikel;
 	
 
 	private String selectedKatId;
@@ -74,6 +86,14 @@ public class ArtikelController implements Serializable {
 	
 	@Inject
 	private transient HttpSession session;
+	
+	@Inject
+	private AuthController auth;
+	
+	@Inject
+	@Push(topic = "updateArtikel")
+	private transient Event<String> updateArtikelEvent;
+	
 
 	
 	@PostConstruct
@@ -103,13 +123,21 @@ public class ArtikelController implements Serializable {
 	public List<Artikel> getLadenhueter() {
 		return ladenhueter;
 	}
-	//TODO locale statt null
+	
 	@Transactional
 	public String findArtikelByName() {
 		artikel = as.findArtikelByNamen(name, locale);
 		flash.put(FLASH_ARTIKEL, artikel);
 
 		return JSF_LIST_ARTIKEL;
+	}
+	
+	@Transactional
+	public String findArtikelById() {
+		updateArtikel = as.findArtikelById(artikel_id, locale);
+		flash.put(FLASH_ARTIKEL, artikel);
+
+ 	return JSF_VIEW_ARTIKEL;
 	}
 	
 	@TransactionAttribute(REQUIRED)
@@ -195,5 +223,71 @@ public class ArtikelController implements Serializable {
 
 	public void setSelectedKatId(String selectedKatId) {
 		this.selectedKatId = selectedKatId;
+	}
+	
+	@TransactionAttribute(REQUIRED)
+	public String update() {
+		auth.preserveLogin();
+		
+		if (!geaendertArtikel || neuerArtikel == null) {
+			return JSF_INDEX;
+		}
+		
+			neuerArtikel = as.updateArtikel(neuerArtikel, locale);
+	
+
+		// Push-Event fuer Webbrowser
+		updateArtikelEvent.fire(String.valueOf(neuerArtikel.getArtikelId()));
+		
+		// ValueChangeListener zuruecksetzen
+		geaendertArtikel = false;
+		
+		// Aufbereitung fuer viewKunde.xhtml
+		artikel_id = neuerArtikel.getArtikelId();
+		
+		return JSF_VIEW_ARTIKEL + JSF_REDIRECT_SUFFIX;
+	}
+	
+	public String selectForUpdate(Artikel ausgewaehlterArtikel) {
+		if (ausgewaehlterArtikel == null) {
+			return null;
+		}
+		
+		neuerArtikel = ausgewaehlterArtikel;
+		
+		return JSF_UPDATE_ARTIKEL;
+			   
+	}
+	public void geaendert(ValueChangeEvent e) {
+		if (geaendertArtikel) {
+			return;
+		}
+		
+		if (e.getOldValue() == null) {
+			if (e.getNewValue() != null) {
+				geaendertArtikel = true;
+			}
+			return;
+		}
+
+		if (!e.getOldValue().equals(e.getNewValue())) {
+			geaendertArtikel = true;				
+		}
+	}
+
+	public Artikel getUpdateArtikel() {
+		return updateArtikel;
+	}
+
+	public void setUpdateArtikel(Artikel updateArtikel) {
+		this.updateArtikel = updateArtikel;
+	}
+
+	public boolean isGeaendertArtikel() {
+		return geaendertArtikel;
+	}
+
+	public void setGeaendertArtikel(boolean geaendertArtikel) {
+		this.geaendertArtikel = geaendertArtikel;
 	}
 }

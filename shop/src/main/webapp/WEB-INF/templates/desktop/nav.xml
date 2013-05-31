@@ -6,7 +6,7 @@
                 xmlns:rich="http://richfaces.org/rich">
 	<h:form id="navForm">
 		<rich:panelMenu id="panelMenu"
-		                itemMode="client"
+		                itemMode="client"	
 		                topGroupExpandedLeftIcon="chevronDown"
 		                topGroupCollapsedLeftIcon="chevron"
 		                itemLeftIcon="grid">
@@ -115,6 +115,18 @@
 			<rich:panelMenuGroup id="artikelverwaltung"
 			                     label="#{msg['nav.artikelverwaltung']}"
 			                     expanded="true">
+					
+				<rich:panelMenuItem id="artikelverwaltungViewArtikelItem">
+					<h:outputLink id="artikelverwaltungViewArtikel"
+					              value="#{request.contextPath}/artikelverwaltung/viewArtikel.jsf">
+						#{msg['nav.artikelverwaltung.viewArtikel']}
+						<f:param id="initParamViewArtikel" name="init" value="true"/>
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="listArtikelCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>	
+			    
 				<rich:panelMenuItem id="artikelverwaltungListArtikelItem">
 					<h:outputLink id="artikelverwaltungListArtikel"
 					              value="#{request.contextPath}/artikelverwaltung/listArtikel.jsf">
@@ -138,7 +150,18 @@
 							<f:param id="createArtikelAid" name="aid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:outputLink>
-				</rich:panelMenuItem>			
+				</rich:panelMenuItem>	
+				
+				<!-- Artikel Update -->
+					<rich:panelMenuItem id="artikelverwaltungUpdateArtikelItem" rendered="#{rich:isUserInRole('admin')}">
+					<h:outputLink id="artikelverwaltungUpdateArtikel"
+					              value="#{request.contextPath}/artikelverwaltung/updateArtikel.jsf">
+						#{msg['nav.artikelverwaltung.updateArtikel']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="updateArtikelAid" name="aid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>		
 			</rich:panelMenuGroup>
 
 			<rich:panelMenuGroup id="bestellverwaltung"
