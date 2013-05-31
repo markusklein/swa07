@@ -6,6 +6,7 @@ import static javax.ejb.TransactionAttributeType.REQUIRED;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,6 +18,7 @@ import javax.inject.Named;
 
 import org.jboss.logging.Logger;
 
+import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.auth.controller.AuthController;
 import de.shop.auth.controller.KundeLoggedIn;
 import de.shop.bestellverwaltung.domain.Bestellposition;
@@ -45,7 +47,7 @@ public class BestellungController implements Serializable {
 	private Long bestellungId;
 	private Bestellung bestellung;
 
-
+	private List<Bestellung> bestellungen = Collections.emptyList();
 	
 	@Inject
 	private Warenkorb warenkorb;
@@ -158,10 +160,16 @@ public class BestellungController implements Serializable {
 		
 	}
 
+	// Bestellungen des eingeloggten Kunden ermitteln
+	@Transactional
+	public void findBestellungenByKunde() {
+		bestellungen = bs.findBestellungenByKunde(kunde.getKundeId());
+	}
 
 	public int getAnzahlBestellungenByKunde() {
 		if (auth.isLoggedIn()) {
-			return bs.findBestellungenByKunde(kunde.getKundeId()).size();
+			findBestellungenByKunde();
+			return bestellungen.size();
 		}
 		return 0;
 	}
