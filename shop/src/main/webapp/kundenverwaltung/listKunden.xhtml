@@ -115,7 +115,7 @@
 								           action="#{kc.details(kunde)}"/>
 							<rich:menuItem id="updateContext"
 								           label="#{msgKv['listKunden.editButtonAlt']}"
-								           icon="#{resource['images:edit.gif']}"
+								           icon="#{resource['images:edit.png']}"
 								           action="#{kc.selectForUpdate(kunde)}"/>
 							<rich:menuSeparator id="menuSeparatorDelete"
 							                    rendered="#{rich:isUserInRole('admin')}"/>
@@ -168,7 +168,7 @@
 									
 					<rich:column id="editSpalte" rendered="#{not empty kc.kunden}">
 						<h:commandButton id="editButton"
-										 image="#{resource['images:edit.gif']}"
+										 image="#{resource['images:edit.png']}"
 								         action="#{kc.selectForUpdate(kunde)}"
 								         alt="#{msgKv['listKunden.editButtonAlt']}"/>
 					</rich:column>

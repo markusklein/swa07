@@ -66,51 +66,52 @@
 					<f:verbatim/>
 					<f:verbatim/>
 					
-					<h:outputLabel id="rechnungsadresseStraßeLabel" for="rechnungsadresse" value="#{msgKv['updatePrivatkunde.adresse.straße']}"/>
-					<h:inputText id="rechnungsadresse" value="#{kc.kunde.rechnungsadresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
+					<h:outputLabel id="rechnungsadresseStrasseLabel" for="rechnungsadresseStrasse" value="#{msgKv['updatePrivatkunde.adresse.straße']}"/>
+					<h:inputText id="rechnungsadresseStrasse" value="#{kc.kunde.rechnungsadresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
 					
-					<h:outputLabel id="rechnungsadressePlzLabel" for="plz" value="#{msgKv['updatePrivatkunde.adresse.plz']}"/>
-					<h:inputText id="plz" value="#{kc.kunde.rechnungsadresse.plz}" valueChangeListener="#{kc.geaendert}"/>
+					<h:outputLabel id="rechnungsadressePlzLabel" for="rechnungsadressePlz" value="#{msgKv['updatePrivatkunde.adresse.plz']}"/>
+					<h:inputText id="rechnungsadressePlz" value="#{kc.kunde.rechnungsadresse.plz}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
 					
-					<h:outputLabel id="rechnungsadresseOrtLabel" for="ort" value="#{msgKv['updatePrivatkunde.adresse.ort']}"/>
-					<h:inputText id="ort" value="#{kc.kunde.rechnungsadresse.ort}" valueChangeListener="#{kc.geaendert}"/>
+					<h:outputLabel id="rechnungsadresseOrtLabel" for="rechnungsadresseOrt" value="#{msgKv['updatePrivatkunde.adresse.ort']}"/>
+					<h:inputText id="rechnungsadresseOrt" value="#{kc.kunde.rechnungsadresse.ort}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
 					
-					<h:selectOneRadio id="RadioButtonRechnungsLand" value="#{kc.kunde.rechnungsadresse.land}"> 
-						<f:selectItem id="valuerechnungsDE" itemValue="DE"
+					<h:selectOneRadio id="RadioButtonRechnungsadresseLand" value="#{kc.kunde.rechnungsadresse.land}"> 
+						<f:selectItem id="valueRechnungsadresseDE" itemValue="DE"
 											 itemLabel="#{msgKv['createPrivatkunde.de']}"/>
-						<f:selectItem id="valuerechnungsCH" itemValue="CH"
+						<f:selectItem id="valueRechnungsadresseCH" itemValue="CH"
 											 itemLabel="#{msgKv['createPrivatkunde.ch']}"/>
-					    <f:selectItem id="valuerechnungsA" itemValue="A"
+					    <f:selectItem id="valueRechnungsadresseA" itemValue="A"
 											 itemLabel="#{msgKv['createPrivatkunde.a']}"/>
 					    </h:selectOneRadio>
 					    <f:verbatim/>
-					    <f:verbatim/>
+					    
+					<f:verbatim/>
 					
 					<h3 style = "margin-bottom: 0px;">#{msgKv['viewKundePopup.kunde.lieferadresse']} </h3>
 					<f:verbatim/>
 					<f:verbatim/>
 					
-					<h:outputLabel id="lieferadresseStraßeLabel" for="lieferadresse" value="#{msgKv['updatePrivatkunde.adresse.straße']}"/>
-					<h:inputText id="lieferadresse" value="#{kc.kunde.lieferadresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
+					<h:outputLabel id="lieferadresseStrasseLabel" for="lieferadresseStrasse" value="#{msgKv['updatePrivatkunde.adresse.straße']}"/>
+					<h:inputText id="lieferadresseStrasse" value="#{kc.kunde.lieferadresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
 					
-					<h:outputLabel id="lieferadressePlzLabel" for="plz" value="#{msgKv['updatePrivatkunde.adresse.plz']}"/>
-					<h:inputText id="lieferadresseplz" value="#{kc.kunde.lieferadresse.plz}" valueChangeListener="#{kc.geaendert}"/>
+					<h:outputLabel id="lieferadressePlzLabel" for="lieferadressePlz" value="#{msgKv['updatePrivatkunde.adresse.plz']}"/>
+					<h:inputText id="lieferadressePlz" value="#{kc.kunde.lieferadresse.plz}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
 					
-					<h:outputLabel id="lieferadresseOrtLabel" for="ort" value="#{msgKv['updatePrivatkunde.adresse.ort']}"/>
-					<h:inputText id="lieferadresseort" value="#{kc.kunde.lieferadresse.ort}" valueChangeListener="#{kc.geaendert}"/>
+					<h:outputLabel id="lieferadresseOrtLabel" for="lieferadresseOrt" value="#{msgKv['updatePrivatkunde.adresse.ort']}"/>
+					<h:inputText id="lieferadresseOrt" value="#{kc.kunde.lieferadresse.ort}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
 					
-					<h:selectOneRadio id="RadioButtonLieferLand" value="#{kc.kunde.lieferadresse.land}"> 
-						<f:selectItem id="valuelieferDE" itemValue="DE"
+					<h:selectOneRadio id="RadioButtonLieferadresseLand" value="#{kc.kunde.lieferadresse.land}"> 
+						<f:selectItem id="valueLieferadresseDE" itemValue="DE"
 											 itemLabel="#{msgKv['createPrivatkunde.de']}"/>
-						<f:selectItem id="valuelieferCH" itemValue="CH"
+						<f:selectItem id="valueLieferadresseCH" itemValue="CH"
 											 itemLabel="#{msgKv['createPrivatkunde.ch']}"/>
-					    <f:selectItem id="valuelieferA" itemValue="A"
+					    <f:selectItem id="valueLieferadresseA" itemValue="A"
 											 itemLabel="#{msgKv['createPrivatkunde.a']}"/>
 					    </h:selectOneRadio>
 					    <f:verbatim/>
