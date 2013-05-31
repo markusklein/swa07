@@ -88,9 +88,10 @@
 								<h:commandButton id="editButton"
 												 image="#{resource['images:edit.png']}"
 										         action="/artikelverwaltung/updateArtikel"
-										         alt="#{msgAv['listArtikel.alt.warenkorb']}"
-										         />
-									<f:param id="editArtikel" name="a" value="#{art}"/>
+										         alt="#{msgAv['listArtikel.alt.warenkorb']}">
+									<f:param id="editArtikel" name="aid" value="#{art.artikelId}"/>
+									
+								</h:commandButton>
 							</rich:column>
 						</rich:dataTable>
 						

@@ -6,28 +6,37 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
 	  xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:param name="pageTitle" value="#{msgAv['updateArtikel.title']}"/>
+		
+		<ui:define name="metadata">
+			<c:if test="#{not empty param.aid}">
+				 	<c:set target="#{ac}" property="selectedArtId" value="#{param.aid}"/>
+				  	<f:event type="preRenderView" listener="#{ac.findArtikelById()}"/>
+			</c:if>
+		</ui:define>
+		
 		<ui:define name="article">
+		
 			<h1>
-				<h:outputFormat id="headingArtikel" value="#{msgAv['updateArtikel.heading']}" rendered="#{not empty ac.neuerArtikel}">
-					<f:param id="idWert" value="#{ac.neuerArtikel.artikelId}"/>
-				</h:outputFormat>
+				<h:outputFormat id="headingArtikel" value="#{msgAv['updateArtikel.heading']}" rendered="#{not empty ac.updateArtikel}"/>
 			</h1>
 			
 			<h:outputText id="fehlerKeinArtikel"
 			              value="#{msgAv['updateArtikel.keinArtikel']}"
 			              class="rf-msg-err"
-			              rendered="#{empty ac.neuerArtikel}"/>
+			              rendered="#{empty param.aid}"/>
 
 			<a4j:push id="updateEvent" address="updateArtikel"
-		              ondataavailable="if (event.rf.data == '#{ac.neuerArtikel.artikelId}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgAv['updateArtikel.concurrentUpdate']}&lt;/span&gt;') }"/>
+		              ondataavailable="if (event.rf.data == '#{ac.updateArtikel}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgAv['updateArtikel.concurrentUpdate']}&lt;/span&gt;') }"/>
+		    
 			<span id="updateMessage"></span>
 			
 			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
-			<h:form id="updateArtikel" rendered="#{not empty ac.artikel}">
+			<h:form id="updateArtikel" rendered="#{not empty ac.updateArtikel}">
 				<rich:jQuery id="nameFocus" selector="#name" query="focus()"/>
 				<!--
 				<rich:focus id="formFocus"/>
@@ -36,20 +45,20 @@
 				<h:panelGrid id="updateArtikelTabelle"
 				             columns="3">
 					<h:outputLabel id="nameLabel" for="name" value="#{msgAv['updateArtikel.name']}"/>
-						<h:inputText id="name" value="#{ac.updateArtikel.name}">
+						<h:inputText id="name" value="#{ac.updateArtikel.name}" valueChangeListener="#{ac.geaendert}">
 							<rich:validator oninvalid="$(#{rich:element('name')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('name')}).removeClass('invalid')"/>
 						</h:inputText>
 						<rich:messages id="fehlermeldungenName" for="name"/>
 			            
 						<h:outputLabel id="beschreibungLabel" for="beschreibung" value="#{msgAv['updateArtikel.beschreibung']}"/>
-						<h:inputText id="beschreibung" value="#{ac.updateArtikel.beschreibung}">
+						<h:inputText id="beschreibung" value="#{ac.updateArtikel.beschreibung}" valueChangeListener="#{ac.geaendert}">
 							<rich:validator oninvalid="$(#{rich:element('beschreibung')}).addClass('invalid')" onvalid="$(#{rich:element('beschreibung')}).removeClass('invalid')"/>				
 						</h:inputText>
 						<rich:messages id="fehlermeldungenBeschreibung" for="beschreibung"/>
 						
 						<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['updateArtikel.preis']}"/>
-						<h:inputText id="preis" value="#{ac.updateArtikel.preis}">
+						<h:inputText id="preis" value="#{ac.updateArtikel.preis}" valueChangeListener="#{ac.geaendert}">
 							<rich:validator oninvalid="$(#{rich:element('preis')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('preis')}).removeClass('invalid')"/>
 						</h:inputText>
@@ -57,11 +66,12 @@
 						
 						<!-- TODO AUTOMATISIEREN -->
 			            <rich:select 
-			            value="#{ac.updateArtikel.kategorie.kategorieId}">
-			            	<f:selectItem itemValue ="500" itemLabel="Herren"/>
-			            	<f:selectItem itemValue ="525" itemLabel="Damen"/>
-			            	<f:selectItem itemValue ="575" itemLabel="Kinder"/>
+			            value="#{ac.updateArtikel.kategorie.kategorieId}" valueChangeListener="#{ac.geaendert}">
+			            	 <c:forEach items="#{kac.kategorien}" var="kat">
+				            	<f:selectItem itemValue ="#{kat.kategorieId}" itemLabel="#{kat.bezeichnung}"/>			            	
+				            </c:forEach>
 			            </rich:select>
+			            
 			            
 					</h:panelGrid>
 		

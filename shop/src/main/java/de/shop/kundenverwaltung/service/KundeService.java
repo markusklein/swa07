@@ -28,8 +28,10 @@ import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
 import de.shop.util.IdGroup;
+import de.shop.util.Log;
 import de.shop.util.ValidatorProvider;
 
+@Log
 public class KundeService implements Serializable {
 
 	/**
