@@ -22,6 +22,7 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.auth.controller.AuthController;
 import de.shop.auth.controller.KundeLoggedIn;
 import de.shop.bestellverwaltung.domain.Bestellposition;
+import de.shop.bestellverwaltung.domain.BestellstatusType;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.service.BestellungService;
 import de.shop.kundenverwaltung.domain.Kunde;
@@ -143,6 +144,7 @@ public class BestellungController implements Serializable {
 		
 		// Neue Bestellung mit neuen Bestellpositionen erstellen
 		Bestellung bestellung = new Bestellung();
+		bestellung.setStatus(BestellstatusType.OFFEN);
 		bestellung.setBestellpositionen(neuePositionen);
 		LOGGER.tracef("Neue Bestellung: %s\nBestellpositionen: %s", bestellung, bestellung.getBestellpositionen());
 		

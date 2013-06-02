@@ -11,49 +11,50 @@
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		
-		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/>
+		<ui:param name="pageTitle" value="#{msgBv['listArtikel.title']}"/>
 	
 		<ui:define name="article">
 		<!-- Als Variable für den Kategorienamen verwende ich aus der Artikelliste vom AC.. die 
 		zuvor mit der richtigen KAT ID nur Artikel einer Kategorie geholt hat... die erste Variable
 		davon die Kategorie davon die Bezeichnung. -->
-		<rich:panel id="listarticle" header="#{msgAv['listArtikelByKategorie.header']} #{ac.artikel[0].kategorie.bezeichnung}">
+		<rich:panel id="listbestellungen" header="#{msgBv['listBestellungen.order']}">
 			<h:form id="form">
-				<a4j:outputPanel id="artikelPanel">
+				<a4j:outputPanel id="bestellungenPanel">
 				
-						<rich:dataTable id="artikelTabelle"
+						<rich:dataTable id="bestellungenTabelle"
 						                value="#{bc.bestellungen}"
 						                var="best"
 						                rows="8"
-						                noDataLabel="#{msgAv['listArtikel.keineDaten']}"
+						                noDataLabel="#{msgBv['listBestellungen.keineDaten']}"
 						                rowClasses="odd-row, even-row"
 						                styleClass="tabelleMitZebrastil"
 						                cellspacing="10"
-						                rendered="#{not empty artikel or param.init ne 'true'}">
+						                rendered="#{not empty bc.bestellungen}">
+						                
 							<rich:column id="idSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.id']}
+									#{msgBv['listBestellungen.id']}
 								</f:facet>
 								#{best.id}
 							</rich:column>
 							
-							<rich:column id="nameSpalte">
+							<rich:column id="statusSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.name']}
+									#{msgBv['listBestellungen.status']}
 								</f:facet>
 								#{best.status}
 							</rich:column>
 							
-							<rich:column id="kategorieSpalte">
+							<rich:column id="lieferverfolgungsnummerSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.kategorie']}
+									#{msgBv['listBestellungen.lieferverfolgungsnummer']}
 								</f:facet>
 								#{best.lieferverfolgungsnummer}
 							</rich:column>
 							
-							<rich:column id="bezeichnungSpalte">
+							<rich:column id="erzeugtSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.beschreibung']}
+									#{msgBv['listBestellungen.bestelldatum']}
 								</f:facet>
 								#{best.erzeugt}
 							</rich:column>
@@ -67,12 +68,12 @@
 							
 							
 							
-<!-- 							<rich:column id="buttonSpalteWk"> -->
-<!-- 								<h:commandButton id="warenkorbButton" -->
-<!-- 												 image="#{resource['images:cart_add.png']}" -->
-<!-- 										         action="#{wk.add(art)}" -->
-<!-- 										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/> -->
-<!-- 							</rich:column> -->
+							<rich:column id="buttonSpalteBestellungAnzeigen">
+							<h:commandButton id="bestellungButton" 
+						    			 action="#{bc.findBestellungById(best.id)}" 
+									     image="#{resource['images:details3.png']}"
+									     alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
+							</rich:column>
 <!-- 								<rich:column id="buttonSpalteEd"  -->
 <!-- 								rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter') }"> -->
 <!-- 								<h:commandButton id="editButton" -->
@@ -87,9 +88,9 @@
 					
 						<p id="abstand2"/>
 						<rich:dataScroller id="dataScroller"
-						                   for="artikelTabelle"
+						                   for="bestellungenTabelle"
 						                   maxPages="10"
-						                   rendered="#{not empty artikel}"/>
+						                   rendered="#{not empty bestellungen}"/>
 						
 						<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
 							<rich:jQuery id="odd"
