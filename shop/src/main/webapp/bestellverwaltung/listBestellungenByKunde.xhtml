@@ -11,12 +11,10 @@
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		
-		<ui:param name="pageTitle" value="#{msgBv['listArtikel.title']}"/>
+		<ui:param name="pageTitle" value="#{msgBv['listBestellungen.titel']}"/>
 	
 		<ui:define name="article">
-		<!-- Als Variable für den Kategorienamen verwende ich aus der Artikelliste vom AC.. die 
-		zuvor mit der richtigen KAT ID nur Artikel einer Kategorie geholt hat... die erste Variable
-		davon die Kategorie davon die Bezeichnung. -->
+
 		<rich:panel id="listbestellungen" header="#{msgBv['listBestellungen.order']}">
 			<h:form id="form">
 				<a4j:outputPanel id="bestellungenPanel">
@@ -59,30 +57,12 @@
 								#{best.erzeugt}
 							</rich:column>
 							
-<!-- 							<rich:column id="preisSpalte"> -->
-<!-- 								<f:facet name="header"> -->
-<!-- 									#{msgAv['listArtikel.preis']} -->
-<!-- 								</f:facet> -->
-<!-- 								#{art.preis} -->
-<!-- 							</rich:column> -->
-							
-							
-							
 							<rich:column id="buttonSpalteBestellungAnzeigen">
 							<h:commandButton id="bestellungButton" 
 						    			 action="#{bc.findBestellungById(best.id)}" 
 									     image="#{resource['images:details3.png']}"
 									     alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
 							</rich:column>
-<!-- 								<rich:column id="buttonSpalteEd"  -->
-<!-- 								rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter') }"> -->
-<!-- 								<h:commandButton id="editButton" -->
-<!-- 												 image="#{resource['images:edit.png']}" -->
-<!-- 										         action="/artikelverwaltung/updateArtikel" -->
-<!-- 										         alt="#{msgAv['listArtikel.alt.warenkorb']}" -->
-<!-- 										         /> -->
-<!-- 									<f:param id="editArtikel" name="a" value="#{art}"/> -->
-<!-- 							</rich:column> -->
 						</rich:dataTable>
 						
 					

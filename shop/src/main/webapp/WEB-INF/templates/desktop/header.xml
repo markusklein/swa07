@@ -51,7 +51,7 @@
 						    		 value="#{bc.bestellungId}"
 						    		 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
 						<h:commandButton id="bestellungButton" 
-						    			 action="#{bc.findBestellungById}" 
+						    			 action="#{bc.findBestellungById(bc.bestellungId)}" 
 						    			 value="#{msg['header.schnellsuche.button']}"
 						    			 rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}"/>
 												
