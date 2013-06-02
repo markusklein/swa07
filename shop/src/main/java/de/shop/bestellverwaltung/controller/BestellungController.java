@@ -93,8 +93,8 @@ public class BestellungController implements Serializable {
 	 * @throws Exception 
 	 */
 	@TransactionAttribute(REQUIRED)
-	public String findBestellungById() throws Exception {
-		bestellung = bs.findBestellungById(bestellungId, BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
+	public String findBestellungById(Long id) throws Exception {
+		bestellung = bs.findBestellungById(id, BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
 		
 		if (bestellung == null) {
 			// Keine Bestellung zu gegebener ID gefunden
@@ -103,6 +103,7 @@ public class BestellungController implements Serializable {
 			System.out.println("es wurde keine Bestellung mit BestellId "+bestellungId+" gefunden");
 		}
 
+		System.out.println("Bestellung mit BestellId "+bestellungId+" gefunden");
 		flash.put("bestellung", bestellung);
 		return JSF_VIEW_BESTELLUNG;
 	}
