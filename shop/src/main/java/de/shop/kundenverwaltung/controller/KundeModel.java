@@ -7,6 +7,8 @@ import static javax.ejb.TransactionAttributeType.REQUIRED;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
 import static javax.persistence.PersistenceContextType.EXTENDED;
 
+
+
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
@@ -36,6 +38,7 @@ import org.richfaces.component.SortOrder;
 import org.richfaces.component.UIPanelMenuItem;
 
 import de.shop.auth.controller.AuthController;
+import de.shop.auth.controller.KundeLoggedIn;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.PasswordGroup;
@@ -112,6 +115,14 @@ public class KundeModel implements Serializable {
 	
 	@Inject
 	private Messages messages;
+	
+	
+	@Inject
+	@SessionScoped
+	@KundeLoggedIn
+	private Kunde eingeloggterKunde;
+	
+	
 
 	@Inject
 	@Push(topic = "marketing")
@@ -187,8 +198,11 @@ public class KundeModel implements Serializable {
 	public Kunde getKunde() {
 		return kunde;
 	}
-
-
+	
+	public Kunde getEingeloggterKunde() {
+		return kunde = em.find(Kunde.class, eingeloggterKunde.getKundeId());
+	}
+	
 	public String getNachname() {
 		return nachname;
 	}
