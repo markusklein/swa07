@@ -12,6 +12,10 @@
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		
 		<ui:param name="pageTitle" value="#{msgBv['listBestellungen.titel']}"/>
+		
+<!-- 		<ui:define name="metadata"> -->
+<!--  		<f:event type="preRenderView" listener="#{bc.findAllBestellungen()}"/> -->
+<!--  		</ui:define> -->
 	
 		<ui:define name="article">
 
@@ -19,14 +23,14 @@
 			<h:form id="form">
 				
 						<rich:dataTable id="bestellungenTabelle"
-						                value="#{bc.bestellungen}"
+						                value="#{bc.getAllBestellungen()}"
 						                var="best"
 						                rows="8"
 						                noDataLabel="#{msgBv['listBestellungen.keineDaten']}"
 						                rowClasses="odd-row, even-row"
 						                styleClass="tabelleMitZebrastil"
-						                cellspacing="10"
-						                rendered="#{not empty bc.bestellungen}">
+						                cellspacing="10">
+ 						                rendered="#{not empty bc.bestellungen}">
 						                
 							<rich:column id="idSpalte">
 								<f:facet name="header">
@@ -92,7 +96,7 @@
 							             query="jQuery(this).removeClass('active-row')"
 							             timing="domready"/>
 						</a4j:outputPanel>
-						
+
 			</h:form>
 			</rich:panel>
 		</ui:define>

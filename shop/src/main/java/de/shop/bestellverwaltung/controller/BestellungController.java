@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,7 +37,8 @@ import de.shop.bestellverwaltung.service.BestellungService.BestellungFetchType;
 
 
 @Named("bc")
-@RequestScoped
+@SessionScoped
+//@RequestScoped
 @Log
 public class BestellungController implements Serializable {
 	private static final long serialVersionUID = 8788102910739438907L;
@@ -49,6 +51,7 @@ public class BestellungController implements Serializable {
 	private Bestellung bestellung;
 
 	private List<Bestellung> bestellungen = Collections.emptyList();
+
 	
 	@Inject
 	private Warenkorb warenkorb;
@@ -101,10 +104,10 @@ public class BestellungController implements Serializable {
 			// Keine Bestellung zu gegebener ID gefunden
 			//TODO implement method findBestellungByIdErrorMsg(String);
 			//return findBestellungByIdErrorMsg(bestellungId.toString());
-			System.out.println("es wurde keine Bestellung mit BestellId "+bestellungId+" gefunden");
+			System.out.println("es wurde keine Bestellung mit BestellId "+id+" gefunden");
 		}
 
-		System.out.println("Bestellung mit BestellId "+bestellungId+" gefunden");
+		System.out.println("Bestellung mit BestellId "+id+" gefunden");
 		flash.put("bestellung", bestellung);
 		return JSF_VIEW_BESTELLUNG;
 	}
@@ -174,10 +177,17 @@ public class BestellungController implements Serializable {
 			bestellungen = bs.findBestellungenByKunde(kunde.getKundeId());
 		}	
 	}
+	
+	@Transactional
+	public List<Bestellung> getAllBestellungen() {
+		return bs.findAllBestellungen(BestellungFetchType.NUR_BESTELLUNG, locale);
+	}
 
 	public int getAnzahlBestellungenByKunde() {
 		return bestellungen.size();
 	}
+
+
 
 
 
