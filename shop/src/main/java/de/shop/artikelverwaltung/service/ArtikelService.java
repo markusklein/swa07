@@ -7,22 +7,26 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import de.shop.util.ValidatorProvider;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import org.jboss.logging.Logger;
+
 import com.google.common.base.Strings;
+
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.util.IdGroup;
 import de.shop.util.Log;
-import org.jboss.logging.Logger;
+import de.shop.util.ValidatorProvider;
 
 @Log
 public class ArtikelService implements Serializable {
@@ -121,17 +125,30 @@ public class ArtikelService implements Serializable {
 		return artikel;
 	}
 	public Artikel createArtikel(Artikel artikel, Locale locale) {
+		
 		if (artikel == null)
 			return artikel;
-		
-		validateArtikel(artikel, locale, Default.class);
 		
 		final Kategorie kategorie = ks.findKategorieById(artikel.getKategorie().getKategorieId(), locale);
 		
 		artikel.setArtikelId(null);
 		artikel.setKategorie(kategorie);
-		em.persist(artikel);
-		return artikel;
+		
+		List<Artikel> a = findAllArtikel();
+		 for (Artikel item: a){
+			 if(item.equals(artikel)){
+				return null;
+			
+			}
+			
+		 }
+		 validateArtikel(artikel, locale, Default.class);
+			
+
+			em.persist(artikel);
+			return artikel;
+		
+		
 	}
 
 	private void validateArtikel(Artikel artikel, Locale locale, Class<?>... groups) {
