@@ -24,3 +24,5 @@ INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert,
 INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(173, 'Lucasweg 36', '5010', 'Salzburg', 'A', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(174, 'Salzburgerstrasse 42', '5010', 'Salzburg', 'A', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(175, 'Zistelweg 32', '1220', 'Wien', 'A', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(176, 'Salzburgerstrasse 42', '5010', 'Salzburg', 'A', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO adresse (adresse_id, strasse, plz, ort, land, erzeugt, aktualisiert, version) VALUES(177, 'Zistelweg 32', '1220', 'Wien', 'A', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

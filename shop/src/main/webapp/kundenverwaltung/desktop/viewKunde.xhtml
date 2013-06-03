@@ -203,6 +203,66 @@
 							</rich:panel>
 						</rich:tab>
 						
+						<rich:tab id="bestellungenTab">
+							<f:facet name="header">
+								<h:panelGroup id="bestellungenLabel">
+									<h:graphicImage id="bestellungenPng"
+									                name="basket.png"
+									                library="images"/>
+									#{' '}
+									#{msgKv['viewKunde.kunde.bestellungen']}
+								</h:panelGroup>
+							</f:facet>
+							
+							<rich:panel id="bestellungenPanel">
+								<rich:dataTable id="bestellungenTabelle"
+						                value="#{kc.bestellungen}"
+						                var="best"
+						                rows="8"
+						                noDataLabel="#{msgBv['listBestellungen.keineDaten']}"
+						                rowClasses="odd-row, even-row"
+						                styleClass="tabelleMitZebrastil"
+						                cellspacing="10"
+						                rendered="#{not empty kc.bestellungen}">
+						                
+							<rich:column id="idSpalte">
+								<f:facet name="header">
+									#{msgBv['listBestellungen.id']}
+								</f:facet>
+								#{best.id}
+							</rich:column>
+							
+							<rich:column id="statusSpalte">
+								<f:facet name="header">
+									#{msgBv['listBestellungen.status']}
+								</f:facet>
+								#{best.status}
+							</rich:column>
+							
+							<rich:column id="lieferverfolgungsnummerSpalte">
+								<f:facet name="header">
+									#{msgBv['listBestellungen.lieferverfolgungsnummer']}
+								</f:facet>
+								#{best.lieferverfolgungsnummer}
+							</rich:column>
+							
+							<rich:column id="erzeugtSpalte">
+								<f:facet name="header">
+									#{msgBv['listBestellungen.bestelldatum']}
+								</f:facet>
+								#{best.erzeugt}
+							</rich:column>
+							
+							<rich:column id="buttonSpalteBestellungAnzeigen">
+							<h:commandButton id="bestellungButton" 
+						    			 action="#{bc.findBestellungById(best.id)}" 
+									     image="#{resource['images:details3.png']}"
+									     alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
+							</rich:column>
+						</rich:dataTable>
+							</rich:panel>
+						</rich:tab>
+						
 						<!--  <rich:tab id="multimediaTab" rendered="#{not empty kc.kunde.file}">
 							<f:facet name="header">
 								<h:panelGroup id="multimediaLabel">
