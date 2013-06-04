@@ -49,6 +49,8 @@ public class BestellungController implements Serializable {
 	
 	private Long bestellungId;
 	private Bestellung bestellung;
+	
+	private String selectedBestellId;
 
 	private List<Bestellung> bestellungen = Collections.emptyList();
 
@@ -110,6 +112,20 @@ public class BestellungController implements Serializable {
 		System.out.println("Bestellung mit BestellId "+id+" gefunden");
 		flash.put("bestellung", bestellung);
 		return JSF_VIEW_BESTELLUNG;
+	}
+	
+	@TransactionAttribute(REQUIRED)
+	public void findBestellungBySelectedId() {
+		bestellung = bs.findBestellungById(Long.valueOf(selectedBestellId), BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
+		
+		if (bestellung == null) {
+			// Keine Bestellung zu gegebener ID gefunden
+			//TODO implement method findBestellungByIdErrorMsg(String);
+			//return findBestellungByIdErrorMsg(bestellungId.toString());
+			System.out.println("es wurde keine Bestellung mit BestellId "+selectedBestellId+" gefunden");
+		}
+		
+		System.out.println("Bestellung mit BestellId "+selectedBestellId+" gefunden");
 	}
 
 
@@ -185,6 +201,16 @@ public class BestellungController implements Serializable {
 
 	public int getAnzahlBestellungenByKunde() {
 		return bestellungen.size();
+	}
+
+
+	public String getSelectedBestellId() {
+		return selectedBestellId;
+	}
+
+
+	public void setSelectedBestellId(String selectedBestellId) {
+		this.selectedBestellId = selectedBestellId;
 	}
 
 

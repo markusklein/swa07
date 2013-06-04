@@ -343,14 +343,14 @@ public class KundeModel implements Serializable {
 		if (nachname == null || nachname.isEmpty()) {
 			kunden = ks.findAllKunden(FetchType.MIT_ADRESSE_UND_ZAHLUNGSINFORMATION, OrderType.KEINE);
 			//TODO Problem wenn es mehrere Kunden mit selben Nachnamen gibt
-			bestellungen = bs.findBestellungenByKunde(kunden.get(0).getKundeId());
+			//bestellungen = bs.findBestellungenByKunde(kunden.get(0).getKundeId());
 			return JSF_LIST_KUNDEN;
 		}
 
 		try {
 			kunden = ks.findKundenByNachname(nachname, FetchType.MIT_ADRESSE_UND_ZAHLUNGSINFORMATION, locale);
 			//TODO Problem wenn es mehrere Kunden mit selben Nachnamen gibt
-			bestellungen = bs.findBestellungenByKunde(kunden.get(0).getKundeId());
+			//bestellungen = bs.findBestellungenByKunde(kunden.get(0).getKundeId());
 		}
 		catch (InvalidNachnameException e) {
 			final Collection<ConstraintViolation<Kunde>> violations = e.getViolations();
@@ -559,6 +559,10 @@ public class KundeModel implements Serializable {
 
 	public void setBestellungen(List<Bestellung> bestellungen) {
 		this.bestellungen = bestellungen;
+	}
+	
+	public void loadBestellungen(Long param) {
+		this.bestellungen = bs.findBestellungenByKunde(param);
 	}
 
 	
