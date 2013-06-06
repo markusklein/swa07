@@ -77,9 +77,20 @@
 		
 	
 				<p id="buttons">
-					<h:commandButton id="button" action="#{ac.update}" value="#{msgAv['updateArtikel.submit']}"/>
+					<a4j:commandButton id="button" action="#{ac.update}" value="#{msgAv['updateArtikel.submit']}"/>
 					#{' '}
 					<h:commandButton type="reset" value="#{msgAv['updateArtikel.reset']}"/>
+				</p>
+				<p><a4j:status id="statusStart">
+							<f:facet name="start">
+								<h:panelGroup id="waitingGroup">
+									<h:graphicImage id="waitingGif"
+									                name="waiting.gif"
+									                library="images"/>
+									#{msgAv['updateArtikel.inBearbeitung']}
+								</h:panelGroup>
+							</f:facet>
+						</a4j:status>
 				</p>
 				
 				<p id="hinweisPflichtfelder">
