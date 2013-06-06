@@ -263,11 +263,13 @@ public class Artikel implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Artikel other = (Artikel) obj;
-		if (artikel_id == null) {
-			if (other.artikel_id != null)
-				return false;
-		} else if (!artikel_id.equals(other.artikel_id))
+//		if (artikel_id == null) {
+//			if (other.artikel_id != null)
+//				return false;
+//		} 
+		if (!name.equals(other.name)||!beschreibung.equals(other.beschreibung)||!kategorie.equals(other.kategorie)){
 			return false;
+			}	
 		return true;
 	}
 }

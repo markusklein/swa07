@@ -73,7 +73,7 @@
 						<f:facet name="header">
 							#{msgKv['listKunden.nachname']}
 						</f:facet>
-						<h:commandLink id="nachnamePopup" value="#{kunde.nachname}">
+						<h:commandLink id="nachnamePopup" value="#{kunde.nachname}" onclick="#{kc.loadBestellungen(kunde.kundeId)}">
 							<rich:componentControl target="popup" operation="show"/>
 						</h:commandLink>
  

@@ -5,7 +5,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:rich="http://richfaces.org/rich">
 
-	<f:event type="preRenderView" listener="#{bc.findBestellungenByKunde()}"/>
+ 	<f:event type="preRenderView" listener="#{bc.findBestellungenByKunde()}"/>
 
 	
 	<h:form id="navForm">
@@ -46,7 +46,7 @@
 					</h:outputLink>
 				</rich:panelMenuItem>
 				
-				<rich:panelMenuItem id="kundenverwaltungUpdatePrivatkundeItem" >
+				<!-- <rich:panelMenuItem id="kundenverwaltungUpdatePrivatkundeItem" >
 					<h:outputLink id="kundenverwaltungUpdatePrivatkunde"
 					              value="#{request.contextPath}/kundenverwaltung/updatePrivatkunde.jsf">
 						#{msg['nav.kundenverwaltung.updatePrivatkunde']}
@@ -54,7 +54,7 @@
 							<f:param id="updatePrivatkundeCid" name="uid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:outputLink>
-				</rich:panelMenuItem>
+				</rich:panelMenuItem> -->
 				
 				
 				<rich:panelMenuItem id="kundenverwaltungUploadItem" >
@@ -162,11 +162,15 @@
 					<h:outputLink id="bestellverwaltungViewBestellungenByKunde"
 					              value="#{request.contextPath}/bestellverwaltung/listBestellungenByKunde.jsf">
 						#{msg['nav.bestellverwaltung.viewBestellungenByKunde']}
-						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
-							<f:param id="viewWarenkorbCid2" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
-						</c:if>
 					</h:outputLink>			
 				</rich:panelMenuItem>				
+				<rich:panelMenuItem id="bestellverwaltungViewAllBestellungenItem"
+									rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter') }">
+					<h:outputLink id="bestellverwaltungViewAllBestellungen"
+					              value="#{request.contextPath}/bestellverwaltung/listAllBestellungen.jsf">						
+						#{msg['nav.bestellverwaltung.viewAllBestellungen']}
+					</h:outputLink>			
+				</rich:panelMenuItem>
 			</rich:panelMenuGroup>
 			<rich:panelMenuGroup id="auth"
 			                     label="#{msg['nav.auth']}"
@@ -183,15 +187,15 @@
 				</rich:panelMenuItem>
 			</rich:panelMenuGroup>
 			
-			<!-- Einstellungen für den Kunden-->		
+			    <!-- Einstellungen für den Kunden-->		
 				
-			<!--	<rich:panelMenuGroup id="kundeneinstellung"
+				<rich:panelMenuGroup id="kundeneinstellung"
 			                     label="#{msg['nav.kundeneinstellungen']}"
 			                     expanded="true"
 				                 rendered="#{rich:isUserInRole('kunde')}">
 				<rich:panelMenuItem id="kundeneinstellungenKundeÄndern">
 					<h:outputLink id="kundeneinstellungenKundeÄndernLink"
-					              value="#{request.contextPath}/kundenverwaltung/updatePrivatkunde.jsf">
+					              value="#{request.contextPath}/kundenverwaltung/updateKundeLoggedIn.jsf">
 						#{msg['nav.kundenverwaltung.updatePrivatkunde']}
 						<f:param id="initParamKundeneinstellung" name="init" value="true"/>
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
@@ -199,7 +203,7 @@
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>	
-				</rich:panelMenuGroup>	  -->
+				</rich:panelMenuGroup>		  
 				
 		</rich:panelMenu>
 	</h:form>

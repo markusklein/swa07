@@ -7,6 +7,10 @@ import static javax.ejb.TransactionAttributeType.REQUIRED;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
 import static javax.persistence.PersistenceContextType.EXTENDED;
 
+
+
+
+
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
@@ -36,6 +40,9 @@ import org.richfaces.component.SortOrder;
 import org.richfaces.component.UIPanelMenuItem;
 
 import de.shop.auth.controller.AuthController;
+import de.shop.auth.controller.KundeLoggedIn;
+import de.shop.bestellverwaltung.domain.Bestellung;
+import de.shop.bestellverwaltung.service.BestellungService;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.PasswordGroup;
@@ -101,6 +108,9 @@ public class KundeModel implements Serializable {
 	private KundeService ks;
 	
 	@Inject
+	private BestellungService bs;
+	
+	@Inject
 	private transient HttpServletRequest request;
 	
 	@Inject
@@ -112,6 +122,14 @@ public class KundeModel implements Serializable {
 	
 	@Inject
 	private Messages messages;
+	
+	
+	@Inject
+	@SessionScoped
+	@KundeLoggedIn
+	private Kunde eingeloggterKunde;
+	
+	
 
 	@Inject
 	@Push(topic = "marketing")
@@ -128,6 +146,7 @@ public class KundeModel implements Serializable {
 	private Kunde kunde;
 	private String nachname;
 	private List<Kunde> kunden = Collections.emptyList();
+	private List<Bestellung> bestellungen = Collections.emptyList();
 	private SortOrder vornameSortOrder = SortOrder.unsorted;
 	private String vornameFilter = "";
 	private boolean geaendertKunde;    // fuer ValueChangeListener
@@ -187,8 +206,11 @@ public class KundeModel implements Serializable {
 	public Kunde getKunde() {
 		return kunde;
 	}
-
-
+	
+	public Kunde getEingeloggterKunde() {
+		return kunde = em.find(Kunde.class, eingeloggterKunde.getKundeId());
+	}
+	
 	public String getNachname() {
 		return nachname;
 	}
@@ -247,6 +269,7 @@ public class KundeModel implements Serializable {
 	public String findKundeById() {
 		// Bestellungen werden durch "Extended Persistence Context" nachgeladen
 		kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE, locale);
+		bestellungen = bs.findBestellungenByKunde(kunde.getKundeId());
 		
 		if (kunde == null) {
 			// Kein Kunde zu gegebener ID gefunden
@@ -319,11 +342,15 @@ public class KundeModel implements Serializable {
 	public String findKundenByNachname() {
 		if (nachname == null || nachname.isEmpty()) {
 			kunden = ks.findAllKunden(FetchType.MIT_ADRESSE_UND_ZAHLUNGSINFORMATION, OrderType.KEINE);
+			//TODO Problem wenn es mehrere Kunden mit selben Nachnamen gibt
+			//bestellungen = bs.findBestellungenByKunde(kunden.get(0).getKundeId());
 			return JSF_LIST_KUNDEN;
 		}
 
 		try {
 			kunden = ks.findKundenByNachname(nachname, FetchType.MIT_ADRESSE_UND_ZAHLUNGSINFORMATION, locale);
+			//TODO Problem wenn es mehrere Kunden mit selben Nachnamen gibt
+			//bestellungen = bs.findBestellungenByKunde(kunden.get(0).getKundeId());
 		}
 		catch (InvalidNachnameException e) {
 			final Collection<ConstraintViolation<Kunde>> violations = e.getViolations();
@@ -524,6 +551,18 @@ public class KundeModel implements Serializable {
 		return Kunde.class.equals(ausgewaehlterKunde.getClass())
 			   ? JSF_UPDATE_KUNDE
 			   : JSF_UPDATE_FIRMENKUNDE;
+	}
+
+	public List<Bestellung> getBestellungen() {
+		return bestellungen;
+	}
+
+	public void setBestellungen(List<Bestellung> bestellungen) {
+		this.bestellungen = bestellungen;
+	}
+	
+	public void loadBestellungen(Long param) {
+		this.bestellungen = bs.findBestellungenByKunde(param);
 	}
 
 	

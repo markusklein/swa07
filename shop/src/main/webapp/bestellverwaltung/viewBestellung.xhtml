@@ -9,6 +9,13 @@
 	  xmlns:rich="http://richfaces.org/rich">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:define name="metadata">
+		<c:if test="#{not empty param.bestellId}">
+			 	<c:set target="#{bc}" property="selectedBestellId" value="#{param.bestellId}"/>
+			  	<f:event type="preRenderView" listener="#{bc.findBestellungBySelectedId()}"/>
+		</c:if>
+		
+		</ui:define>
 		<ui:param name="pageTitle" value="#{msgBv['viewBestellung.title']}"/>
 	
 		<ui:define name="article">

@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,6 +23,7 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.auth.controller.AuthController;
 import de.shop.auth.controller.KundeLoggedIn;
 import de.shop.bestellverwaltung.domain.Bestellposition;
+import de.shop.bestellverwaltung.domain.BestellstatusType;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.service.BestellungService;
 import de.shop.kundenverwaltung.domain.Kunde;
@@ -35,7 +37,8 @@ import de.shop.bestellverwaltung.service.BestellungService.BestellungFetchType;
 
 
 @Named("bc")
-@RequestScoped
+@SessionScoped
+//@RequestScoped
 @Log
 public class BestellungController implements Serializable {
 	private static final long serialVersionUID = 8788102910739438907L;
@@ -46,8 +49,11 @@ public class BestellungController implements Serializable {
 	
 	private Long bestellungId;
 	private Bestellung bestellung;
+	
+	private String selectedBestellId;
 
 	private List<Bestellung> bestellungen = Collections.emptyList();
+
 	
 	@Inject
 	private Warenkorb warenkorb;
@@ -93,18 +99,33 @@ public class BestellungController implements Serializable {
 	 * @throws Exception 
 	 */
 	@TransactionAttribute(REQUIRED)
-	public String findBestellungById() throws Exception {
-		bestellung = bs.findBestellungById(bestellungId, BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
+	public String findBestellungById(Long id) throws Exception {
+		bestellung = bs.findBestellungById(id, BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
 		
 		if (bestellung == null) {
 			// Keine Bestellung zu gegebener ID gefunden
 			//TODO implement method findBestellungByIdErrorMsg(String);
 			//return findBestellungByIdErrorMsg(bestellungId.toString());
-			System.out.println("es wurde keine Bestellung mit BestellId "+bestellungId+" gefunden");
+			System.out.println("es wurde keine Bestellung mit BestellId "+id+" gefunden");
 		}
 
+		System.out.println("Bestellung mit BestellId "+id+" gefunden");
 		flash.put("bestellung", bestellung);
 		return JSF_VIEW_BESTELLUNG;
+	}
+	
+	@TransactionAttribute(REQUIRED)
+	public void findBestellungBySelectedId() {
+		bestellung = bs.findBestellungById(Long.valueOf(selectedBestellId), BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
+		
+		if (bestellung == null) {
+			// Keine Bestellung zu gegebener ID gefunden
+			//TODO implement method findBestellungByIdErrorMsg(String);
+			//return findBestellungByIdErrorMsg(bestellungId.toString());
+			System.out.println("es wurde keine Bestellung mit BestellId "+selectedBestellId+" gefunden");
+		}
+		
+		System.out.println("Bestellung mit BestellId "+selectedBestellId+" gefunden");
 	}
 
 
@@ -142,6 +163,7 @@ public class BestellungController implements Serializable {
 		
 		// Neue Bestellung mit neuen Bestellpositionen erstellen
 		Bestellung bestellung = new Bestellung();
+		bestellung.setStatus(BestellstatusType.OFFEN);
 		bestellung.setBestellpositionen(neuePositionen);
 		LOGGER.tracef("Neue Bestellung: %s\nBestellpositionen: %s", bestellung, bestellung.getBestellpositionen());
 		
@@ -171,10 +193,27 @@ public class BestellungController implements Serializable {
 			bestellungen = bs.findBestellungenByKunde(kunde.getKundeId());
 		}	
 	}
+	
+	@Transactional
+	public List<Bestellung> getAllBestellungen() {
+		return bs.findAllBestellungen(BestellungFetchType.NUR_BESTELLUNG, locale);
+	}
 
 	public int getAnzahlBestellungenByKunde() {
 		return bestellungen.size();
 	}
+
+
+	public String getSelectedBestellId() {
+		return selectedBestellId;
+	}
+
+
+	public void setSelectedBestellId(String selectedBestellId) {
+		this.selectedBestellId = selectedBestellId;
+	}
+
+
 
 
 
