@@ -132,7 +132,7 @@
 				</rich:panelMenuItem>	
 				
 				<!-- Artikel Update -->
-					<rich:panelMenuItem id="artikelverwaltungUpdateArtikelItem" rendered="#{rich:isUserInRole('admin')}">
+<!-- 					<rich:panelMenuItem id="artikelverwaltungUpdateArtikelItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:outputLink id="artikelverwaltungUpdateArtikel"
 					              value="#{request.contextPath}/artikelverwaltung/updateArtikel.jsf">
 						#{msg['nav.artikelverwaltung.updateArtikel']}
@@ -140,7 +140,7 @@
 							<f:param id="updateArtikelAid" name="aid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:outputLink>
-				</rich:panelMenuItem>		
+				</rich:panelMenuItem>	 -->	
 			</rich:panelMenuGroup>
 
 			<rich:panelMenuGroup id="bestellverwaltung"
