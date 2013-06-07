@@ -64,7 +64,6 @@ public class ArtikelController implements Serializable {
 	private List<Artikel> artikel = Collections.emptyList();
 	private String name;
 	private Long id;
-	private List<Artikel> ladenhueter;
 	private Artikel neuerArtikel;
 	private Kategorie neueKategorie;
 	private Artikel updateArtikel;
@@ -117,11 +116,6 @@ public class ArtikelController implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
-	public List<Artikel> getLadenhueter() {
-		return ladenhueter;
-	}
 	
 	@Transactional
 	public String findArtikelByName() {
@@ -158,11 +152,6 @@ public class ArtikelController implements Serializable {
 		neuerArtikel.setKategorie(neueKategorie);
 		
 	}
-//TODO 
-//	@Transactional
-//	public void loadLadenhueter() {
-//		ladenhueter = as.ladenhueter(ANZAHL_LADENHUETER);
-//	}
 	
 	@Transactional
 	public String selectArtikel() {

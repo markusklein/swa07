@@ -56,7 +56,6 @@ import de.shop.kundenverwaltung.service.KundeService.OrderType;
 import de.shop.util.AbstractShopException;
 import de.shop.util.Client;
 import de.shop.util.ConcurrentDeletedException;
-import de.shop.util.FileHelper;
 import de.shop.util.Log;
 import de.shop.util.Messages;
 
@@ -138,9 +137,6 @@ public class KundeModel implements Serializable {
 	@Inject
 	@Push(topic = "updateKunde")
 	private transient Event<String> updateKundeEvent;
-	
-	@Inject
-	private FileHelper fileHelper;
 
 	private Long kundeId;
 	private Kunde kunde;

@@ -115,7 +115,7 @@ import de.shop.auth.service.jboss.AuthService.RolleType;
 	
 	)
 
-public class Kunde implements Serializable {
+public class Kunde implements Serializable, Cloneable {
 	
 	/**
 	 * 
