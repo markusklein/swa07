@@ -49,7 +49,7 @@ public class ZahlungsinformationService implements Serializable {
 	
 	// Alle Zahlungsinformationen finden
 	
-	public List <Zahlungsinformation> findAllZahlungsinformation() {
+	public List<Zahlungsinformation> findAllZahlungsinformation() {
 		
 		List<Zahlungsinformation> zahlungsinformationen;
 		

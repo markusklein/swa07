@@ -6,16 +6,11 @@ import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.event.Event;
@@ -26,9 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
-
 import de.shop.auth.service.jboss.AuthService;
-import de.shop.auth.service.jboss.AuthService.RolleType;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Zahlungsinformation;
