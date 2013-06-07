@@ -57,7 +57,7 @@
 				</rich:panelMenuItem> -->
 				
 				
-				<rich:panelMenuItem id="kundenverwaltungUploadItem" >
+<!-- 				<rich:panelMenuItem id="kundenverwaltungUploadItem" >
 					<h:outputLink id="kundenverwaltungUpload"
 					              value="#{request.contextPath}/kundenverwaltung/upload.jsf"
 					              rendered="#{auth.loggedIn}">
@@ -66,7 +66,7 @@
 							<f:param id="uploadCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:outputLink>
-				</rich:panelMenuItem>
+				</rich:panelMenuItem> -->
 				<!--
 				<rich:panelMenuItem id="kundenverwaltungViewByEmailInit" label="Init" binding="{kc.menuItemEmail}">
 				</rich:panelMenuItem>
