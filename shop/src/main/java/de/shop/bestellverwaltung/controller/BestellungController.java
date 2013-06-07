@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.TransactionAttribute;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
@@ -19,7 +18,7 @@ import javax.inject.Named;
 
 import org.jboss.logging.Logger;
 
-import de.shop.artikelverwaltung.domain.Artikel;
+
 import de.shop.auth.controller.AuthController;
 import de.shop.auth.controller.KundeLoggedIn;
 import de.shop.bestellverwaltung.domain.Bestellposition;
@@ -28,7 +27,6 @@ import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.service.BestellungService;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.KundeService;
-import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.Client;
 import de.shop.util.Log;
 import de.shop.util.Transactional;
@@ -106,26 +104,28 @@ public class BestellungController implements Serializable {
 			// Keine Bestellung zu gegebener ID gefunden
 			//TODO implement method findBestellungByIdErrorMsg(String);
 			//return findBestellungByIdErrorMsg(bestellungId.toString());
-			System.out.println("es wurde keine Bestellung mit BestellId "+id+" gefunden");
+			System.out.println("es wurde keine Bestellung mit BestellId " + id + " gefunden");
 		}
 
-		System.out.println("Bestellung mit BestellId "+id+" gefunden");
+		System.out.println("Bestellung mit BestellId " + id + " gefunden");
 		flash.put("bestellung", bestellung);
 		return JSF_VIEW_BESTELLUNG;
 	}
 	
 	@TransactionAttribute(REQUIRED)
 	public void findBestellungBySelectedId() {
-		bestellung = bs.findBestellungById(Long.valueOf(selectedBestellId), BestellungFetchType.MIT_BESTELLPOSITIONEN, locale);
+		bestellung = bs.findBestellungById(Long.valueOf(selectedBestellId), 
+											BestellungFetchType.MIT_BESTELLPOSITIONEN, 
+											locale);
 		
 		if (bestellung == null) {
 			// Keine Bestellung zu gegebener ID gefunden
 			//TODO implement method findBestellungByIdErrorMsg(String);
 			//return findBestellungByIdErrorMsg(bestellungId.toString());
-			System.out.println("es wurde keine Bestellung mit BestellId "+selectedBestellId+" gefunden");
+			System.out.println("es wurde keine Bestellung mit BestellId " + selectedBestellId + " gefunden");
 		}
 		
-		System.out.println("Bestellung mit BestellId "+selectedBestellId+" gefunden");
+		System.out.println("Bestellung mit BestellId " + selectedBestellId + " gefunden");
 	}
 
 
@@ -212,10 +212,4 @@ public class BestellungController implements Serializable {
 	public void setSelectedBestellId(String selectedBestellId) {
 		this.selectedBestellId = selectedBestellId;
 	}
-
-
-
-
-
-
-}	
+}
