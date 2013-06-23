@@ -111,6 +111,7 @@ public class Artikel implements Serializable {
 		this.preis = preis;
 		this.erzeugt = erzeugt == null ? null : (Timestamp) erzeugt.clone();
 		this.aktualisiert = aktualisiert == null ? null : (Timestamp) aktualisiert.clone();
+	
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -271,6 +272,14 @@ public class Artikel implements Serializable {
 			return false;
 			}	
 		return true;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 }
 
